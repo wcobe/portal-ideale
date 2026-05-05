@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ideale Rep – Portal do Cliente</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1a4fa0;--blue2:#1566cc;--orange:#e07018;--dark:#0d1b2e;--light:#f0f4fb;
+  --gray1:#f8f9fa;--gray2:#e9ecef;--gray6:#6c757d;--green:#1a8a3e;--red:#c0392b;
+  --shadow:0 4px 24px rgba(26,79,160,.12);--shadow-lg:0 8px 40px rgba(26,79,160,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:var(--light);color:var(--dark);font-size:15px}
+
+/* ========== LOGIN ========== */
+#pg-login{
+  min-height:100vh;
+  background:linear-gradient(135deg,var(--dark) 0%,#162850 45%,var(--blue) 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+#pg-login::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 15% 50%,rgba(224,112,24,.18) 0%,transparent 55%),
+             radial-gradient(circle at 85% 15%,rgba(26,79,160,.25) 0%,transparent 55%);
+}
+#pg-login::after{
+  content:'';position:absolute;bottom:-100px;right:-100px;
+  width:400px;height:400px;border-radius:50%;
+  background:rgba(26,79,160,.15);
+}
+.login-card{
+  background:#fff;border-radius:24px;padding:48px 44px;
+  width:440px;max-width:95vw;
+  box-shadow:0 24px 72px rgba(0,0,0,.35);
+  position:relative;z-index:1;
+}
+.login-logo{text-align:center;margin-bottom:28px}
+.ideale-logo-svg{margin:0 auto 4px}
+.login-brand{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;color:var(--blue);letter-spacing:1px;text-align:center}
+.login-brand span{color:var(--orange)}
+.login-sub{text-align:center;color:var(--gray6);font-size:.88rem;margin-bottom:28px;margin-top:4px}
+.login-hr{border:none;border-top:2px solid var(--gray2);margin:20px 0}
+.fgroup{margin-bottom:18px}
+.fgroup label{display:block;font-size:.82rem;font-weight:600;color:var(--dark);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.fgroup input{
+  width:100%;padding:12px 16px;border:2px solid var(--gray2);
+  border-radius:10px;font-size:.95rem;font-family:'Barlow',sans-serif;
+  transition:border-color .2s,box-shadow .2s;
+}
+.fgroup input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,79,160,.1)}
+.btn-login{
+  width:100%;padding:14px;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:#fff;border:none;border-radius:10px;
+  font-size:1rem;font-weight:700;font-family:'Barlow Condensed',sans-serif;
+  cursor:pointer;transition:all .25s;letter-spacing:.8px;text-transform:uppercase;
+}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,79,160,.45)}
+.login-hint{text-align:center;color:var(--gray6);font-size:.76rem;margin-top:14px}
+.login-contacts{
+  margin-top:24px;padding-top:20px;border-top:1px solid var(--gray2);
+  display:flex;flex-direction:column;gap:8px;align-items:center;
+}
+.login-contacts a{color:var(--blue);font-size:.84rem;text-decoration:none;display:flex;align-items:center;gap:6px}
+.login-contacts a:hover{color:var(--orange)}
+.lerr{
+  background:#fff0f0;color:var(--red);border:1px solid #fcc;
+  border-radius:8px;padding:10px 14px;font-size:.84rem;margin-bottom:14px;display:none;
+}
+
+/* ========== PORTAL ========== */
+#pg-portal{display:none}
+.topbar{
+  background:linear-gradient(90deg,var(--dark) 0%,#1a3060 100%);
+  padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 12px rgba(0,0,0,.25);position:sticky;top:0;z-index:100;
+}
+.tb-left{display:flex;align-items:center;gap:16px}
+.tb-brand{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:#fff;letter-spacing:.5px}
+.tb-brand span{color:var(--orange)}
+.tb-client{color:rgba(255,255,255,.75);font-size:.82rem}
+.tb-client strong{color:#fff;font-size:.9rem}
+.btn-logout{
+  background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);
+  padding:7px 18px;border-radius:8px;cursor:pointer;font-size:.84rem;font-family:'Barlow',sans-serif;
+  transition:all .2s;
+}
+.btn-logout:hover{background:rgba(255,255,255,.22)}
+
+.main{max-width:1280px;margin:0 auto;padding:28px 20px}
+
+/* ========== HOME ========== */
+#pg-home{}
+.welcome-banner{
+  background:linear-gradient(135deg,var(--blue) 0%,#1566cc 100%);
+  border-radius:18px;padding:28px 36px;color:#fff;margin-bottom:28px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+}
+.welcome-banner h2{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800;letter-spacing:.3px}
+.welcome-banner p{opacity:.88;font-size:.92rem;margin-top:4px}
+.client-badge{
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  border-radius:12px;padding:12px 20px;text-align:right;
+}
+.client-badge .cb-name{font-weight:700;font-size:1rem}
+.client-badge .cb-info{font-size:.8rem;opacity:.8;margin-top:2px}
+
+.fabricas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:28px}
+.fabrica-card{
+  background:#fff;border-radius:18px;padding:28px 24px;text-align:center;
+  box-shadow:var(--shadow);cursor:pointer;transition:all .25s;
+  border:2px solid transparent;position:relative;overflow:hidden;
+}
+.fabrica-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--card-accent,var(--blue));
+}
+.fabrica-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--card-accent,var(--blue))}
+.fabrica-card img{max-height:70px;max-width:180px;object-fit:contain;margin-bottom:16px}
+.fabrica-card .fc-name{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.5px}
+.fabrica-card .fc-desc{font-size:.82rem;color:var(--gray6);margin-top:6px}
+.fc-itatiaia{--card-accent:#c8001e}
+.fc-colli{--card-accent:#00884a}
+.fc-nautika{--card-accent:#0070b8}
+
+/* ========== ITATIAIA ========== */
+#pg-itatiaia{display:none}
+.page-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.page-header img{max-height:50px;max-width:150px;object-fit:contain}
+.page-header h2{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;color:var(--dark)}
+.btn-back{
+  margin-left:auto;background:#fff;border:2px solid var(--gray2);color:var(--dark);
+  padding:8px 18px;border-radius:10px;cursor:pointer;font-size:.88rem;font-family:'Barlow',sans-serif;
+  font-weight:600;transition:all .2s;display:flex;align-items:center;gap:6px;
+}
+.btn-back:hover{border-color:var(--blue);color:var(--blue)}
+
+.tab-bar{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;flex-wrap:wrap}
+.tab-btn{
+  padding:9px 20px;border-radius:10px;border:2px solid var(--gray2);background:#fff;
+  cursor:pointer;font-size:.88rem;font-weight:600;font-family:'Barlow',sans-serif;
+  transition:all .2s;white-space:nowrap;color:var(--dark);
+}
+.tab-btn:hover{border-color:var(--blue);color:var(--blue)}
+.tab-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
+
+.tab-info{
+  background:#fff3e0;border:1px solid #ffcc80;border-radius:10px;
+  padding:10px 16px;font-size:.84rem;color:#7c4000;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+
+.filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{
+  padding:8px 14px;border:2px solid var(--gray2);border-radius:8px;
+  font-family:'Barlow',sans-serif;font-size:.88rem;
+}
+.filter-bar input:focus,.filter-bar select:focus{outline:none;border-color:var(--blue)}
+.filter-bar input{min-width:220px}
+
+.itatiaia-table{width:100%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--gray2)}
+.itatiaia-table table{width:100%;border-collapse:collapse}
+.itatiaia-table th{
+  background:var(--dark);color:#fff;padding:11px 14px;text-align:left;
+  font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;white-space:nowrap;
+}
+.itatiaia-table td{padding:10px 14px;border-bottom:1px solid var(--gray1);font-size:.86rem;vertical-align:middle}
+.itatiaia-table tr:last-child td{border-bottom:none}
+.itatiaia-table tr:hover td{background:#f5f8ff}
+.itatiaia-table tr:nth-child(even) td{background:#fafbfd}
+.itatiaia-table tr:nth-child(even):hover td{background:#f0f4ff}
+.qty-input{
+  width:68px;padding:5px 8px;border:2px solid var(--gray2);border-radius:7px;
+  text-align:center;font-size:.88rem;font-family:'Barlow',sans-serif;
+  transition:border-color .2s;
+}
+.qty-input:focus{outline:none;border-color:var(--blue)}
+.qty-input:not([value=""]):not([value="0"]){border-color:var(--green);background:#f0fff4}
+
+.tag-linha{
+  display:inline-block;background:rgba(26,79,160,.1);color:var(--blue);
+  padding:2px 8px;border-radius:5px;font-size:.76rem;font-weight:600;
+}
+.tag-setor{
+  display:inline-block;background:rgba(224,112,24,.1);color:var(--orange);
+  padding:2px 8px;border-radius:5px;font-size:.76rem;font-weight:600;
+}
+
+.sticky-pedido{
+  position:sticky;bottom:0;background:#fff;border-top:2px solid var(--gray2);
+  padding:14px 20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,.08);
+  border-radius:14px 14px 0 0;
+}
+.sp-total{font-size:1.1rem;font-weight:700;color:var(--dark)}
+.sp-total span{color:var(--blue);font-size:1.25rem}
+.sp-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn-clear{
+  background:#fff;border:2px solid var(--gray2);color:var(--gray6);
+  padding:9px 18px;border-radius:9px;cursor:pointer;font-size:.88rem;font-family:'Barlow',sans-serif;font-weight:600;
+}
+.btn-clear:hover{border-color:var(--red);color:var(--red)}
+.btn-gerar{
+  background:linear-gradient(135deg,var(--green),#1fa84a);
+  color:#fff;border:none;padding:10px 24px;border-radius:9px;
+  cursor:pointer;font-size:.92rem;font-weight:700;font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:.5px;transition:all .25s;
+}
+.btn-gerar:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(26,138,62,.4)}
+.btn-gerar:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.pagamento-sel{padding:8px 14px;border:2px solid var(--gray2);border-radius:8px;font-family:'Barlow',sans-serif;font-size:.88rem}
+.pagamento-sel:focus{outline:none;border-color:var(--blue)}
+
+.min-pedido-warn{
+  background:#fff0f0;border:1px solid #fcc;color:var(--red);
+  border-radius:8px;padding:8px 14px;font-size:.82rem;display:none;
+}
+
+/* ========== CATALOGO ========== */
+.catalogo-bar{
+  background:#fff;border-radius:12px;padding:18px 24px;margin-bottom:20px;
+  box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.btn-catalogo{
+  background:linear-gradient(135deg,#c8001e,#e00022);
+  color:#fff;border:none;padding:10px 22px;border-radius:9px;
+  cursor:pointer;font-size:.9rem;font-weight:700;font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:.5px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+}
+
+/* ========== COLLI / NAUTIKA ========== */
+#pg-colli,#pg-nautika{display:none}
+.coming-card{
+  background:#fff;border-radius:18px;padding:48px;text-align:center;box-shadow:var(--shadow);
+}
+.coming-card img{max-height:80px;object-fit:contain;margin-bottom:20px}
+.coming-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:800;color:var(--dark);margin-bottom:10px}
+.coming-card p{color:var(--gray6);max-width:400px;margin:0 auto}
+
+/* ========== MODAL PEDIDO ========== */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.open{display:flex}
+.modal{
+  background:#fff;border-radius:20px;width:680px;max-width:100%;max-height:90vh;
+  overflow-y:auto;padding:36px;position:relative;
+}
+.modal h3{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:800;color:var(--dark);margin-bottom:6px}
+.modal-close{
+  position:absolute;top:18px;right:18px;background:var(--gray2);border:none;
+  width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;font-weight:700;
+}
+.modal-close:hover{background:var(--gray6);color:#fff}
+.order-section{margin:16px 0}
+.order-section h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.6px;color:var(--gray6);font-weight:700;margin-bottom:8px;border-bottom:1px solid var(--gray2);padding-bottom:6px}
+.order-row{display:flex;gap:10px;font-size:.86rem;margin-bottom:4px}
+.order-row .lbl{color:var(--gray6);min-width:110px;font-weight:600}
+.order-items-table{width:100%;border-collapse:collapse;font-size:.84rem;margin-top:8px}
+.order-items-table th{background:var(--dark);color:#fff;padding:8px 10px;text-align:left;font-size:.76rem;text-transform:uppercase;letter-spacing:.4px}
+.order-items-table td{padding:8px 10px;border-bottom:1px solid var(--gray1)}
+.order-total{text-align:right;font-size:1rem;font-weight:700;margin-top:12px;color:var(--dark)}
+.order-total span{color:var(--blue);font-size:1.1rem}
+.order-obs{
+  background:#fffbf0;border:1px solid #ffe082;border-radius:8px;
+  padding:10px 14px;font-size:.82rem;color:#7c5800;margin-top:12px;
+}
+.modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+.btn-print{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;
+  border:none;padding:11px 26px;border-radius:9px;cursor:pointer;
+  font-size:.92rem;font-weight:700;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;
+}
+.btn-enviar{
+  background:linear-gradient(135deg,#25d366,#1fa84a);color:#fff;
+  border:none;padding:11px 26px;border-radius:9px;cursor:pointer;
+  font-size:.92rem;font-weight:700;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;
+}
+
+@media(max-width:600px){
+  .itatiaia-table{overflow-x:auto;display:block}
+  .topbar{padding:0 14px}
+  .main{padding:16px 10px}
+  .welcome-banner{padding:20px}
+  .login-card{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN PAGE ===== -->
+<div id="pg-login">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg class="ideale-logo-svg" width="200" height="70" viewBox="0 0 200 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="70" rx="4" fill="white"/>
+        <text x="10" y="28" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="26" fill="#1a4fa0">IDEALE</text>
+        <text x="10" y="46" font-family="Barlow Condensed,sans-serif" font-weight="600" font-size="13" fill="#e07018" letter-spacing="1">REP COM LTDA</text>
+        <line x1="10" y1="52" x2="190" y2="52" stroke="#e07018" stroke-width="2.5"/>
+        <text x="10" y="63" font-family="Barlow,sans-serif" font-weight="500" font-size="10" fill="#6c757d">REPRESENTAÇÕES COMERCIAIS</text>
+      </svg>
+    </div>
+    <p class="login-sub">Acesso exclusivo para clientes credenciados</p>
+    <div id="lerr" class="lerr">CNPJ ou senha inválidos. Verifique seus dados.</div>
+    <div class="fgroup">
+      <label>CNPJ (somente números)</label>
+      <input type="text" id="inp-cnpj" placeholder="00000000000000" maxlength="18" autocomplete="off">
+    </div>
+    <div class="fgroup">
+      <label>Senha (8 primeiros dígitos do CNPJ)</label>
+      <input type="password" id="inp-senha" placeholder="••••••••" maxlength="8">
+    </div>
+    <button class="btn-login" onclick="doLogin()">ENTRAR NO PORTAL</button>
+    <p class="login-hint">Senha = 8 primeiros dígitos do seu CNPJ</p>
+    <div class="login-contacts">
+      <a href="https://wa.me/5535999598717" target="_blank">📱 WhatsApp: (35) 99959-8717</a>
+      <a href="tel:35999598717">📞 (35) 99959-8717</a>
+      <a href="mailto:ideale.vendas@terra.com.br">✉ ideale.vendas@terra.com.br</a>
+      <a href="mailto:ideale.vendas3@terra.com.br">✉ ideale.vendas3@terra.com.br</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PORTAL ===== -->
+<div id="pg-portal">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-left">
+      <span class="tb-brand">IDEALE <span>REP</span></span>
+      <span class="tb-client">
+        <strong id="tb-nome">—</strong>&nbsp;|&nbsp;<span id="tb-cidade">—</span>
+      </span>
+    </div>
+    <button class="btn-logout" onclick="doLogout()">✕ Sair</button>
+  </div>
+
+  <div class="main">
+
+    <!-- HOME -->
+    <div id="pg-home">
+      <div class="welcome-banner">
+        <div>
+          <h2>Bem-vindo ao Portal Ideale!</h2>
+          <p>Consulte tabelas de preços e faça seus pedidos diretamente por aqui.</p>
+        </div>
+        <div class="client-badge">
+          <div class="cb-name" id="hm-nome">—</div>
+          <div class="cb-info" id="hm-info">—</div>
+        </div>
+      </div>
+      <div class="fabricas-grid">
+        <div class="fabrica-card fc-itatiaia" onclick="showPage('itatiaia')">
+          <svg width="160" height="60" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <rect width="160" height="60" rx="4" fill="white"/>
+            <text x="12" y="24" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="22" fill="#c8001e">ITATIAIA</text>
+            <text x="12" y="40" font-family="Barlow,sans-serif" font-weight="500" font-size="11" fill="#444">MÓVEIS S/A</text>
+            <line x1="12" y1="44" x2="148" y2="44" stroke="#c8001e" stroke-width="2"/>
+          </svg>
+          <div class="fc-name">Itatiaia Móveis</div>
+          <div class="fc-desc">Cozinhas, Fogões, Lavadoras, Portáteis</div>
+        </div>
+        <div class="fabrica-card fc-colli" onclick="showPage('colli')">
+          <svg width="160" height="60" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <rect width="160" height="60" rx="4" fill="white"/>
+            <text x="12" y="26" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="24" fill="#00884a">COLLI</text>
+            <text x="12" y="42" font-family="Barlow,sans-serif" font-weight="500" font-size="11" fill="#444">BIKE</text>
+            <line x1="12" y1="46" x2="148" y2="46" stroke="#00884a" stroke-width="2"/>
+          </svg>
+          <div class="fc-name">Colli Bike</div>
+          <div class="fc-desc">Bicicletas e Acessórios</div>
+        </div>
+        <div class="fabrica-card fc-nautika" onclick="showPage('nautika')">
+          <svg width="160" height="60" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <rect width="160" height="60" rx="4" fill="white"/>
+            <text x="12" y="26" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="22" fill="#0070b8">NAUTIKA</text>
+            <text x="12" y="40" font-family="Barlow,sans-serif" font-weight="500" font-size="11" fill="#444">ARTIGOS ESPORTIVOS</text>
+            <line x1="12" y1="44" x2="148" y2="44" stroke="#0070b8" stroke-width="2"/>
+          </svg>
+          <div class="fc-name">Nautika</div>
+          <div class="fc-desc">Camping, Esportes e Lazer</div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px 24px;box-shadow:var(--shadow);font-size:1.25rem;color:var(--gray6);text-align:center">
+        <strong style="color:var(--dark)">📞 Contato Ideale Rep Com Ltda</strong>&nbsp;|&nbsp;
+        (35) 99959-8717 &nbsp;|&nbsp;
+        <a href="mailto:ideale.vendas@terra.com.br" style="color:var(--blue)">ideale.vendas@terra.com.br</a> &nbsp;|&nbsp;
+        <a href="mailto:ideale.vendas3@terra.com.br" style="color:var(--blue)">ideale.vendas3@terra.com.br</a>
+      </div>
+    </div>
+
+    <!-- ITATIAIA -->
+    <div id="pg-itatiaia">
+      <div class="page-header">
+        <svg width="130" height="44" viewBox="0 0 130 44" xmlns="http://www.w3.org/2000/svg">
+          <text x="4" y="28" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="28" fill="#c8001e">ITATIAIA</text>
+          <line x1="4" y1="32" x2="126" y2="32" stroke="#c8001e" stroke-width="2"/>
+          <text x="4" y="42" font-family="Barlow,sans-serif" font-weight="500" font-size="10" fill="#444">MÓVEIS S/A</text>
+        </svg>
+        <h2>Tabela de Preços</h2>
+        <button class="btn-back" onclick="showPage('home')">← Voltar</button>
+      </div>
+
+      <div class="catalogo-bar">
+        <span style="font-weight:600;font-size:.92rem">📋 Catálogo Itatiaia 2026:</span>
+        <a class="btn-catalogo" href="CATALOGO_ITATIAIA-26.pdf" target="_blank">⬇ Baixar Catálogo PDF</a>
+        <span style="font-size:.82rem;color:var(--gray6);margin-left:auto">Pedido Mínimo: Aço R$3.000 | Madeira R$3.000 | Fogões R$3.000 | Portáteis R$1.500</span>
+      </div>
+
+      <div class="tab-bar" id="itat-tabs">
+        <button class="tab-btn active" onclick="setTab('aco',this)">🔩 Aço</button>
+        <button class="tab-btn" onclick="setTab('madeira',this)">🪵 Madeira</button>
+        <button class="tab-btn" onclick="setTab('fogoes',this)">🔥 Fogões & Cooktop</button>
+        <button class="tab-btn" onclick="setTab('lavadoras',this)">🫧 Lavadoras</button>
+        <button class="tab-btn" onclick="setTab('portateis',this)">⚡ Portáteis</button>
+      </div>
+
+      <div id="tab-info" class="tab-info">ℹ️ <span id="tab-info-txt"></span></div>
+      <div id="min-warn" class="min-pedido-warn">⚠️ <span id="min-warn-txt"></span></div>
+
+      <div class="filter-bar">
+        <input type="text" id="search-prod" placeholder="🔍 Buscar código ou descrição..." oninput="renderTable()">
+        <select id="sel-linha" onchange="renderTable()"><option value="">Todas as linhas</option></select>
+        <select id="sel-setor" onchange="renderTable()"><option value="">Todos os setores</option></select>
+        <button onclick="clearFilters()" style="padding:8px 14px;border:2px solid var(--gray2);border-radius:8px;background:#fff;cursor:pointer;font-family:Barlow,sans-serif;font-size:.84rem">✕ Limpar</button>
+      </div>
+
+      <div class="itatiaia-table">
+        <table id="prod-table">
+          <thead>
+            <tr>
+              <th>Setor</th><th>Linha</th><th>Código</th><th>Foto</th><th>Descrição</th>
+              <th>Preço</th><th>IPI</th><th>ST/Frete</th><th>Preço Final</th><th>Qtd</th>
+            </tr>
+          </thead>
+          <tbody id="prod-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="sticky-pedido">
+        <div>
+          <div class="sp-total">Total: <span id="sp-total">R$ 0,00</span></div>
+          <div id="sp-count" style="font-size:.8rem;color:var(--gray6);margin-top:2px">0 itens</div>
+        </div>
+        <div class="sp-actions">
+          <select class="pagamento-sel" id="pgto-sel">
+            <option value="">— Forma de pagamento —</option>
+            <option value="À VISTA 10 DIAS - DESC. 5%">À Vista 10 Dias — Desconto 5%</option>
+            <option value="30/60/90 - DESC. 1,7%">30/60/90 — Desconto 1,7%</option>
+            <option value="30/300 (10x)">Acima R$5.000: 30/300 (10 pagamentos)</option>
+            <option value="30/60/90/120/150">Abaixo R$5.000: 30/60/90/120/150</option>
+          </select>
+          <button class="btn-clear" onclick="clearCart()">🗑 Limpar</button>
+          <button class="btn-gerar" id="btn-gerar" onclick="gerarPedido()">📄 Gerar Pedido PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLLI -->
+    <div id="pg-colli">
+      <div class="page-header">
+        <h2>Colli Bike</h2>
+        <button class="btn-back" onclick="showPage('home')">← Voltar</button>
+      </div>
+      <div class="coming-card">
+        <svg width="160" height="60" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 16px">
+          <text x="12" y="38" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="36" fill="#00884a">COLLI BIKE</text>
+        </svg>
+        <h3>Tabela Colli Bike</h3>
+        <p>Tabela de preços e catálogo Colli Bike em breve neste portal.<br>Para pedidos, entre em contato:</p>
+        <div style="margin-top:20px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+          <a href="https://wa.me/5535999598717" style="background:#25d366;color:#fff;padding:10px 22px;border-radius:9px;text-decoration:none;font-weight:700;font-family:Barlow Condensed,sans-serif;font-size:.95rem;letter-spacing:.5px">WhatsApp</a>
+          <a href="mailto:ideale.vendas@terra.com.br" style="background:var(--blue);color:#fff;padding:10px 22px;border-radius:9px;text-decoration:none;font-weight:700;font-family:Barlow Condensed,sans-serif;font-size:.95rem;letter-spacing:.5px">E-mail</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAUTIKA -->
+    <div id="pg-nautika">
+      <div class="page-header">
+        <h2>Nautika</h2>
+        <button class="btn-back" onclick="showPage('home')">← Voltar</button>
+      </div>
+      <div class="coming-card">
+        <svg width="160" height="60" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 16px">
+          <text x="4" y="38" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="32" fill="#0070b8">NAUTIKA</text>
+        </svg>
+        <h3>Tabela Nautika</h3>
+        <p>Tabela de preços, catálogo e Curva ABC Nautika em breve neste portal.<br>Para pedidos, entre em contato:</p>
+        <div style="margin-top:20px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+          <a href="https://wa.me/5535999598717" style="background:#25d366;color:#fff;padding:10px 22px;border-radius:9px;text-decoration:none;font-weight:700;font-family:Barlow Condensed,sans-serif;font-size:.95rem;letter-spacing:.5px">WhatsApp</a>
+          <a href="mailto:ideale.vendas@terra.com.br" style="background:var(--blue);color:#fff;padding:10px 22px;border-radius:9px;text-decoration:none;font-weight:700;font-family:Barlow Condensed,sans-serif;font-size:.95rem;letter-spacing:.5px">E-mail</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /portal -->
+
+<!-- MODAL PEDIDO -->
+<div class="modal-bg" id="modal-pedido">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>📄 Pedidos Gerados por Setor</h3>
+    <div id="modal-content"></div>
+    <div class="modal-actions" id="modal-actions-area"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+// ===== DATA =====
+const CLIENTS_DB = [{"razao_social":"ABEL MOVEIS LTDA","nome_fantasia":"ABEL MOVEIS LTDA","cnpj":"22748503000182","cod_itatiaia":"5000013","cidade":"CAMPO BELO","estado":"MG"},{"razao_social":"CASA CIRILO LTDA","nome_fantasia":"CASA CIRILO LTDA","cnpj":"17175357000103","cod_itatiaia":"5000080","cidade":"CAPITOLIO","estado":"MG"},{"razao_social":"CASA GUARARAPES COMERCIAL LTDA","nome_fantasia":"CASA GUARARAPES COMERCIAL LTDA","cnpj":"20611737000158","cod_itatiaia":"5000092","cidade":"CLÁUDIO","estado":"MG"},{"razao_social":"COMERCIAL DE FERRAGENS E MATERIAIS","nome_fantasia":"COMERCIAL DE FERRAGENS E MATERIAIS","cnpj":"18661629000148","cod_itatiaia":"5000136","cidade":"Baependi","estado":"MG"},{"razao_social":"CRUZIMAC LTDA","nome_fantasia":"CRUZIMAC LTDA","cnpj":"26038240000179","cod_itatiaia":"5000139","cidade":"CRUZILIA","estado":"MG"},{"razao_social":"ELETROMIL LTDA","nome_fantasia":"ELETROMIL LTDA","cnpj":"16726218000168","cod_itatiaia":"5000167","cidade":"BAMBUÍ","estado":"MG"},{"razao_social":"EMIVA-EMPRESA MINEIRA DE VAREJO LTDA","nome_fantasia":"EMIVA-EMPRESA MINEIRA DE VAREJO LTDA","cnpj":"19523117000188","cod_itatiaia":"5000185","cidade":"ITAGUARA","estado":"MG"},{"razao_social":"GUERRA ELETRODOMESTICOS LTDA","nome_fantasia":"GUERRA ELETRODOMESTICOS LTDA","cnpj":"18775148000163","cod_itatiaia":"5000240","cidade":"Piumhi","estado":"MG"},{"razao_social":"IMPERIAL MOVEIS LTDA - EPP","nome_fantasia":"IMPERIAL MOVEIS LTDA - EPP","cnpj":"24903536000185","cod_itatiaia":"5000256","cidade":"SAO SEBASTIAO DO PARAISO","estado":"MG"},{"razao_social":"J M MOVEIS E ELETRODOMESTICOS LTDA","nome_fantasia":"J M MOVEIS E ELETRODOMESTICOS LTDA","cnpj":"64267701000174","cod_itatiaia":"5000266","cidade":"CARMO DO RIO CLARO","estado":"MG"},{"razao_social":"JAG MOVEIS LTDA","nome_fantasia":"JAG MOVEIS LTDA","cnpj":"24034886000152","cod_itatiaia":"5000280","cidade":"PERDOES","estado":"MG"},{"razao_social":"JANUZIO FERREIRA DA COSTA","nome_fantasia":"JANUZIO FERREIRA DA COSTA","cnpj":"42795930000129","cod_itatiaia":"5000282","cidade":"PIMENTA","estado":"MG"},{"razao_social":"L F UTILIDADES DOMESTICAS LTDA EPP","nome_fantasia":"L F UTILIDADES DOMESTICAS LTDA EPP","cnpj":"86575131000112","cod_itatiaia":"5000313","cidade":"Arcos","estado":"MG"},{"razao_social":"LOJAS ATHAMAR LTDA - EPP","nome_fantasia":"LOJAS ATHAMAR LTDA - EPP","cnpj":"21260898000107","cod_itatiaia":"5000330","cidade":"ITAUNA","estado":"MG"},{"razao_social":"MOBILIADORA FLAMAR LTDA","nome_fantasia":"MOBILIADORA FLAMAR LTDA","cnpj":"21466537000111","cod_itatiaia":"5000404","cidade":"SANTO ANTONIO DO MONTE","estado":"MG"},{"razao_social":"MOBILIADORA PIUMHI LTDA - EPP","nome_fantasia":"MOBILIADORA PIUMHI LTDA - EPP","cnpj":"22292999000122","cod_itatiaia":"5000420","cidade":"PIUMHI","estado":"MG"},{"razao_social":"MOBILIARIA SAO PAULO LTDA","nome_fantasia":"MOBILIARIA SAO PAULO LTDA","cnpj":"20702213000172","cod_itatiaia":"5000428","cidade":"Lambari","estado":"MG"},{"razao_social":"MOVEIS ARMANDO LTDA - EPP","nome_fantasia":"MOVEIS ARMANDO LTDA - EPP","cnpj":"20677233000130","cod_itatiaia":"5000435","cidade":"Monte Belo","estado":"MG"},{"razao_social":"JOSELAR MOVEIS LTDA","nome_fantasia":"JOSELAR MOVEIS LTDA","cnpj":"18520767000107","cod_itatiaia":"5000441","cidade":"PARA DE MINAS","estado":"MG"},{"razao_social":"MOVEIS SANTIAGO LTDA","nome_fantasia":"MOVEIS SANTIAGO LTDA","cnpj":"00874894000149","cod_itatiaia":"5000467","cidade":"NOVA RESENDE","estado":"MG"},{"razao_social":"MOVEIS THOMAZ EIRELI","nome_fantasia":"MOVEIS THOMAZ EIRELI","cnpj":"42919415000103","cod_itatiaia":"5000471","cidade":"PASSOS","estado":"MG"},{"razao_social":"PARA MOVEIS LTDA","nome_fantasia":"PARA MOVEIS LTDA","cnpj":"18313577000119","cod_itatiaia":"5000494","cidade":"PARÁ DE MINAS","estado":"MG"},{"razao_social":"PAULO 40 MOVEIS - COMERCIAL E IMPORTADORA LTDA","nome_fantasia":"PAULO 40 MOVEIS - COMERCIAL E IMPORTADORA LTDA","cnpj":"19964709000135","cod_itatiaia":"5000500","cidade":"ANDRADAS","estado":"MG"},{"razao_social":"SOUZA MOVEIS LTDA","nome_fantasia":"SOUZA MOVEIS LTDA","cnpj":"18659128000127","cod_itatiaia":"5000565","cidade":"AGUANIL","estado":"MG"},{"razao_social":"TRANSLAR MOVEIS LTDA - EPP","nome_fantasia":"TRANSLAR MOVEIS LTDA - EPP","cnpj":"01660442000127","cod_itatiaia":"5000578","cidade":"Boa Esperança","estado":"MG"},{"razao_social":"IMPERIAL MOVEIS LTDA - EPP","nome_fantasia":"IMPERIAL MOVEIS LTDA - EPP","cnpj":"24903536000266","cod_itatiaia":"5000617","cidade":"SAO SEBASTIAO DO PARAISO","estado":"MG"},{"razao_social":"RICARDO CANASSA JUNIOR","nome_fantasia":"RICARDO CANASSA JUNIOR","cnpj":"22527584000190","cod_itatiaia":"5000648","cidade":"DELTA","estado":"MG"},{"razao_social":"POP LAR MOVEIS LTDA","nome_fantasia":"POP LAR MOVEIS LTDA","cnpj":"01893903000101","cod_itatiaia":"5000718","cidade":"MONTE BELO","estado":"MG"},{"razao_social":"DURCE ALVARENGA DE CARVALHO LTDA","nome_fantasia":"DURCE ALVARENGA DE CARVALHO LTDA","cnpj":"02055022000184","cod_itatiaia":"5000743","cidade":"IJACI","estado":"MG"},{"razao_social":"ITA MOVEIS LTDA","nome_fantasia":"ITA MOVEIS LTDA","cnpj":"17904418000126","cod_itatiaia":"5000899","cidade":"ITAMONTE","estado":"MG"},{"razao_social":"MITRE - ELETRO DOMESTICOS LTDA - EPP","nome_fantasia":"MITRE - ELETRO DOMESTICOS LTDA - EPP","cnpj":"00390597000128","cod_itatiaia":"5000923","cidade":"CAMPO BELO","estado":"MG"},{"razao_social":"ELETRO SAO MARCOS LTDA - EPP","nome_fantasia":"ELETRO SAO MARCOS LTDA - EPP","cnpj":"21304878000190","cod_itatiaia":"5001327","cidade":"Itaguara","estado":"MG"},{"razao_social":"MARIA AUXILIADORA LARA DE ALVARENGA","nome_fantasia":"MARIA AUXILIADORA LARA DE ALVARENGA","cnpj":"71038087000134","cod_itatiaia":"5001493","cidade":"PASSA TEMPO","estado":"MG"},{"razao_social":"CARVALHO SILVA SILVA LTDA","nome_fantasia":"CARVALHO SILVA SILVA LTDA","cnpj":"03513319000109","cod_itatiaia":"5001715","cidade":"LAVRAS","estado":"MG"},{"razao_social":"MOBILIADORA STARLAR LTDA","nome_fantasia":"MOBILIADORA STARLAR LTDA","cnpj":"02879563000127","cod_itatiaia":"5001751","cidade":"CARMO DA MATA","estado":"MG"},{"razao_social":"JOSE TRINDADE MANGIA","nome_fantasia":"JOSE TRINDADE MANGIA","cnpj":"64206378000129","cod_itatiaia":"5001788","cidade":"Andrelândia","estado":"MG"},{"razao_social":"LOJAS EDMIL S/A","nome_fantasia":"LOJAS EDMIL S/A","cnpj":"21545371000129","cod_itatiaia":"5001842","cidade":"Elói Mendes","estado":"MG"},{"razao_social":"MUSA MOVEIS LTDA","nome_fantasia":"MUSA MOVEIS LTDA","cnpj":"23857840000170","cod_itatiaia":"5001939","cidade":"ARCOS","estado":"MG"},{"razao_social":"CASA CELIA LTDA","nome_fantasia":"CASA CELIA LTDA","cnpj":"22011373000109","cod_itatiaia":"5002052","cidade":"Pains","estado":"MG"},{"razao_social":"CASA CAMARGOS LTDA","nome_fantasia":"CASA CAMARGOS LTDA","cnpj":"16814055000922","cod_itatiaia":"5002131","cidade":"ITAUNA","estado":"MG"},{"razao_social":"UTILIDADES DOMESTICAS UD LTDA","nome_fantasia":"UTILIDADES DOMESTICAS UD LTDA","cnpj":"02817838000521","cod_itatiaia":"5002141","cidade":"Lagoa da Prata","estado":"MG"},{"razao_social":"CASA DE MOVEIS SAO JOSE LTDA","nome_fantasia":"CASA DE MOVEIS SAO JOSE LTDA","cnpj":"19035963000159","cod_itatiaia":"5002208","cidade":"Camanducaia","estado":"MG"},{"razao_social":"ELETROMOVEIS MATA LTDA","nome_fantasia":"ELETROMOVEIS MATA LTDA","cnpj":"64230709000166","cod_itatiaia":"5002261","cidade":"São Tiago","estado":"MG"},{"razao_social":"IZABEL DE FATIMA DO LAGO CUNHA ME","nome_fantasia":"IZABEL DE FATIMA DO LAGO CUNHA ME","cnpj":"03090836000112","cod_itatiaia":"5002262","cidade":"Cabo Verde","estado":"MG"},{"razao_social":"TEREZINHA ROSA DE SOUZA","nome_fantasia":"TEREZINHA ROSA DE SOUZA","cnpj":"05767202000187","cod_itatiaia":"5002330","cidade":"BRASÓPOLIS","estado":"MG"},{"razao_social":"REQUINTE MOVEIS E ELETRODOMESTICOS","nome_fantasia":"REQUINTE MOVEIS E ELETRODOMESTICOS","cnpj":"02718676000140","cod_itatiaia":"5002340","cidade":"ALTEROSA","estado":"MG"},{"razao_social":"CASA VERA CRUZ FLORARTE LTDA","nome_fantasia":"CASA VERA CRUZ FLORARTE LTDA","cnpj":"21030283000194","cod_itatiaia":"5002358","cidade":"ITAJUBA","estado":"MG"},{"razao_social":"UTILAR - UTILIDADES DO LAR LTDA - EPP","nome_fantasia":"UTILAR - UTILIDADES DO LAR LTDA - EPP","cnpj":"04683253000168","cod_itatiaia":"5002424","cidade":"PARAISOPOLIS","estado":"MG"},{"razao_social":"VERA SEIXAS DA SILVA - EPP","nome_fantasia":"VERA SEIXAS DA SILVA - EPP","cnpj":"02465436000181","cod_itatiaia":"5002460","cidade":"SANTA RITA DE JACUTINGA","estado":"MG"},{"razao_social":"CICLO SAT MOVEIS LTDA","nome_fantasia":"CICLO SAT MOVEIS LTDA","cnpj":"04793218000100","cod_itatiaia":"5002534","cidade":"AREADO","estado":"MG"},{"razao_social":"MOBILIADORA DO IVO LTDA - ME","nome_fantasia":"MOBILIADORA DO IVO LTDA - ME","cnpj":"05010531000189","cod_itatiaia":"5002764","cidade":"Itatiaiuçu","estado":"MG"},{"razao_social":"DANLAR COMERCIAL LTDA","nome_fantasia":"DANLAR COMERCIAL LTDA","cnpj":"06031987000198","cod_itatiaia":"5002850","cidade":"Cruzília","estado":"MG"},{"razao_social":"UTILAR DE JACUTINGA LTDA EPP","nome_fantasia":"UTILAR DE JACUTINGA LTDA EPP","cnpj":"20330734000146","cod_itatiaia":"5002851","cidade":"JACUTINGA","estado":"MG"},{"razao_social":"IRMAOS GOULART LTDA - EPP","nome_fantasia":"IRMAOS GOULART LTDA - EPP","cnpj":"71390249000107","cod_itatiaia":"5002886","cidade":"PIUMHI","estado":"MG"},{"razao_social":"APOL ELETROMOVEIS LTDA","nome_fantasia":"APOL ELETROMOVEIS LTDA","cnpj":"01439842000107","cod_itatiaia":"5002910","cidade":"Perdigão","estado":"MG"},{"razao_social":"NERI MARIA DE ANDRADE","nome_fantasia":"NERI MARIA DE ANDRADE","cnpj":"00754365000101","cod_itatiaia":"5002911","cidade":"Cana Verde","estado":"MG"},{"razao_social":"ANDERSON DINIZ VILELA - ME","nome_fantasia":"ANDERSON DINIZ VILELA - ME","cnpj":"01569451000298","cod_itatiaia":"5002913","cidade":"Liberdade","estado":"MG"},{"razao_social":"JOAO SAULO FERNANDES - CPF: 444.925","nome_fantasia":"JOAO SAULO FERNANDES - CPF: 444.925","cnpj":"18037952000145","cod_itatiaia":"5003011","cidade":"Monte Santo de Minas","estado":"MG"},{"razao_social":"COMERCIAL ELETROMOVEIS ALVARENGA LT","nome_fantasia":"COMERCIAL ELETROMOVEIS ALVARENGA LT","cnpj":"07873844000196","cod_itatiaia":"5003016","cidade":"CRUZILIA","estado":"MG"},{"razao_social":"COMERCIO DE COLCHOES E MOVEIS MOBIL","nome_fantasia":"COMERCIO DE COLCHOES E MOVEIS MOBIL","cnpj":"07409155000125","cod_itatiaia":"5003080","cidade":"Estiva","estado":"MG"},{"razao_social":"MOVEIS ZACARIAS DE MONTE SANTO DE M","nome_fantasia":"MOVEIS ZACARIAS DE MONTE SANTO DE M","cnpj":"04690328000138","cod_itatiaia":"5003081","cidade":"Monte Santo de Minas","estado":"MG"},{"razao_social":"MOBILIADORA SENHOR DO BONFIM LTDA","nome_fantasia":"MOBILIADORA SENHOR DO BONFIM LTDA","cnpj":"02319782000151","cod_itatiaia":"5003172","cidade":"BONFIM","estado":"MG"},{"razao_social":"SEVAL MOVEIS & ELETRODOMESTICOS LTD","nome_fantasia":"SEVAL MOVEIS & ELETRODOMESTICOS LTD","cnpj":"71017172000116","cod_itatiaia":"5003179","cidade":"Santo Antônio do Amparo","estado":"MG"},{"razao_social":"JOSE AMERICO SOUZA JUNIOR","nome_fantasia":"JOSE AMERICO SOUZA JUNIOR","cnpj":"04405538000137","cod_itatiaia":"5003239","cidade":"CARRANCAS","estado":"MG"},{"razao_social":"CLEIA DE PADUA CANTALISTO DOS REIS","nome_fantasia":"CLEIA DE PADUA CANTALISTO DOS REIS","cnpj":"71021976000199","cod_itatiaia":"5003281","cidade":"Campos Gerais","estado":"MG"},{"razao_social":"MILALVES MOVEIS LTDA","nome_fantasia":"MILALVES MOVEIS LTDA","cnpj":"02560263000180","cod_itatiaia":"5003282","cidade":"NEPOMUCENO","estado":"MG"},{"razao_social":"VALDOMIRO FUZARI","nome_fantasia":"VALDOMIRO FUZARI","cnpj":"18903252000196","cod_itatiaia":"5003307","cidade":"OURO FINO","estado":"MG"},{"razao_social":"JULIO'S BIKES LTDA EPP - ME","nome_fantasia":"JULIO'S BIKES LTDA EPP - ME","cnpj":"00879905000183","cod_itatiaia":"5003407","cidade":"Piracema","estado":"MG"},{"razao_social":"IVO MOVEIS E ELETROS LTDA ME","nome_fantasia":"IVO MOVEIS E ELETROS LTDA ME","cnpj":"08620645000139","cod_itatiaia":"5003667","cidade":"CRUCILANDIA","estado":"MG"},{"razao_social":"LUIZ MARQUES DE OLIVEIRA","nome_fantasia":"LUIZ MARQUES DE OLIVEIRA","cnpj":"17865320000107","cod_itatiaia":"5003710","cidade":"PARAISÓPOLIS","estado":"MG"},{"razao_social":"DEMETRIO LEONIO DE SOUSA","nome_fantasia":"DEMETRIO LEONIO DE SOUSA","cnpj":"02826729000147","cod_itatiaia":"5003711","cidade":"PIEDADE DOS GERAIS","estado":"MG"},{"razao_social":"SILVANO DE ALMEIDA RESENDE - ME","nome_fantasia":"SILVANO DE ALMEIDA RESENDE - ME","cnpj":"03872560000124","cod_itatiaia":"5003796","cidade":"SAO TIAGO","estado":"MG"},{"razao_social":"REINALDO JOSE FORZAN","nome_fantasia":"REINALDO JOSE FORZAN","cnpj":"05553909000190","cod_itatiaia":"5003797","cidade":"BOA ESPERANCA","estado":"MG"},{"razao_social":"PAULO CESAR GOULART E CIA LDA","nome_fantasia":"PAULO CESAR GOULART E CIA LDA","cnpj":"08298344000130","cod_itatiaia":"5003849","cidade":"SAO ROQUE DE MINAS","estado":"MG"},{"razao_social":"SOBERANA MOVEIS LTDA","nome_fantasia":"SOBERANA MOVEIS LTDA","cnpj":"19132273000118","cod_itatiaia":"5003851","cidade":"CAMPO BELO","estado":"MG"},{"razao_social":"LUIZ VILELA COMERCIAL LTDA","nome_fantasia":"LUIZ VILELA COMERCIAL LTDA","cnpj":"02395007000185","cod_itatiaia":"5003921","cidade":"CRUZILIA","estado":"MG"},{"razao_social":"ZL ELETROMOVEIS LTDA","nome_fantasia":"ZL ELETROMOVEIS LTDA","cnpj":"00413198000135","cod_itatiaia":"5003984","cidade":"NATERCIA","estado":"MG"},{"razao_social":"S A OLIVEIRA OLIVEIRA LTDA","nome_fantasia":"S A OLIVEIRA OLIVEIRA LTDA","cnpj":"04563247000177","cod_itatiaia":"5003985","cidade":"CAMANDUCAIA","estado":"MG"},{"razao_social":"HELAINE LOPES SIQUEIRA NERY","nome_fantasia":"HELAINE LOPES SIQUEIRA NERY","cnpj":"05168929000148","cod_itatiaia":"5003992","cidade":"MACHADO","estado":"MG"},{"razao_social":"LOSANGO MOVEIS LTDA","nome_fantasia":"LOSANGO MOVEIS LTDA","cnpj":"03058767000160","cod_itatiaia":"5004025","cidade":"Carmo do Cajuru","estado":"MG"},{"razao_social":"KERIMA SANTOS CORREA E CIA LTDA","nome_fantasia":"KERIMA SANTOS CORREA E CIA LTDA","cnpj":"07843002000191","cod_itatiaia":"5004096","cidade":"SANTA RITA DE CALDAS","estado":"MG"},{"razao_social":"SILVANA MEDEIROS SOUZA DA MATAE CIA","nome_fantasia":"SILVANA MEDEIROS SOUZA DA MATAE CIA","cnpj":"09104971000156","cod_itatiaia":"5004333","cidade":"Nazareno","estado":"MG"},{"razao_social":"LARA & OLIVEIRA MOVEIS LTDA","nome_fantasia":"LARA & OLIVEIRA MOVEIS LTDA","cnpj":"09238637000195","cod_itatiaia":"5004387","cidade":"Itaguara","estado":"MG"},{"razao_social":"LOJA DANEGA LTDA - ME","nome_fantasia":"LOJA DANEGA LTDA - ME","cnpj":"03145401000128","cod_itatiaia":"5004600","cidade":"São João Batista do Glória","estado":"MG"},{"razao_social":"JONAS ALVES NASCIMENTO","nome_fantasia":"JONAS ALVES NASCIMENTO","cnpj":"09463080000196","cod_itatiaia":"5004618","cidade":"EXTREMA","estado":"MG"},{"razao_social":"MOVEIS PICA PAU LTDA","nome_fantasia":"MOVEIS PICA PAU LTDA","cnpj":"09143986000123","cod_itatiaia":"5004619","cidade":"CONGONHAL","estado":"MG"},{"razao_social":"MOVEIS GAMA LTDA - ME","nome_fantasia":"MOVEIS GAMA LTDA - ME","cnpj":"21924493000126","cod_itatiaia":"5004703","cidade":"Bom Despacho","estado":"MG"},{"razao_social":"MOURA COLCHOES E MOVEIS LTDA - ME","nome_fantasia":"MOURA COLCHOES E MOVEIS LTDA - ME","cnpj":"09420545000121","cod_itatiaia":"5004704","cidade":"Nova Serrana","estado":"MG"},{"razao_social":"ACJD COMERCIO DE MOVEIS E ELETRODOM","nome_fantasia":"ACJD COMERCIO DE MOVEIS E ELETRODOM","cnpj":"08646213000105","cod_itatiaia":"5004713","cidade":"Passa-Vinte","estado":"MG"},{"razao_social":"MOVEIS SANTA RITA LTDA","nome_fantasia":"MOVEIS SANTA RITA LTDA","cnpj":"05135928000105","cod_itatiaia":"5004762","cidade":"Cássia","estado":"MG"},{"razao_social":"LOJA MARINEL COMERCIO VAREJISTA DE","nome_fantasia":"LOJA MARINEL COMERCIO VAREJISTA DE","cnpj":"09463923000154","cod_itatiaia":"5004852","cidade":"SERITINGA","estado":"MG"},{"razao_social":"XUXUCA ELETRO MOVEIS E ELETRODOMEST","nome_fantasia":"XUXUCA ELETRO MOVEIS E ELETRODOMEST","cnpj":"10333095000119","cod_itatiaia":"5004891","cidade":"ARAUJOS","estado":"MG"},{"razao_social":"JOSE ADENIL DONIZETI LOPES LTDA","nome_fantasia":"JOSE ADENIL DONIZETI LOPES LTDA","cnpj":"03708755000133","cod_itatiaia":"5005015","cidade":"TRES PONTAS","estado":"MG"},{"razao_social":"CASA E ELETRO EIRELI","nome_fantasia":"CASA E ELETRO EIRELI","cnpj":"07294179000186","cod_itatiaia":"5005021","cidade":"Elói Mendes","estado":"MG"},{"razao_social":"MOVEIS ADS LTDA ME","nome_fantasia":"MOVEIS ADS LTDA ME","cnpj":"04991350000118","cod_itatiaia":"5005078","cidade":"Muzambinho","estado":"MG"},{"razao_social":"SANTOS E FERREIRA COMERCIO DE MOVEI","nome_fantasia":"SANTOS E FERREIRA COMERCIO DE MOVEI","cnpj":"05001220000153","cod_itatiaia":"5005122","cidade":"LAVRAS","estado":"MG"},{"razao_social":"DANILO AUGUSTO LARA DE ALVARENGA","nome_fantasia":"DANILO AUGUSTO LARA DE ALVARENGA","cnpj":"10423104000162","cod_itatiaia":"5005200","cidade":"DESTERRO DE ENTRE RIOS","estado":"MG"},{"razao_social":"ML COMERCIO DE MOVEIS E ELETRODOMES","nome_fantasia":"ML COMERCIO DE MOVEIS E ELETRODOMES","cnpj":"09278361000179","cod_itatiaia":"5005239","cidade":"BOA ESPERANCA","estado":"MG"},{"razao_social":"MARCIA RODRIGUES DE OLIVEIRA SOUZA","nome_fantasia":"MARCIA RODRIGUES DE OLIVEIRA SOUZA","cnpj":"09101014000176","cod_itatiaia":"5005369","cidade":"FORMIGA","estado":"MG"},{"razao_social":"DEPOSITO REAL 340 LTDA","nome_fantasia":"DEPOSITO REAL 340 LTDA","cnpj":"38749545000178","cod_itatiaia":"5005471","cidade":"CLÁUDIO","estado":"MG"},{"razao_social":"INEZ PARANAHIBA MACIEL - ME","nome_fantasia":"INEZ PARANAHIBA MACIEL - ME","cnpj":"03836374000130","cod_itatiaia":"5005650","cidade":"CRUZILIA","estado":"MG"},{"razao_social":"BRUMAK MOVEIS EIRELI","nome_fantasia":"BRUMAK MOVEIS EIRELI","cnpj":"05266238000187","cod_itatiaia":"5005664","cidade":"Nova Serrana","estado":"MG"},{"razao_social":"MARIA PALMIRA DINIZ VILELA - ME","nome_fantasia":"MARIA PALMIRA DINIZ VILELA - ME","cnpj":"03820609000103","cod_itatiaia":"5005787","cidade":"São Vicente de Minas","estado":"MG"},{"razao_social":"CASA CAMARGOS LTDA","nome_fantasia":"CASA CAMARGOS LTDA","cnpj":"16814055000418","cod_itatiaia":"5005800","cidade":"PARA DE MINAS","estado":"MG"},{"razao_social":"JR MOVEIS E COLCHOES LTDA","nome_fantasia":"JR MOVEIS E COLCHOES LTDA","cnpj":"10754839000179","cod_itatiaia":"5005867","cidade":"ITAPECERICA","estado":"MG"},{"razao_social":"LEANDRO PEREIRA RINCO","nome_fantasia":"LEANDRO PEREIRA RINCO","cnpj":"05661075000137","cod_itatiaia":"5005977","cidade":"Camacho","estado":"MG"},{"razao_social":"MAGAZINE BONFIM MOVEIS E ELETRODOME","nome_fantasia":"MAGAZINE BONFIM MOVEIS E ELETRODOME","cnpj":"08906641000111","cod_itatiaia":"5006121","cidade":"Bonfim","estado":"MG"},{"razao_social":"CARLOS ALBERTO MARINELE","nome_fantasia":"CARLOS ALBERTO MARINELE","cnpj":"06244299000106","cod_itatiaia":"5006123","cidade":"BORDA DA MATA","estado":"MG"},{"razao_social":"GABRIEL MOVEIS E ELETRO LTDA","nome_fantasia":"GABRIEL MOVEIS E ELETRO LTDA","cnpj":"10903112000106","cod_itatiaia":"5006470","cidade":"Jacuí","estado":"MG"},{"razao_social":"FERNANDO RIBEIRO DE PAULA","nome_fantasia":"FERNANDO RIBEIRO DE PAULA","cnpj":"64285810000114","cod_itatiaia":"5006949","cidade":"BOM JARDIM DE MINAS","estado":"MG"},{"razao_social":"SILVA E PIRES MOVEIS LTDA","nome_fantasia":"SILVA E PIRES MOVEIS LTDA","cnpj":"13229213000131","cod_itatiaia":"5007035","cidade":"Formiga","estado":"MG"},{"razao_social":"CELIA REGINA SALGADO AVELLA JOIA","nome_fantasia":"CELIA REGINA SALGADO AVELLA JOIA","cnpj":"23874134000641","cod_itatiaia":"5007213","cidade":"BORDA DA MATA","estado":"MG"},{"razao_social":"DECORE MOVEIS COLCHOES E DECORACAO","nome_fantasia":"DECORE MOVEIS COLCHOES E DECORACAO","cnpj":"07331063000170","cod_itatiaia":"5007720","cidade":"PIMENTA","estado":"MG"},{"razao_social":"DAX COMERCIO DE CELULARES, PARTICIP","nome_fantasia":"DAX COMERCIO DE CELULARES, PARTICIP","cnpj":"10695162000145","cod_itatiaia":"5008107","cidade":"Guaçuí","estado":"ES"},{"razao_social":"MOVEIS GAMA LTDA","nome_fantasia":"MOVEIS GAMA LTDA","cnpj":"15168724000116","cod_itatiaia":"5008436","cidade":"BOM DESPACHO","estado":"MG"},{"razao_social":" FABIANA MELO & CIA LTDA","nome_fantasia":" FABIANA MELO & CIA LTDA","cnpj":"15307724000150","cod_itatiaia":"5008702","cidade":"Candeias","estado":"MG"},{"razao_social":"MOVEIS ZACARIAS DE CAJURU LTDA","nome_fantasia":"MOVEIS ZACARIAS DE CAJURU LTDA","cnpj":"05164105000280","cod_itatiaia":"5009336","cidade":"Cajuru","estado":"SP"},{"razao_social":"MAGAZINE BONFIM MOVEIS EELETRODOMESTICOS LTDA","nome_fantasia":"MAGAZINE BONFIM MOVEIS EELETRODOMESTICOS LTDA","cnpj":"08906641000200","cod_itatiaia":"5009707","cidade":"ENTRE RIOS DE MINAS","estado":"MG"},{"razao_social":"BRASLAR MOVEIS E ELETRODOMESTICOS L","nome_fantasia":"BRASLAR MOVEIS E ELETRODOMESTICOS L","cnpj":"23260896000143","cod_itatiaia":"5009873","cidade":"Oliveira","estado":"MG"},{"razao_social":"COLCHOBRAS LIMITADA","nome_fantasia":"COLCHOBRAS LIMITADA","cnpj":"71182646000185","cod_itatiaia":"5009965","cidade":"DIVINOPOLIS","estado":"MG"},{"razao_social":"CEARA MOVEIS LTDA","nome_fantasia":"CEARA MOVEIS LTDA","cnpj":"18914440000110","cod_itatiaia":"5010916","cidade":"LAVRAS","estado":"MG"},{"razao_social":"RENI GONTIJO DE ASSUNCAO - CPF 2745","nome_fantasia":"RENI GONTIJO DE ASSUNCAO - CPF 2745","cnpj":"02412049000187","cod_itatiaia":"5011694","cidade":"Moema","estado":"MG"},{"razao_social":"PEDRO IVO DOS SANTOS & CIA LTDA","nome_fantasia":"PEDRO IVO DOS SANTOS & CIA LTDA","cnpj":"02427525000133","cod_itatiaia":"5011857","cidade":"SANTO ANTONIO DO MONTE","estado":"MG"},{"razao_social":"SUMOV SUL MOVEIS LTDA","nome_fantasia":"SUMOV SUL MOVEIS LTDA","cnpj":"21625066000147","cod_itatiaia":"5011875","cidade":"CAMPO BELO","estado":"MG"},{"razao_social":"SUPERMOVEIS LTDA","nome_fantasia":"SUPERMOVEIS LTDA","cnpj":"00544596000190","cod_itatiaia":"5013132","cidade":"DIVINÓPOLIS","estado":"MG"},{"razao_social":"MOBILIADORA CAMPANHENSE LTDA","nome_fantasia":"MOBILIADORA CAMPANHENSE LTDA","cnpj":"71325609000189","cod_itatiaia":"5014093","cidade":"CAMPANHA","estado":"MG"},{"razao_social":"KFK MOVEIS LTDA","nome_fantasia":"KFK MOVEIS LTDA","cnpj":"05068130000180","cod_itatiaia":"5014660","cidade":"DIVINÓPOLIS","estado":"MG"},{"razao_social":"MOVEIS ALENIER LIMITADA","nome_fantasia":"MOVEIS ALENIER LIMITADA","cnpj":"02073086000108","cod_itatiaia":"5015680","cidade":"Divinópolis","estado":"MG"},{"razao_social":"WKL MOVEIS E ELETRODOMESTICOS LTDA","nome_fantasia":"WKL MOVEIS E ELETRODOMESTICOS LTDA","cnpj":"07978824000180","cod_itatiaia":"5016577","cidade":"BOM JARDIM DE MINAS","estado":"MG"},{"razao_social":"MONALISA SANTOS COMERCIAL DE COLCHO","nome_fantasia":"MONALISA SANTOS COMERCIAL DE COLCHO","cnpj":"07068269000159","cod_itatiaia":"5017387","cidade":"PIUMHI","estado":"MG"},{"razao_social":"MAGAZINE BRASIL LTDA","nome_fantasia":"MAGAZINE BRASIL LTDA","cnpj":"07370139000176","cod_itatiaia":"5017789","cidade":"Itamonte","estado":"MG"},{"razao_social":"ALEXANDRE IVO SANTOS & CIA LTDA","nome_fantasia":"ALEXANDRE IVO SANTOS & CIA LTDA","cnpj":"10909106000166","cod_itatiaia":"5018907","cidade":"SANTO ANTONIO DO MONTE","estado":"MG"},{"razao_social":"VIGILAR MOVEIS E ELETRO LTDA","nome_fantasia":"VIGILAR MOVEIS E ELETRO LTDA","cnpj":"05370560000151","cod_itatiaia":"5019773","cidade":"Pains","estado":"MG"},{"razao_social":"MOVEIS MAGAZINE, MOVEIS E ELETRO LT","nome_fantasia":"MOVEIS MAGAZINE, MOVEIS E ELETRO LT","cnpj":"13786859000110","cod_itatiaia":"5022687","cidade":"São Tomás de Aquino","estado":"MG"},{"razao_social":"MAGAZINE BRASIL REAL LTDA","nome_fantasia":"MAGAZINE BRASIL REAL LTDA","cnpj":"18009848000147","cod_itatiaia":"5027122","cidade":"SÃO LOURENÇO","estado":"MG"},{"razao_social":"ELETRO CASA NOVA LTDA","nome_fantasia":"ELETRO CASA NOVA LTDA","cnpj":"17823155000120","cod_itatiaia":"5028070","cidade":"Três Pontas","estado":"MG"},{"razao_social":"VIDAL MOVEIS LTDA - ME","nome_fantasia":"VIDAL MOVEIS LTDA - ME","cnpj":"15866012000170","cod_itatiaia":"5032598","cidade":"São Gonçalo do Sapucaí","estado":"MG"},{"razao_social":"JM TELEFONIA LTDA - ME","nome_fantasia":"JM TELEFONIA LTDA - ME","cnpj":"08767650000179","cod_itatiaia":"5033307","cidade":"Crucilândia","estado":"MG"},{"razao_social":"OSMAR DOS REIS VIEIRA","nome_fantasia":"OSMAR DOS REIS VIEIRA","cnpj":"71111116000146","cod_itatiaia":"5035330","cidade":"São Sebastião do Paraíso","estado":"MG"},{"razao_social":"JACKSON MOVEIS LTDA","nome_fantasia":"JACKSON MOVEIS LTDA","cnpj":"19571902000106","cod_itatiaia":"5036542","cidade":"LAGOA DA PRATA","estado":"MG"},{"razao_social":"MOBILIADORA NOSSA SENHORA DA PIEDAD","nome_fantasia":"MOBILIADORA NOSSA SENHORA DA PIEDAD","cnpj":"21852472000142","cod_itatiaia":"5036742","cidade":"PIEDADE DOS GERAIS","estado":"MG"},{"razao_social":"MARCELO JOSE LARA - ME","nome_fantasia":"MARCELO JOSE LARA - ME","cnpj":"22092176000153","cod_itatiaia":"5037527","cidade":"PIRACEMA","estado":"MG"},{"razao_social":"TELIS GEAN PARREIRAS","nome_fantasia":"TELIS GEAN PARREIRAS","cnpj":"21754949000157","cod_itatiaia":"5037902","cidade":"PIEDADE DOS GERAIS","estado":"MG"},{"razao_social":"ALEX LUIZ GONCALVES - ME","nome_fantasia":"ALEX LUIZ GONCALVES - ME","cnpj":"22102256000142","cod_itatiaia":"5038886","cidade":"PERDIGAO","estado":"MG"},{"razao_social":"FLAVIA DA SILVA SANTOS COSTA","nome_fantasia":"FLAVIA DA SILVA SANTOS COSTA","cnpj":"23161564000101","cod_itatiaia":"5039584","cidade":"DESTERRO DE ENTRE RIOS","estado":"MG"},{"razao_social":"JOSE DO CARMO DA SILVA","nome_fantasia":"JOSE DO CARMO DA SILVA","cnpj":"22404939000154","cod_itatiaia":"5039751","cidade":"Córrego Fundo","estado":"MG"},{"razao_social":"ALEXANDRA FRANCISCO-CPF03743758601","nome_fantasia":"ALEXANDRA FRANCISCO-CPF03743758601","cnpj":"12138696000104","cod_itatiaia":"5041336","cidade":"Alfenas","estado":"MG"},{"razao_social":"JOTINHA COMERCIO VAREJISTA DE MOVEI","nome_fantasia":"JOTINHA COMERCIO VAREJISTA DE MOVEI","cnpj":"22938037000106","cod_itatiaia":"5041854","cidade":"SÃO SEBASTIÃO DO PARAÍSO","estado":"MG"},{"razao_social":"UNIAO DOS MOVEIS LTDA","nome_fantasia":"UNIAO DOS MOVEIS LTDA","cnpj":"10573389000118","cod_itatiaia":"5042775","cidade":"BOM DESPACHO","estado":"MG"},{"razao_social":"COLCHOES E ESTOFADOS LUREAN LTDA- EPP","nome_fantasia":"COLCHOES E ESTOFADOS LUREAN LTDA- EPP","cnpj":"06915274000197","cod_itatiaia":"5043488","cidade":"ALPINOPOLIS","estado":"MG"},{"razao_social":"LEIA PAULA VENTURA - ME","nome_fantasia":"LEIA PAULA VENTURA - ME","cnpj":"06159371000105","cod_itatiaia":"5043630","cidade":"Monte Santo de Minas","estado":"MG"},{"razao_social":"ISAQUE MARTINS CORDEIRO LTDA","nome_fantasia":"ISAQUE MARTINS CORDEIRO LTDA","cnpj":"23234095000103","cod_itatiaia":"5044061","cidade":"PERDIGÃO","estado":"MG"},{"razao_social":"BRINK - LAR LTDA","nome_fantasia":"BRINK - LAR LTDA","cnpj":"00389128000199","cod_itatiaia":"5045685","cidade":"Passos","estado":"MG"},{"razao_social":"ELINALDA APARECIDA RIBEIRO","nome_fantasia":"ELINALDA APARECIDA RIBEIRO","cnpj":"27285531000124","cod_itatiaia":"5046620","cidade":"CARMO DA MATA","estado":"MG"},{"razao_social":"WAGNER LUIZ DOS SANTOS ME","nome_fantasia":"WAGNER LUIZ DOS SANTOS ME","cnpj":"08268858000143","cod_itatiaia":"5049005","cidade":"Passos","estado":"MG"},{"razao_social":"CASA LEDO MOVEIS EM RECUPERACAO JUD","nome_fantasia":"CASA LEDO MOVEIS EM RECUPERACAO JUD","cnpj":"29117235000140","cod_itatiaia":"5055436","cidade":"CAMPO BELO","estado":"MG"},{"razao_social":"ROCHA RIBEIRO LTDA","nome_fantasia":"ROCHA RIBEIRO LTDA","cnpj":"29493766000137","cod_itatiaia":"5059188","cidade":"ITAPECERICA","estado":"MG"},{"razao_social":"MAIA COLCHOES LTDA","nome_fantasia":"MAIA COLCHOES LTDA","cnpj":"24402504000104","cod_itatiaia":"5062324","cidade":"CRISTAIS","estado":"MG"},{"razao_social":"PAULO CESAR DA COSTA MOBILIADORA","nome_fantasia":"PAULO CESAR DA COSTA MOBILIADORA","cnpj":"29566816000169","cod_itatiaia":"5062615","cidade":"ITATIAIUCU","estado":"MG"},{"razao_social":"MALTA MOVEIS E DECORACOES LTDA","nome_fantasia":"MALTA MOVEIS E DECORACOES LTDA","cnpj":"30652511000159","cod_itatiaia":"5064796","cidade":"Bambuí","estado":"MG"},{"razao_social":"MARIA ISABEL DE OLIVEIRA SANTOS","nome_fantasia":"MARIA ISABEL DE OLIVEIRA SANTOS","cnpj":"29764238000175","cod_itatiaia":"5065287","cidade":"CONCEICAO DA APARECIDA","estado":"MG"},{"razao_social":"SUZANA SILVA MAGALHAES 05582924612","nome_fantasia":"SUZANA SILVA MAGALHAES 05582924612","cnpj":"18816914000352","cod_itatiaia":"5072532","cidade":"Formiga","estado":"MG"},{"razao_social":"ERICK PINTO","nome_fantasia":"ERICK PINTO","cnpj":"16944515000180","cod_itatiaia":"5073564","cidade":"Conceição dos Ouros","estado":"MG"},{"razao_social":"TATIANE CRISTINA DE OLIVEIRA 109671","nome_fantasia":"TATIANE CRISTINA DE OLIVEIRA 109671","cnpj":"28863331000174","cod_itatiaia":"5074419","cidade":"Nova Resende","estado":"MG"},{"razao_social":"MOVEIS SILVA TOME LTDA","nome_fantasia":"MOVEIS SILVA TOME LTDA","cnpj":"21686082000140","cod_itatiaia":"5075121","cidade":"NOVA RESENDE","estado":"MG"},{"razao_social":"11.554.983 RENATO MARIANO NASCIMENT","nome_fantasia":"11.554.983 RENATO MARIANO NASCIMENT","cnpj":"11554983000124","cod_itatiaia":"5077060","cidade":"Piumhi","estado":"MG"},{"razao_social":"NATHALIA CALDERUCCI JUNQUEIRA","nome_fantasia":"NATHALIA CALDERUCCI JUNQUEIRA","cnpj":"32566273000194","cod_itatiaia":"5077132","cidade":"CRISTINA","estado":"MG"},{"razao_social":"MARIA ALICE MONTEIRO REIS 513978896","nome_fantasia":"MARIA ALICE MONTEIRO REIS 513978896","cnpj":"33424875000170","cod_itatiaia":"5079416","cidade":"IBITIURA DE MINAS","estado":"MG"},{"razao_social":"MAGAZINE FORT LAR DE CASSIA LTDA","nome_fantasia":"MAGAZINE FORT LAR DE CASSIA LTDA","cnpj":"11523573000116","cod_itatiaia":"5080878","cidade":"CÁSSIA","estado":"MG"},{"razao_social":"LOJAS MOVELAR EIRELI","nome_fantasia":"LOJAS MOVELAR EIRELI","cnpj":"34770824000162","cod_itatiaia":"5087124","cidade":"Varginha","estado":"MG"},{"razao_social":"JLA COMERCIO DE MOVEIS LTDA","nome_fantasia":"JLA COMERCIO DE MOVEIS LTDA","cnpj":"21831947000114","cod_itatiaia":"5088001","cidade":"ALFENAS","estado":"MG"},{"razao_social":"IZADORA CARDOSO DE LIMA SILVA 11518","nome_fantasia":"IZADORA CARDOSO DE LIMA SILVA 11518","cnpj":"12293982000136","cod_itatiaia":"5089409","cidade":"SÃO BENTO ABADE","estado":"MG"},{"razao_social":"SILVANA MEDEIROS SOUZA DA MATA E CI","nome_fantasia":"SILVANA MEDEIROS SOUZA DA MATA E CI","cnpj":"09104971000407","cod_itatiaia":"5090004","cidade":"BOM SUCESSO","estado":"MG"},{"razao_social":"20.967.737 KEILA FERREIRA COSTA AGU","nome_fantasia":"20.967.737 KEILA FERREIRA COSTA AGU","cnpj":"20967737000195","cod_itatiaia":"5090095","cidade":"Lavras","estado":"MG"},{"razao_social":"MAGAZINE CENTRAL SAMONTE LTDA","nome_fantasia":"MAGAZINE CENTRAL SAMONTE LTDA","cnpj":"30225812000104","cod_itatiaia":"5095444","cidade":"Santo Antônio do Monte","estado":"MG"},{"razao_social":"COMERCIAL DUARTE E DUARTE LTDA","nome_fantasia":"COMERCIAL DUARTE E DUARTE LTDA","cnpj":"12267351000142","cod_itatiaia":"5095880","cidade":"Belo Vale","estado":"MG"},{"razao_social":"MOBILIADORA CAMILA LTDA","nome_fantasia":"MOBILIADORA CAMILA LTDA","cnpj":"66396912000132","cod_itatiaia":"5096712","cidade":"Divinópolis","estado":"MG"},{"razao_social":"RICARDO JOSE PEREIRA","nome_fantasia":"RICARDO JOSE PEREIRA","cnpj":"31333957000183","cod_itatiaia":"5102146","cidade":"São Roque de Minas","estado":"MG"},{"razao_social":"TULIO PIRES MOVEIS LTDA","nome_fantasia":"TULIO PIRES MOVEIS LTDA","cnpj":"35903130000119","cod_itatiaia":"5105835","cidade":"FORMIGA","estado":"MG"},{"razao_social":"HELEN DE LOURDES RODRIGUES BARBOSA","nome_fantasia":"HELEN DE LOURDES RODRIGUES BARBOSA","cnpj":"17550562000101","cod_itatiaia":"5108309","cidade":"IBITURUNA","estado":"MG"},{"razao_social":"WARLEY WAGNER GONCALVES","nome_fantasia":"WARLEY WAGNER GONCALVES","cnpj":"36545099000154","cod_itatiaia":"5108589","cidade":"PITANGUI","estado":"MG"},{"razao_social":"ANGELICA CARVALHO FONSECA 286699688","nome_fantasia":"ANGELICA CARVALHO FONSECA 286699688","cnpj":"26219813000160","cod_itatiaia":"5109318","cidade":"LIBERDADE","estado":"MG"},{"razao_social":"MOVEIS SANTOS COELHO LTDA","nome_fantasia":"MOVEIS SANTOS COELHO LTDA","cnpj":"12184810000124","cod_itatiaia":"5111372","cidade":"Divinópolis","estado":"MG"},{"razao_social":"CASA RIOS ELETROELETRONICOS LTDA","nome_fantasia":"CASA RIOS ELETROELETRONICOS LTDA","cnpj":"37105206000196","cod_itatiaia":"5113258","cidade":"ITAPECERICA","estado":"MG"},{"razao_social":"JOSE GONCALVES NETO EIRELI","nome_fantasia":"JOSE GONCALVES NETO EIRELI","cnpj":"40482083000117","cod_itatiaia":"5118202","cidade":"IGUATAMA","estado":"MG"},{"razao_social":"COMERCIAL ELETRO LUZ LTDA ME","nome_fantasia":"COMERCIAL ELETRO LUZ LTDA ME","cnpj":"38051632000157","cod_itatiaia":"5119201","cidade":"ITAGUARA","estado":"MG"},{"razao_social":"BRASIL DECOR MOVEIS LTDA","nome_fantasia":"BRASIL DECOR MOVEIS LTDA","cnpj":"14156615000116","cod_itatiaia":"5120079","cidade":"Divinópolis","estado":"MG"},{"razao_social":"MICHELL MENDES CARVALHO09342278612","nome_fantasia":"MICHELL MENDES CARVALHO09342278612","cnpj":"42868816000181","cod_itatiaia":"5123461","cidade":"Bom Jesus da Penha","estado":"MG"},{"razao_social":"JF MOVEIS E DECORACOES EIRELI","nome_fantasia":"JF MOVEIS E DECORACOES EIRELI","cnpj":"36930483000170","cod_itatiaia":"5123940","cidade":"TURVOLANDIA","estado":"MG"},{"razao_social":"H K COMERCIO DE MOVEIS LTDA","nome_fantasia":"H K COMERCIO DE MOVEIS LTDA","cnpj":"44036912000199","cod_itatiaia":"5127605","cidade":"IGARATINGA","estado":"MG"},{"razao_social":"WAGNER NOGUEIRA DA FONSECA","nome_fantasia":"WAGNER NOGUEIRA DA FONSECA","cnpj":"21755944000149","cod_itatiaia":"5130234","cidade":"Carmo do Cajuru","estado":"MG"},{"razao_social":"GERSON NAVES VILELA","nome_fantasia":"GERSON NAVES VILELA","cnpj":"28589212000175","cod_itatiaia":"5131999","cidade":"CAMPO BELO","estado":"MG"},{"razao_social":"WAINE GRAZIELE PIRES 09123375671","nome_fantasia":"WAINE GRAZIELE PIRES 09123375671","cnpj":"34748518000120","cod_itatiaia":"5134927","cidade":"MARTINHO CAMPOS","estado":"MG"},{"razao_social":"GILMAR ALVES DA SILVA 04146111609","nome_fantasia":"GILMAR ALVES DA SILVA 04146111609","cnpj":"27108456000126","cod_itatiaia":"5135121","cidade":"Cláudio","estado":"MG"},{"razao_social":"GOMAP COMERCIO DE MOVEIS E EQUIPAME","nome_fantasia":"GOMAP COMERCIO DE MOVEIS E EQUIPAME","cnpj":"44384524000107","cod_itatiaia":"5135578","cidade":"FORMIGA","estado":"MG"},{"razao_social":"IGARA MOVEIS E ELETROS ONLINE LTDA","nome_fantasia":"IGARA MOVEIS E ELETROS ONLINE LTDA","cnpj":"47643367000197","cod_itatiaia":"5137958","cidade":"IGARATINGA","estado":"MG"},{"razao_social":"TOPA TUDO LIDER FORMIGA LTDA","nome_fantasia":"TOPA TUDO LIDER FORMIGA LTDA","cnpj":"42280885000170","cod_itatiaia":"5138543","cidade":"FORMIGA","estado":"MG"},{"razao_social":"DIEGO SOUZA BARBOSA","nome_fantasia":"DIEGO SOUZA BARBOSA","cnpj":"14237862000147","cod_itatiaia":"5139372","cidade":"POMPEU","estado":"MG"},{"razao_social":"MARIA SELMA DA COSTA RIBEIRO","nome_fantasia":"MARIA SELMA DA COSTA RIBEIRO","cnpj":"48994349000112","cod_itatiaia":"5143092","cidade":"LIBERDADE","estado":"MG"},{"razao_social":"MAGAZINE DRIDENIS LTDA","nome_fantasia":"MAGAZINE DRIDENIS LTDA","cnpj":"37564444000160","cod_itatiaia":"5143138","cidade":"NOVA RESENDE","estado":"MG"},{"razao_social":"MAGAZINE MARIA GABI LTDA","nome_fantasia":"MAGAZINE MARIA GABI LTDA","cnpj":"34389596000185","cod_itatiaia":"5143314","cidade":"NOVA SERRANA","estado":"MG"},{"razao_social":"ELECTROSYS LTDA ME","nome_fantasia":"ELECTROSYS LTDA ME","cnpj":"03979464000180","cod_itatiaia":"5143792","cidade":"Monte Santo de Minas","estado":"MG"},{"razao_social":"CASA DECOR COMERCIO DE MOVEIS E DEC","nome_fantasia":"CASA DECOR COMERCIO DE MOVEIS E DEC","cnpj":"29258120000175","cod_itatiaia":"5147064","cidade":"PARAGUACU","estado":"MG"},{"razao_social":"PREPAVE COMERCIO DE MOVEIS E EQUIPA","nome_fantasia":"PREPAVE COMERCIO DE MOVEIS E EQUIPA","cnpj":"47695345000170","cod_itatiaia":"5149862","cidade":"Formiga","estado":"MG"},{"razao_social":"ELETRO CASA NOVA LTDA","nome_fantasia":"ELETRO CASA NOVA LTDA","cnpj":"17823155003499","cod_itatiaia":"5151192","cidade":"SERRA","estado":"ES"},{"razao_social":"SMG DISTRIBUIDORA LTDA","nome_fantasia":"SMG DISTRIBUIDORA LTDA","cnpj":"49449728000275","cod_itatiaia":"5152229","cidade":"MARABA","estado":"PA"},{"razao_social":"COSTA & SILVA COMERCIO DE MOVEIS E","nome_fantasia":"COSTA & SILVA COMERCIO DE MOVEIS E","cnpj":"50387433000110","cod_itatiaia":"5155696","cidade":"Formiga","estado":"MG"},{"razao_social":"26.112.139 NEUSA APARECIDA COSTA NA","nome_fantasia":"26.112.139 NEUSA APARECIDA COSTA NA","cnpj":"26112139000110","cod_itatiaia":"5156999","cidade":"Piumhi","estado":"MG"},{"razao_social":"E MULTI COMERCIO LTDA EPP","nome_fantasia":"E MULTI COMERCIO LTDA EPP","cnpj":"48393378000129","cod_itatiaia":"5160993","cidade":"Monte Santo de Minas","estado":"MG"},{"razao_social":"LOJAS AVANCE MOVEIS E ELETRO LTDA E","nome_fantasia":"LOJAS AVANCE MOVEIS E ELETRO LTDA E","cnpj":"51513020000105","cod_itatiaia":"5162376","cidade":"Elói Mendes","estado":"MG"},{"razao_social":"TODA CASA BELLA LTDA","nome_fantasia":"TODA CASA BELLA LTDA","cnpj":"28601535000218","cod_itatiaia":"5163782","cidade":"Cláudio","estado":"MG"},{"razao_social":"50.606.233 RITA DANIELA DA SILVA PE","nome_fantasia":"50.606.233 RITA DANIELA DA SILVA PE","cnpj":"50606233000100","cod_itatiaia":"5178558","cidade":"CAREACU","estado":"MG"},{"razao_social":"HELIO APARECIDO DA COSTA 8312875166","nome_fantasia":"HELIO APARECIDO DA COSTA 8312875166","cnpj":"27142515000182","cod_itatiaia":"5179086","cidade":"Nova Serrana","estado":"MG"},{"razao_social":"MAGAZINE REIS LTDA","nome_fantasia":"MAGAZINE REIS LTDA","cnpj":"51016157000146","cod_itatiaia":"5179593","cidade":"Campos Gerais","estado":"MG"},{"razao_social":"CAIRU ELETRO VARIEDADES E DISTRIBUI","nome_fantasia":"CAIRU ELETRO VARIEDADES E DISTRIBUI","cnpj":"52903503000170","cod_itatiaia":"5179730","cidade":"SAO MATEUS","estado":"ES"},{"razao_social":"ANA FLAVIA ALVES CARVALHO PINTO","nome_fantasia":"ANA FLAVIA ALVES CARVALHO PINTO","cnpj":"44224203000137","cod_itatiaia":"5186681","cidade":"PARAISÓPOLIS","estado":"MG"},{"razao_social":"GISLAINY MILENA MANGIA","nome_fantasia":"GISLAINY MILENA MANGIA","cnpj":"05994804000177","cod_itatiaia":"5188470","cidade":"Piedade do Rio Grande","estado":"MG"},{"razao_social":"GEMA MOVEIS E DECORACOES LTDA.","nome_fantasia":"GEMA MOVEIS E DECORACOES LTDA.","cnpj":"09553436000182","cod_itatiaia":"5188912","cidade":"São Francisco de Paula","estado":"MG"},{"razao_social":"MEGG MOVEIS E DECORACOES LTDA.","nome_fantasia":"MEGG MOVEIS E DECORACOES LTDA.","cnpj":"54668517000182","cod_itatiaia":"5189058","cidade":"SÃO FRANCISCO DE PAULA","estado":"MG"},{"razao_social":"START MOVEIS LTDA","nome_fantasia":"START MOVEIS LTDA","cnpj":"54601665000180","cod_itatiaia":"5189060","cidade":"Campo Belo","estado":"MG"},{"razao_social":"EDNEI DE OLIVEIRA ARAUJO CIA LTDA","nome_fantasia":"EDNEI DE OLIVEIRA ARAUJO CIA LTDA","cnpj":"14870758000195","cod_itatiaia":"5192084","cidade":"Olímpio Noronha","estado":"MG"},{"razao_social":"CONVE COMERCIO DE MOVEIS E UTILIDAD","nome_fantasia":"CONVE COMERCIO DE MOVEIS E UTILIDAD","cnpj":"53438403000183","cod_itatiaia":"5192698","cidade":"FORMIGA","estado":"MG"},{"razao_social":"MAGAZINE RIOS LTDA","nome_fantasia":"MAGAZINE RIOS LTDA","cnpj":"55160952000164","cod_itatiaia":"5194150","cidade":"ENTRE RIOS DE MINAS","estado":"MG"},{"razao_social":"MOVEIS MLP LTDA","nome_fantasia":"MOVEIS MLP LTDA","cnpj":"54767531000133","cod_itatiaia":"5194801","cidade":"BOM DESPACHO","estado":"MG"},{"razao_social":"EDIVANIA APARECIDA MOTA","nome_fantasia":"EDIVANIA APARECIDA MOTA","cnpj":"97525748000140","cod_itatiaia":"5195590","cidade":"SAPUCAI MIRIM","estado":"MG"},{"razao_social":"52 249 121 EVERTON DA SILVA FREITAS","nome_fantasia":"52 249 121 EVERTON DA SILVA FREITAS","cnpj":"52249121000175","cod_itatiaia":"5196048","cidade":"VITORIA","estado":"ES"},{"razao_social":"JLR MOVEIS LTDA","nome_fantasia":"JLR MOVEIS LTDA","cnpj":"32873202000134","cod_itatiaia":"5198113","cidade":"TOLEDO","estado":"MG"},{"razao_social":"MACHADO E SILVA COMERCIO DE MOVEIS","nome_fantasia":"MACHADO E SILVA COMERCIO DE MOVEIS","cnpj":"08234076000193","cod_itatiaia":"5201416","cidade":"DIVINOPOLIS","estado":"MG"},{"razao_social":"ANDERSON DINIZ VILELA","nome_fantasia":"ANDERSON DINIZ VILELA","cnpj":"01569451000107","cod_itatiaia":"5201536","cidade":"CARVALHOS","estado":"MG"},{"razao_social":"N J D MACIEL","nome_fantasia":"N J D MACIEL","cnpj":"36440879000130","cod_itatiaia":"5202394","cidade":"NOVA SERRANA","estado":"MG"},{"razao_social":"56 965 461 MARCELO AUGUSTO GOMES DE","nome_fantasia":"56 965 461 MARCELO AUGUSTO GOMES DE","cnpj":"56965461000153","cod_itatiaia":"5203080","cidade":"HUMAITA","estado":"AM"},{"razao_social":"53.732.922 FERDINAN JUNIOR DA SILVA","nome_fantasia":"53.732.922 FERDINAN JUNIOR DA SILVA","cnpj":"53732922000150","cod_itatiaia":"5205003","cidade":"EPITACIOLANDIA","estado":"AC"},{"razao_social":"57 309 055 LUANA CAROLINE TORRES","nome_fantasia":"57 309 055 LUANA CAROLINE TORRES","cnpj":"57309055000103","cod_itatiaia":"5205628","cidade":"BOM JESUS DA PENHA","estado":"MG"},{"razao_social":"J A R MOVEIS LTDA","nome_fantasia":"J A R MOVEIS LTDA","cnpj":"52737729000149","cod_itatiaia":"5207284","cidade":"LAVRAS","estado":"MG"},{"razao_social":"54 393 667 EDUARDA ELIZABETH DE SOU","nome_fantasia":"54 393 667 EDUARDA ELIZABETH DE SOU","cnpj":"54393667000120","cod_itatiaia":"5208114","cidade":"CARIACICA","estado":"ES"},{"razao_social":"57 925 321 JOAO AUGUSTO SOUSA DA SI","nome_fantasia":"57 925 321 JOAO AUGUSTO SOUSA DA SI","cnpj":"57925321000114","cod_itatiaia":"5209470","cidade":"BRASILEIA","estado":"AC"},{"razao_social":"57 900 765 MIRLA CAVALCANTE DE CARV","nome_fantasia":"57 900 765 MIRLA CAVALCANTE DE CARV","cnpj":"57900765000103","cod_itatiaia":"5211179","cidade":"RIO BRANCO","estado":"AC"},{"razao_social":"LOUNGE MOVEIS LTDA","nome_fantasia":"LOUNGE MOVEIS LTDA","cnpj":"15782869000374","cod_itatiaia":"5212370","cidade":"ELOI MENDES","estado":"MG"},{"razao_social":"2T TEXTIL LTDA","nome_fantasia":"2T TEXTIL LTDA","cnpj":"55516897000100","cod_itatiaia":"5212380","cidade":"GOIANIA","estado":"GO"},{"razao_social":"LOJA DA SABRINA LTDA.","nome_fantasia":"LOJA DA SABRINA LTDA.","cnpj":"14956872000132","cod_itatiaia":"5212779","cidade":"ITAMOGI","estado":"MG"},{"razao_social":"CLAUDIA MAGAZINE DELFINOPOLIS LTDA","nome_fantasia":"CLAUDIA MAGAZINE DELFINOPOLIS LTDA","cnpj":"27933588000192","cod_itatiaia":"5212900","cidade":"DELFINOPOLIS","estado":"MG"},{"razao_social":"50.250.250 ABGAR FURTADO CORREA","nome_fantasia":"50.250.250 ABGAR FURTADO CORREA","cnpj":"50250250000158","cod_itatiaia":"5213069","cidade":"CARIACICA","estado":"ES"},{"razao_social":"MOVEIS CARVALHO E SILVA LTDA","nome_fantasia":"MOVEIS CARVALHO E SILVA LTDA","cnpj":"46721807000114","cod_itatiaia":"5213187","cidade":"LAVRAS","estado":"MG"},{"razao_social":"DOS SANTOS E SILVA COMERCIO LTDA","nome_fantasia":"DOS SANTOS E SILVA COMERCIO LTDA","cnpj":"58369285000112","cod_itatiaia":"5213580","cidade":"VILA VELHA","estado":"ES"},{"razao_social":"07.532.166 JOSE CARLOS DE LIMA","nome_fantasia":"07.532.166 JOSE CARLOS DE LIMA","cnpj":"07532166000106","cod_itatiaia":"5213620","cidade":"SAO BENTO ABADE","estado":"MG"},{"razao_social":"G & P DISTRIBUIDORA LTDA","nome_fantasia":"G & P DISTRIBUIDORA LTDA","cnpj":"10642269000125","cod_itatiaia":"5213999","cidade":"SANTO ANTONIO DO MONTE","estado":"MG"},{"razao_social":"MADEIRART'S MOVEIS LTDA","nome_fantasia":"MADEIRART'S MOVEIS LTDA","cnpj":"53449811000130","cod_itatiaia":"5214002","cidade":"PAINS","estado":"MG"},{"razao_social":"LOJAS BOM NEGOCIOS LTDA","nome_fantasia":"LOJAS BOM NEGOCIOS LTDA","cnpj":"57606805000109","cod_itatiaia":"5214009","cidade":"Piumhi","estado":"MG"},{"razao_social":"57.745.638 ELIAS LOPES RAMOS","nome_fantasia":"57.745.638 ELIAS LOPES RAMOS","cnpj":"57745638000179","cod_itatiaia":"5214013","cidade":"SENA MADUREIRA","estado":"AC"},{"razao_social":"WILSON FERNANDO PEREIRA 00754963640","nome_fantasia":"WILSON FERNANDO PEREIRA 00754963640","cnpj":"31348743000180","cod_itatiaia":"5214207","cidade":"ITUMIRIM","estado":"MG"},{"razao_social":"59.413.261 CARLOS ALBERTO MARQUES J","nome_fantasia":"59.413.261 CARLOS ALBERTO MARQUES J","cnpj":"59413261000186","cod_itatiaia":"5214221","cidade":"EPITACIOLANDIA","estado":"AC"},{"razao_social":"K. A. S. DOS SANTOS LTDA","nome_fantasia":"K. A. S. DOS SANTOS LTDA","cnpj":"57359479000174","cod_itatiaia":"5214225","cidade":"RIO BRANCO","estado":"AC"},{"razao_social":"RH ESPECIALIDADES LTDA","nome_fantasia":"RH ESPECIALIDADES LTDA","cnpj":"58369012000178","cod_itatiaia":"5214256","cidade":"CACHOEIRO DE ITAPEMIRIM","estado":"ES"},{"razao_social":"12.100.013 RODINALDO JOSE TAVARES","nome_fantasia":"12.100.013 RODINALDO JOSE TAVARES","cnpj":"12100013000111","cod_itatiaia":"5214475","cidade":"SANTO ANTONIO DO MONTE","estado":"MG"}];
+const ITATIAIA = {"aco":[{"setor":"AÇO","linha":"AMANDA","codigo":"3500001920","descricao":"COZ AMANDA 2023 BRA","preco":819.29427277698,"ipi":0.0325,"st":0.0,"preco_final":845.921336642232},{"setor":"AÇO","linha":"AMANDA","codigo":"3500001921","descricao":"COZ AMANDA 2023 BRA/PTO","preco":819.29427277698,"ipi":0.0325,"st":0.0,"preco_final":845.921336642232},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"6000001972","descricao":"ARM 2P VD ALTO G 65 EXCLUSIVE NG GFT/PTM","preco":538.45167524148,"ipi":0.0325,"st":0.0,"preco_final":555.951354686828},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001807","descricao":"ARM 2P-120 NC GAR EXCLUSIVE SM GFT/PTM","preco":426.67241268752105,"ipi":0.0325,"st":0.0,"preco_final":440.5392660998655},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001776","descricao":"ARM 3P ALTO 120 EXCLUSIVE SM GFT/PTM","preco":357.433083908901,"ipi":0.0325,"st":0.0,"preco_final":369.04965913594026},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001775","descricao":"ARM 3P VD ALTO 120 EXCLUSIVE SM GFT/PTM","preco":408.79112346072003,"ipi":0.0325,"st":0.0,"preco_final":422.07683497319346},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001781","descricao":"ARM 1PT HORIZ 80 EXCLUSIVE GFT/PTM","preco":151.602234748965,"ipi":0.0325,"st":0.0,"preco_final":156.52930737830636},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001783","descricao":"ARM 2P ALTO 80 EXCLUSIVE SM GFT/PTM","preco":244.44406792505694,"ipi":0.0325,"st":0.0,"preco_final":252.3885001326213},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001782","descricao":"ARM 2P VD ALTO 80 EXCLUSIVE SM GFT/PTM","preco":279.57538570361396,"ipi":0.0325,"st":0.0,"preco_final":288.66158573898144},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001771","descricao":"BALC 2P 120 ST EXCLUSIVE SM GFT/PTM","preco":441.35088459462,"ipi":0.0325,"st":0.0,"preco_final":455.69478834394516},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001770","descricao":"BALC 2P2G 120 EXCLUSIVE SM GFT/PTM","preco":633.772428046758,"ipi":0.0325,"st":0.0,"preco_final":654.3700319582777},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001785","descricao":"BALC 1P1G 65 DIR EXCLUSIVE SM GFT/PTM","preco":377.248024256103,"ipi":0.0325,"st":0.0,"preco_final":389.50858504442635},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001780","descricao":"BALC 1P1G 65 ESQ EXCLUSIVE SM GFT/PTM","preco":377.248024256103,"ipi":0.0325,"st":0.0,"preco_final":389.50858504442635},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001774","descricao":"BALC 2GAV 80 COOK 4B EXCLUSIVE GFT/PTM","preco":504.64307332939507,"ipi":0.0325,"st":0.0,"preco_final":521.0439732126003},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001773","descricao":"BALC 2GAV 80 COOK 5B EXCLUSIVE GFT/PTM","preco":504.64307332939507,"ipi":0.0325,"st":0.0,"preco_final":521.0439732126003},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001772","descricao":"BALC 3GAV 80 EXCLUSIVE GFT/PTM","preco":575.5236798631321,"ipi":0.0325,"st":0.0,"preco_final":594.2281994586839},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001925","descricao":"PAN FNO 2P1G60 D EXCLUSIVE NG SM GFT/PTM","preco":651.5079214643999,"ipi":0.0325,"st":0.0,"preco_final":672.6819289119929},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"3500001928","descricao":"PAN FNO 2P1G60 E EXCLUSIVE NG SM GFT/PTM","preco":651.2733973746001,"ipi":0.0325,"st":0.0,"preco_final":672.4397827892747},{"setor":"AÇO","linha":"EXCLUSIVE","codigo":"6000001976","descricao":"PAN 3P1G-65 ESQ EXCLUSIVE VD NG GFT/PTM","preco":937.6663983687002,"ipi":0.0325,"st":0.0,"preco_final":968.140556315683},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001769","descricao":"KIT-140 8PT 2GAV FLORENCA GFT","preco":868.0994465434202,"ipi":0.0325,"st":0.0,"preco_final":896.3126785560813},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500002015","descricao":"KIT-105 6PT 1VD 2GV FLORENCA GFT","preco":626.5847621697301,"ipi":0.0325,"st":0.0,"preco_final":646.9487669402463},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500002016","descricao":"KIT-105 6PT 1VD 2GV FLORENCA BRA","preco":626.5847621697301,"ipi":0.0325,"st":0.0,"preco_final":646.9487669402463},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001839","descricao":"ARM-105 3PT FLORENCA BRA","preco":210.03008116250163,"ipi":0.0325,"st":0.0,"preco_final":216.85605880028294},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001840","descricao":"ARM-105 3PT FLORENCA GFT","preco":210.03008116250163,"ipi":0.0325,"st":0.0,"preco_final":216.85605880028294},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001841","descricao":"ARM-105 3PT VD FLORENCA BRA","preco":301.94476243691764,"ipi":0.0325,"st":0.0,"preco_final":311.7579672161175},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001842","descricao":"ARM-105 3PT VD FLORENCA GFT","preco":301.94476243691764,"ipi":0.0325,"st":0.0,"preco_final":311.7579672161175},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001843","descricao":"ARM-70 1PTH FLORENCA BRA","preco":103.0695850816632,"ipi":0.0325,"st":0.0,"preco_final":106.41934659681726},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001844","descricao":"ARM-70 1PTH FLORENCA GFT","preco":103.0695850816632,"ipi":0.0325,"st":0.0,"preco_final":106.41934659681726},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001834","descricao":"ARM-70 2PT FLORENCA BRA","preco":153.8887664498184,"ipi":0.0325,"st":0.0,"preco_final":158.8901513594375},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001835","descricao":"ARM-70 2PT FLORENCA GFT","preco":153.8887664498184,"ipi":0.0325,"st":0.0,"preco_final":158.8901513594375},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001847","descricao":"ARM-70 2PT VD FLORENCA BRA","preco":216.51013811306882,"ipi":0.0325,"st":0.0,"preco_final":223.54671760174355},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001848","descricao":"ARM-70 2PT VD FLORENCA GFT","preco":216.51013811306882,"ipi":0.0325,"st":0.0,"preco_final":223.54671760174355},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001836","descricao":"BALC-105 3PT 2GV FLORENCA BRA","preco":369.19063645223764,"ipi":0.0325,"st":0.0,"preco_final":381.1893321369354},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001837","descricao":"BALC-105 3PT 2GV FLORENCA BRA/GFT","preco":369.19063645223764,"ipi":0.0325,"st":0.0,"preco_final":381.1893321369354},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001838","descricao":"BALC-105 3PT 2GV FLORENCA GFT","preco":369.19063645223764,"ipi":0.0325,"st":0.0,"preco_final":381.1893321369354},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001828","descricao":"BALC-70 2PT FLORENCA BRA","preco":231.2323096755672,"ipi":0.0325,"st":0.0,"preco_final":238.74735974002311},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001829","descricao":"BALC-70 2PT FLORENCA GFT","preco":231.2323096755672,"ipi":0.0325,"st":0.0,"preco_final":238.74735974002311},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001866","descricao":"COZ 8 4PC FLORENCA 3VD BRA","preco":1201.9247030686897,"ipi":0.0325,"st":0.0,"preco_final":1240.987255918422},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001867","descricao":"COZ 8 4PC FLORENCA 3VD GFT","preco":1201.9247030686897,"ipi":0.0325,"st":0.0,"preco_final":1240.987255918422},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001837","descricao":"COZ 5 4PC FLORENCA 5VD BRA","preco":1262.7840170705763,"ipi":0.0325,"st":0.0,"preco_final":1303.82449762537},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001864","descricao":"COZ 7 4PC FLORENCA BRA","preco":1115.4831886526329,"ipi":0.0325,"st":0.0,"preco_final":1151.7363922838435},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001865","descricao":"COZ 7 4PC FLORENCA GFT","preco":1115.4831886526329,"ipi":0.0325,"st":0.0,"preco_final":1151.7363922838435},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001782","descricao":"COZ 3 5PC FLORENCA 2VD GFT","preco":1115.7924477523827,"ipi":0.0325,"st":0.0,"preco_final":1152.0557023043352},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001783","descricao":"COZ 4 6PC FLORENCA 3VD GFT","preco":1173.3362165220697,"ipi":0.0325,"st":0.0,"preco_final":1211.469643559037},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001768","descricao":"KIT-140 8PT 2GV FLORENCA BRA","preco":868.0974850692144,"ipi":0.0325,"st":0.0,"preco_final":896.3106533339638},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001946","descricao":"PAN-70 4PT 1FNO FLORENCA BRA","preco":458.6600132170057,"ipi":0.0325,"st":0.0,"preco_final":473.5664636465584},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001945","descricao":"PAN-70 4PT 1FNO FLORENCA GFT","preco":458.6600132170057,"ipi":0.0325,"st":0.0,"preco_final":473.5664636465584},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001772","descricao":"PAN-70 FLEX 4PT2VD FLORENCA BRA","preco":445.2827591348136,"ipi":0.0325,"st":0.0,"preco_final":459.75444880669505},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001774","descricao":"PAN-70 FLEX 4PT2VD FLORENCA BRA/GFT","preco":445.2827591348136,"ipi":0.0325,"st":0.0,"preco_final":459.75444880669505},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001773","descricao":"PAN-70 FLEX 4PT2VD FLORENCA GFT","preco":445.2827591348136,"ipi":0.0325,"st":0.0,"preco_final":459.75444880669505},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001770","descricao":"PAN-70 FLEX 4PT FLORENCA BRA","preco":384.3731006283169,"ipi":0.0325,"st":0.0,"preco_final":396.86522639873715},{"setor":"AÇO","linha":"FLORENCA","codigo":"6000001771","descricao":"PAN-70 FLEX 4PT FLORENCA GFT","preco":384.3731006283169,"ipi":0.0325,"st":0.0,"preco_final":396.86522639873715},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001914","descricao":"PAN-70 6PT 2VD FLORENCA BRA","preco":488.5646489555831,"ipi":0.0325,"st":0.0,"preco_final":504.44300004663955},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001916","descricao":"PAN-70 6PT 2VD FLORENCA GFT","preco":488.5646489555831,"ipi":0.0325,"st":0.0,"preco_final":504.44300004663955},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001913","descricao":"PAN-70 6PT FLORENCA BRA","preco":430.89861496041357,"ipi":0.0325,"st":0.0,"preco_final":444.902819946627},{"setor":"AÇO","linha":"FLORENCA","codigo":"3500001915","descricao":"PAN-70 6PT FLORENCA GFT","preco":430.89861496041357,"ipi":0.0325,"st":0.0,"preco_final":444.902819946627},{"setor":"AÇO","linha":"LUCE","codigo":"3500001050","descricao":"IP3-105 LUCE 2018 BRA","preco":219.54722507597882,"ipi":0.0325,"st":0.0,"preco_final":226.68250989094813},{"setor":"AÇO","linha":"LUCE","codigo":"3500001051","descricao":"IP3-105 LUCE 2018 PTO","preco":219.54722507597882,"ipi":0.0325,"st":0.0,"preco_final":226.68250989094813},{"setor":"AÇO","linha":"LUCE","codigo":"6000001799","descricao":"IPV3-105/IPH-70 LUCE 2018 BRA","preco":330.4714909732236,"ipi":0.0325,"st":0.0,"preco_final":341.21181442985335},{"setor":"AÇO","linha":"LUCE","codigo":"3500001241","descricao":"IPV3-105 LUCE 2018 BRA","preco":244.29749036893205,"ipi":0.0325,"st":0.0,"preco_final":252.23715880592235},{"setor":"AÇO","linha":"LUCE","codigo":"3500001242","descricao":"IPV3-105 LUCE 2018 PTO","preco":244.29749036893205,"ipi":0.0325,"st":0.0,"preco_final":252.23715880592235},{"setor":"AÇO","linha":"LUCE","codigo":"3500001047","descricao":"IPH-70 LUCE 2018 BRA","preco":101.251085289354,"ipi":0.0325,"st":0.0,"preco_final":104.541745561258},{"setor":"AÇO","linha":"LUCE","codigo":"3500001048","descricao":"IPH-70 LUCE 2018 PTO","preco":101.251085289354,"ipi":0.0325,"st":0.0,"preco_final":104.541745561258},{"setor":"AÇO","linha":"LUCE","codigo":"3500001056","descricao":"IG3G2-105 LUCE 2018 BRA","preco":363.38851047058563,"ipi":0.0325,"st":0.0,"preco_final":375.19863706087966},{"setor":"AÇO","linha":"LUCE","codigo":"3500001106","descricao":"IG3G2-105 LUCE 2018 PTO","preco":363.38851047058563,"ipi":0.0325,"st":0.0,"preco_final":375.19863706087966},{"setor":"AÇO","linha":"LUCE","codigo":"6000001108","descricao":"COZ 7 LUCE 2V 2018 BRA","preco":766.4505231162781,"ipi":0.0325,"st":0.0,"preco_final":791.3601651175571},{"setor":"AÇO","linha":"LUCE","codigo":"6000001109","descricao":"COZ 7 LUCE 2V 2018 BRA/PTO","preco":766.4505231162781,"ipi":0.0325,"st":0.0,"preco_final":791.3601651175571},{"setor":"AÇO","linha":"LUCE","codigo":"6000001113","descricao":"COZ 4 LUCE 3V 2018 BRA","preco":773.4634187988709,"ipi":0.0325,"st":0.0,"preco_final":798.6009799098342},{"setor":"AÇO","linha":"LUCE","codigo":"6000001201","descricao":"COZ 4 LUCE 3V 2018 BRA/PTO","preco":773.4634187988709,"ipi":0.0325,"st":0.0,"preco_final":798.6009799098342},{"setor":"AÇO","linha":"LUCE","codigo":"6000001759","descricao":"COZ 10 4PC 2VD LUCE BRA/PTO","preco":1171.768970204633,"ipi":0.0325,"st":0.0,"preco_final":1209.8514617362835},{"setor":"AÇO","linha":"LUCE","codigo":"6000001649","descricao":"COZ 9 4PC 3PT VD LUCE BRA","preco":1157.5316381104478,"ipi":0.0325,"st":0.0,"preco_final":1195.1514163490374},{"setor":"AÇO","linha":"LUCE","codigo":"6000001645","descricao":"COZ 9 4PC 3PT VD LUCE BRA/PTO","preco":1157.5316381104478,"ipi":0.0325,"st":0.0,"preco_final":1195.1514163490374},{"setor":"AÇO","linha":"LUCE","codigo":"6000001647","descricao":"COZ 9 4PC 5PT VD LUCE BRA","preco":1157.5316381104478,"ipi":0.0325,"st":0.0,"preco_final":1195.1514163490374},{"setor":"AÇO","linha":"LUCE","codigo":"6000001646","descricao":"COZ 9 4PC 5PT VD LUCE BRA/PTO","preco":1157.5316381104478,"ipi":0.0325,"st":0.0,"preco_final":1195.1514163490374},{"setor":"AÇO","linha":"LUCE","codigo":"6000001648","descricao":"COZ 9 4PC MAX LUCE BRA","preco":1156.7559887707823,"ipi":0.0325,"st":0.0,"preco_final":1194.3505584058328},{"setor":"AÇO","linha":"LUCE","codigo":"6000001110","descricao":"COZ 7 LUCE 5V 2018 BRA","preco":792.1302855518053,"ipi":0.0325,"st":0.0,"preco_final":817.874519832239},{"setor":"AÇO","linha":"LUCE","codigo":"6000001111","descricao":"COZ 7 LUCE 5V 2018 BRA/PTO","preco":792.1302855518053,"ipi":0.0325,"st":0.0,"preco_final":817.874519832239},{"setor":"AÇO","linha":"LUCE","codigo":"3500001940","descricao":"PAN-70 4PT 1FNO LUCE BRA","preco":389.8375119206568,"ipi":0.0325,"st":0.0,"preco_final":402.50723105807816},{"setor":"AÇO","linha":"LUCE","codigo":"3500001247","descricao":"IPLDV-70 MX LUCE 2018 BRA","preco":448.9407095381209,"ipi":0.0325,"st":0.0,"preco_final":463.53128259810984},{"setor":"AÇO","linha":"LUCE","codigo":"3500001248","descricao":"IPLDV-70 MX LUCE 2018 BRA/PTO","preco":448.9407095381209,"ipi":0.0325,"st":0.0,"preco_final":463.53128259810984},{"setor":"AÇO","linha":"LUCE","codigo":"3500001062","descricao":"IPLD-70 MX LUCE 2018 BRA","preco":430.20973953397436,"ipi":0.0325,"st":0.0,"preco_final":444.1915560688285},{"setor":"AÇO","linha":"MULTILINHAS","codigo":"3500001846","descricao":"NICHO-70 MICROONDAS GFT","preco":99.21150745505999,"ipi":0.0325,"st":0.0,"preco_final":102.43588144734943},{"setor":"AÇO","linha":"MULTILINHAS","codigo":"3500001845","descricao":"NICHO-70 MICROONDAS BRA","preco":99.21150745505999,"ipi":0.0325,"st":0.0,"preco_final":102.43588144734943},{"setor":"AÇO","linha":"MULTILINHAS","codigo":"3500000588","descricao":"2/2 PIA-120 NG INOX","preco":351.52034073156,"ipi":0.0325,"st":0.0,"preco_final":362.94475180533567},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001858","descricao":"ARM-120 3PT NEW PREMIUM BRA","preco":241.71928887506402,"ipi":0.0325,"st":0.0,"preco_final":249.5751657635036},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001865","descricao":"ARM-120 3PT NEW PREMIUM GFT","preco":241.71928887506402,"ipi":0.0325,"st":0.0,"preco_final":249.5751657635036},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001857","descricao":"ARM-120 3PT VD NEW PREMIUM BRA","preco":282.420944659854,"ipi":0.0325,"st":0.0,"preco_final":291.5996253612993},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001864","descricao":"ARM-120 3PT VD NEW PREMIUM GFT","preco":282.420944659854,"ipi":0.0325,"st":0.0,"preco_final":291.5996253612993},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001854","descricao":"ARM-80 2PT NEW PREMIUM BRA","preco":165.21987602320203,"ipi":0.0325,"st":0.0,"preco_final":170.5895219939561},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001890","descricao":"ARM-80 2PT NEW PREMIUM GFT","preco":165.21987602320203,"ipi":0.0325,"st":0.0,"preco_final":170.5895219939561},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001855","descricao":"ARM-80 2PT VD NEW PREMIUM BRA","preco":192.67326597519008,"ipi":0.0325,"st":0.0,"preco_final":198.93514711938374},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001891","descricao":"ARM-80 2PT VD NEW PREMIUM GFT","preco":192.67326597519008,"ipi":0.0325,"st":0.0,"preco_final":198.93514711938374},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001856","descricao":"ARM-80 2PT GEL NEW PREMIUM BRA","preco":126.24197229844201,"ipi":0.0325,"st":0.0,"preco_final":130.34483639814138},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001894","descricao":"ARM-80 2PT GEL NEW PREMIUM GFT","preco":126.24197229844201,"ipi":0.0325,"st":0.0,"preco_final":130.34483639814138},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001991","descricao":"ARM ANGULO 1PT NEW PREMIUM BRA","preco":220.12665592717798,"ipi":0.0325,"st":0.0,"preco_final":227.28077224481126},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001992","descricao":"ARM ANGULO 1PT NEW PREMIUM GFT","preco":220.12665592717798,"ipi":0.0325,"st":0.0,"preco_final":227.28077224481126},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001852","descricao":"BALC-120 3PT 2GV NEW PREMIUM BRA","preco":458.03961882478796,"ipi":0.0325,"st":0.0,"preco_final":472.92590643659355},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001863","descricao":"BALC-120 3PT 2GV NEW PREMIUM BRA/GFT","preco":458.03961882478796,"ipi":0.0325,"st":0.0,"preco_final":472.92590643659355},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001888","descricao":"BALC-120 3PT 2GV NEW PREMIUM GFT","preco":458.03961882478796,"ipi":0.0325,"st":0.0,"preco_final":472.92590643659355},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001851","descricao":"BALC-120 3PT 2GV ST NEW PREMIUM BRA","preco":395.32318673047206,"ipi":0.0325,"st":0.0,"preco_final":408.1711902992124},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001862","descricao":"BALC-120 3PT 2GV ST NEW PREMIUM BRA/GFT","preco":395.32318673047206,"ipi":0.0325,"st":0.0,"preco_final":408.1711902992124},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001889","descricao":"BALC-120 3PT 2GV ST NEW PREMIUM GFT","preco":395.32318673047206,"ipi":0.0325,"st":0.0,"preco_final":408.1711902992124},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001902","descricao":"BALC-140 3PT 2GV NC ST NEW PREMIUM BRA","preco":441.68156356123797,"ipi":0.0325,"st":0.0,"preco_final":456.0362143769782},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001867","descricao":"BALC-160 4PT 2GV ST NEW PREMIUM BRA","preco":481.06753920225003,"ipi":0.0325,"st":0.0,"preco_final":496.7022342263232},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001853","descricao":"BALC-80 2PT NEW PREMIUM BRA","preco":280.0217632212,"ipi":0.0325,"st":0.0,"preco_final":289.122470525889},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001860","descricao":"BALC-80 2PTA COOK 4Q NEW PREMIUM BRA","preco":280.0217632212,"ipi":0.0325,"st":0.0,"preco_final":289.122470525889},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001989","descricao":"BALC-80 2PTA COOK 4Q NEW PREMIUM GFT","preco":280.0217632212,"ipi":0.0325,"st":0.0,"preco_final":289.122470525889},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001859","descricao":"BALC-80 2PTA COOK 5Q NEW PREMIUM BRA","preco":280.0217632212,"ipi":0.0325,"st":0.0,"preco_final":289.122470525889},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001988","descricao":"BALC-80 2PTA COOK 5Q NEW PREMIUM GFT","preco":280.0217632212,"ipi":0.0325,"st":0.0,"preco_final":289.122470525889},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001887","descricao":"BALC-80 2PT NEW PREMIUM GFT","preco":280.0217632212,"ipi":0.0325,"st":0.0,"preco_final":289.122470525889},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001903","descricao":"BALC-80 2PT ST NEW PREMIUM BRA","preco":236.414353963788,"ipi":0.0325,"st":0.0,"preco_final":244.0978204676111},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001993","descricao":"BALC ANGULO 1PT NEW PREMIUM BRA","preco":314.208339791346,"ipi":0.0325,"st":0.0,"preco_final":324.42011083456475},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001994","descricao":"BALC ANGULO 1PT NEW PREMIUM GFT","preco":314.208339791346,"ipi":0.0325,"st":0.0,"preco_final":324.42011083456475},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001847","descricao":"COZ 7 3PC NEW PREMIUM 5VD BRA","preco":889.1253840088619,"ipi":0.0325,"st":0.0,"preco_final":918.02195898915},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001928","descricao":"COZ 7 3PC NEW PREMIUM 5VD BRA/GFT","preco":889.1253840088619,"ipi":0.0325,"st":0.0,"preco_final":918.02195898915},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001791","descricao":"COZ 7 3PC NEW PREMIUM 5VD GFT","preco":889.1253840088619,"ipi":0.0325,"st":0.0,"preco_final":918.02195898915},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001813","descricao":"COZ 10 3PC NEW PREMIUM BRA","preco":878.839157430234,"ipi":0.0325,"st":0.0,"preco_final":907.4014300467165},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001806","descricao":"COZ 8 4PC NEW PREMIUM 3VD BRA","preco":1337.969313272592,"ipi":0.0325,"st":0.0,"preco_final":1381.4533159539512},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001814","descricao":"COZ 11 4PC NEW PREMIUM 3VD BRA","preco":1351.428650786214,"ipi":0.0325,"st":0.0,"preco_final":1395.350081936766},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001951","descricao":"COZ 25 4PC NEW PREMIUM 3VD BRA","preco":1414.6164763010281,"ipi":0.0325,"st":0.0,"preco_final":1460.5915117808115},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001792","descricao":"COZ 8 4PC NEW PREMIUM 5VD GFT","preco":1365.7815250819742,"ipi":0.0325,"st":0.0,"preco_final":1410.1694246471384},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001815","descricao":"COZ 12 4PC NEW PREMIUM BRA","preco":1166.7479657914082,"ipi":0.0325,"st":0.0,"preco_final":1204.667274679629},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001846","descricao":"COZ 8 4PC NEW PREMIUM 5VD BRA","preco":1357.486408025748,"ipi":0.0325,"st":0.0,"preco_final":1401.6047162865848},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001950","descricao":"COZ 24 4PC NEW PREMIUM GFT","preco":1331.777877301872,"ipi":0.0325,"st":0.0,"preco_final":1375.0606583141828},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001788","descricao":"COZ 4 5PC NEW PREMIUM 3VD BRA","preco":1263.0388665814924,"ipi":0.0325,"st":0.0,"preco_final":1304.0876297453908},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001786","descricao":"COZ 2 5PC NEW PREMIUM 3VD GFT","preco":1310.037494177412,"ipi":0.0325,"st":0.0,"preco_final":1352.613712738178},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001779","descricao":"PAN-80 FLEX 4PT2VD NEW PREMIUM BRA","preco":472.30806444821997,"ipi":0.0325,"st":0.0,"preco_final":487.6580765427871},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001777","descricao":"PAN-80 FLEX 4PT2VD NEW PREMIUM BRA/GFT","preco":472.30806444821997,"ipi":0.0325,"st":0.0,"preco_final":487.6580765427871},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001778","descricao":"PAN-80 FLEX 4PT2VD NEW PREMIUM GFT","preco":472.30806444821997,"ipi":0.0325,"st":0.0,"preco_final":487.6580765427871},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001775","descricao":"PAN-80 FLEX 4PT NEW PREMIUM BRA","preco":444.63656709271805,"ipi":0.0325,"st":0.0,"preco_final":459.08725552323136},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001923","descricao":"PAN-80 4PT FNO NEW PREMIUM BRA","preco":513.720328225104,"ipi":0.0325,"st":0.0,"preco_final":530.4162388924199},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001922","descricao":"PAN-80 4PT FNO NEW PREMIUM GFT","preco":513.720328225104,"ipi":0.0325,"st":0.0,"preco_final":530.4162388924199},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"6000001776","descricao":"PAN-80 FLEX 4PT NEW PREMIUM GFT","preco":444.63656709271805,"ipi":0.0325,"st":0.0,"preco_final":459.08725552323136},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001882","descricao":"PAN-80 6PT 2VD NEW PREMIUM BRA","preco":504.7708889583362,"ipi":0.0325,"st":0.0,"preco_final":521.1759428494821},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001883","descricao":"PAN-80 6PT 2VD NEW PREMIUM BRA/GFT","preco":504.7708889583362,"ipi":0.0325,"st":0.0,"preco_final":521.1759428494821},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001901","descricao":"PAN-80 6PT 2VD NEW PREMIUM GFT","preco":504.7708889583362,"ipi":0.0325,"st":0.0,"preco_final":521.1759428494821},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001881","descricao":"PAN-80 6PT NEW PREMIUM BRA","preco":480.040323688926,"ipi":0.0325,"st":0.0,"preco_final":495.6416342088161},{"setor":"AÇO","linha":"NEW PREMIUM","codigo":"3500001900","descricao":"PAN-80 6PT NEW PREMIUM GFT","preco":480.040323688926,"ipi":0.0325,"st":0.0,"preco_final":495.6416342088161},{"setor":"AÇO","linha":"PRATIKA","codigo":"3500001904","descricao":"KIT-105 6PT 2GV PRATIKA BRA","preco":556.8000582804659,"ipi":0.0325,"st":0.0,"preco_final":574.8960601745811},{"setor":"AÇO","linha":"PRATIKA","codigo":"3500001905","descricao":"KIT-105 6PT 2GV PRATIKA BRA/PTO","preco":556.8000582804659,"ipi":0.0325,"st":0.0,"preco_final":574.8960601745811},{"setor":"AÇO","linha":"PRATIKA","codigo":"3500001906","descricao":"KIT-105 6PT 3VD 2GV PRATIKA BRA","preco":572.6937558462121,"ipi":0.0325,"st":0.0,"preco_final":591.306302911214},{"setor":"AÇO","linha":"PRATIKA","codigo":"3500001907","descricao":"KIT-105 6PT 3VD 2GV PRATIKA BRA/PTO","preco":572.6937558462121,"ipi":0.0325,"st":0.0,"preco_final":591.306302911214},{"setor":"AÇO","linha":"PRATIKA","codigo":"6000001816","descricao":"KIT-120 6PT 2GV PRATIKA BRA","preco":729.857729384784,"ipi":0.0325,"st":0.0,"preco_final":753.5781055897894},{"setor":"AÇO","linha":"PRATIKA","codigo":"6000001817","descricao":"KIT-120 6PT 2GV PRATIKA BRA/PTO","preco":729.857729384784,"ipi":0.0325,"st":0.0,"preco_final":753.5781055897894},{"setor":"AÇO","linha":"PRATIKA","codigo":"6000001818","descricao":"KIT-120 6PT 3VD 2GV PRATIKA BRA","preco":753.4907219139301,"ipi":0.0325,"st":0.0,"preco_final":777.9791703761329},{"setor":"AÇO","linha":"PRATIKA","codigo":"6000001819","descricao":"KIT-120 6PT 3VD 2GV PRATIKA BRA/PTO","preco":753.4907219139301,"ipi":0.0325,"st":0.0,"preco_final":777.9791703761329},{"setor":"AÇO","linha":"PRATIKA","codigo":"3500001822","descricao":"KIT-80 4PT 1GV PRATIKA BRA","preco":440.613306332199,"ipi":0.0325,"st":0.0,"preco_final":454.93323878799544},{"setor":"AÇO","linha":"PRATIKA","codigo":"3500001823","descricao":"KIT-80 4PT 1GV PRATIKA BRA/PTO","preco":440.613306332199,"ipi":0.0325,"st":0.0,"preco_final":454.93323878799544},{"setor":"AÇO","linha":"RENOVA","codigo":"3500001960","descricao":"ARM-120 3PT ALTO RENOVA BRA","preco":353.24800152642,"ipi":0.0325,"st":0.0,"preco_final":364.72856157602865},{"setor":"AÇO","linha":"RENOVA","codigo":"3500001961","descricao":"ARM-80 2PT ALTO RENOVA BRA","preco":236.56444938126003,"ipi":0.0325,"st":0.0,"preco_final":244.25279398615098},{"setor":"AÇO","linha":"RENOVA","codigo":"3500001967","descricao":"ARM 2PT GEL 80 RENOVA BRA","preco":159.1636822776,"ipi":0.0325,"st":0.0,"preco_final":164.336501951622},{"setor":"AÇO","linha":"RENOVA","codigo":"3500001965","descricao":"BALC-120 3PT 2GAV RENOVA BRA","preco":581.60410776468,"ipi":0.0325,"st":0.0,"preco_final":600.506241267032},{"setor":"AÇO","linha":"RENOVA","codigo":"3500001966","descricao":"BALC-120 3PT 2GAV S/T RENOVA BRA","preco":504.96163521804004,"ipi":0.0325,"st":0.0,"preco_final":521.3728883626263},{"setor":"AÇO","linha":"RENOVA","codigo":"3500001964","descricao":"BALC-80 2PT RENOVA BRA","preco":347.61160590156004,"ipi":0.0325,"st":0.0,"preco_final":358.90898309336075},{"setor":"AÇO","linha":"RENOVA","codigo":"6000002059","descricao":"COZ 5 4PC RENOVA BRA","preco":1515.18978697086,"ipi":0.0325,"st":0.0,"preco_final":1564.433455047413},{"setor":"AÇO","linha":"RENOVA","codigo":"6000002055","descricao":"COZ 2 5PC RENOVA 2VD 1FNO BRA","preco":2315.4797910043803,"ipi":0.0325,"st":0.0,"preco_final":2390.732884212023},{"setor":"AÇO","linha":"RENOVA","codigo":"6000002057","descricao":"COZ 3 5PC RENOVA 2VD 1FNO BRA","preco":2241.9174015037797,"ipi":0.0325,"st":0.0,"preco_final":2314.7797170526524},{"setor":"AÇO","linha":"RENOVA","codigo":"3500001981","descricao":"PAN-70 4PTA RENOVA BRA","preco":703.2986579619001,"ipi":0.0325,"st":0.0,"preco_final":726.1558643456618},{"setor":"AÇO","linha":"RENOVA","codigo":"6000002029","descricao":"PAN-70 4PT FNO RENOVA 2VD BRA","preco":800.2900040335201,"ipi":0.0325,"st":0.0,"preco_final":826.2994291646095},{"setor":"AÇO","linha":"ROSE","codigo":"3500001850","descricao":"ARM-105 3PT ROSE BRA","preco":163.54146528720003,"ipi":0.0325,"st":0.0,"preco_final":168.85656290903404},{"setor":"AÇO","linha":"ROSE","codigo":"3500001849","descricao":"ARM-105 3PT ROSE PTO","preco":163.54146528720003,"ipi":0.0325,"st":0.0,"preco_final":168.85656290903404},{"setor":"AÇO","linha":"ROSE","codigo":"3500001871","descricao":"IG3G1-105 ROSE 2023 BRA","preco":304.6995605704051,"ipi":0.0325,"st":0.0,"preco_final":314.60229628894325},{"setor":"AÇO","linha":"ROSE","codigo":"3500001872","descricao":"IG3G1-105 ROSE 2023 PTO","preco":304.6995605704051,"ipi":0.0325,"st":0.0,"preco_final":314.60229628894325},{"setor":"AÇO","linha":"ROSE","codigo":"6000001765","descricao":"COZ 1 ROSE BRA C/IG3G1-105 2023 BRA","preco":799.158425300235,"ipi":0.0325,"st":0.0,"preco_final":825.1310741224926},{"setor":"AÇO","linha":"ROSE","codigo":"6000001766","descricao":"COZ 1 ROSE BRA C/IG3G1-105 2023 PTO","preco":799.158425300235,"ipi":0.0325,"st":0.0,"preco_final":825.1310741224926},{"setor":"AÇO","linha":"ROSE","codigo":"6000001767","descricao":"COZ 1 ROSE PTO C/IG3G1-105 2023 PTO","preco":799.158425300235,"ipi":0.0325,"st":0.0,"preco_final":825.1310741224926},{"setor":"AÇO","linha":"ROSE","codigo":"3500000595","descricao":"COZ ROSE BRA","preco":497.42559446580003,"ipi":0.0325,"st":0.0,"preco_final":513.5919262859385},{"setor":"AÇO","linha":"ROSE","codigo":"3500000825","descricao":"COZ ROSE PTO","preco":497.42559446580003,"ipi":0.0325,"st":0.0,"preco_final":513.5919262859385},{"setor":"AÇO","linha":"ROSE","codigo":"3500001877","descricao":"I3G1-105 ROSE 2023 BRA","preco":497.196933478245,"ipi":0.0325,"st":0.0,"preco_final":513.3558338162879},{"setor":"AÇO","linha":"ROSE","codigo":"3500001878","descricao":"I3G1-105 ROSE 2023 BRA/PTO","preco":497.196933478245,"ipi":0.0325,"st":0.0,"preco_final":513.3558338162879},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000700","descricao":"IP3-120 TARSILA 2021 BRA","preco":299.904715554444,"ipi":0.0325,"st":0.0,"preco_final":309.65161880996345},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001252","descricao":"IPV3-120 TARSILA 2021 BRA","preco":326.126854034982,"ipi":0.0325,"st":0.0,"preco_final":336.7259767911189},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001256","descricao":"IPV3-120 TARSILA 2021 PTO","preco":326.126854034982,"ipi":0.0325,"st":0.0,"preco_final":336.7259767911189},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000697","descricao":"IPH-80 TARSILA 2021 BRA","preco":140.411917804158,"ipi":0.0325,"st":0.0,"preco_final":144.97530513279315},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000831","descricao":"IPH-80 TARSILA 2021 PTO","preco":140.411917804158,"ipi":0.0325,"st":0.0,"preco_final":144.97530513279315},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000987","descricao":"IP2-80 TARSILA 2021 BRA","preco":207.75081970843198,"ipi":0.0325,"st":0.0,"preco_final":214.50272134895602},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000837","descricao":"IG3G2-120 S/T FURO PIA TARSILA 2021 BRA","preco":473.48303013811807,"ipi":0.0325,"st":0.0,"preco_final":488.8712286176069},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001463","descricao":"IG3G2-120ST FURO PIA TARSILA 2021BRA/PTO","preco":473.48303013811807,"ipi":0.0325,"st":0.0,"preco_final":488.8712286176069},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000710","descricao":"IG3G2-120 TARSILA 2021 BRA","preco":559.4525257361039,"ipi":0.0325,"st":0.0,"preco_final":577.6347328225273},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000989","descricao":"IG3G2-120 TARSILA 2021 BRA/PTO","preco":559.4525257361039,"ipi":0.0325,"st":0.0,"preco_final":577.6347328225273},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000802","descricao":"IGH1G1-80 COOK TOP 4B TARSILA 2021 BRA","preco":421.214646244392,"ipi":0.0325,"st":0.0,"preco_final":434.9041222473347},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000803","descricao":"IGH1G1-80 COOK TOP 5B TARSILA 2021 BRA","preco":420.581431201932,"ipi":0.0325,"st":0.0,"preco_final":434.2503277159948},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000704","descricao":"IG2A-80 TARSILA 2021 BRA","preco":360.41896644553805,"ipi":0.0325,"st":0.0,"preco_final":372.13258285501803},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001462","descricao":"IG2A-80 COOK 4Q TARSILA 2021 BRA","preco":348.1134874537319,"ipi":0.0325,"st":0.0,"preco_final":359.4271757959782},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001461","descricao":"IG2A-80 COOK 5Q TARSILA 2021 BRA","preco":347.82502282327806,"ipi":0.0325,"st":0.0,"preco_final":359.1293360650346},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001096","descricao":"COZ 1 TARSILA 2V 2021 BRA","preco":1061.23323254949,"ipi":0.0325,"st":0.0,"preco_final":1095.7233126073484},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001097","descricao":"COZ 1 TARSILA 2V 2021 BRA/PTO","preco":1061.23323254949,"ipi":0.0325,"st":0.0,"preco_final":1095.7233126073484},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001667","descricao":"COZ 14 TARSILA 3PC FNO BRA","preco":1051.5309709544642,"ipi":0.0325,"st":0.0,"preco_final":1085.7057275104844},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001098","descricao":"COZ 2 TARSILA 3V 2021 BRA","preco":1075.156927760916,"ipi":0.0325,"st":0.0,"preco_final":1110.0995279131457},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001462","descricao":"COZ 9 TARSILA 3V 2021 BRA","preco":1091.606447419488,"ipi":0.0325,"st":0.0,"preco_final":1127.0836569606213},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001099","descricao":"COZ 2 TARSILA 3V 2021 BRA/PTO","preco":1075.156927760916,"ipi":0.0325,"st":0.0,"preco_final":1110.0995279131457},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001433","descricao":"COZ 9 TARSILA 3V 2021 BRA/PTO","preco":1091.606447419488,"ipi":0.0325,"st":0.0,"preco_final":1127.0836569606213},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001662","descricao":"COZ 11 TARSILA 4PC 2 GAV BRA","preco":1416.790514613474,"ipi":0.0325,"st":0.0,"preco_final":1462.8362063384118},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001665","descricao":"COZ 10 TARSILA 4PC BRA","preco":1657.5810880929298,"ipi":0.0325,"st":0.0,"preco_final":1711.45247345595},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001666","descricao":"COZ 13 TARSILA 4PC FNO BRA","preco":1617.217146997452,"ipi":0.0325,"st":0.0,"preco_final":1669.7767042748692},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001661","descricao":"COZ 10 TARSILA 4PC C/VD BRA","preco":1657.918802782242,"ipi":0.0325,"st":0.0,"preco_final":1711.8011638726648},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001664","descricao":"COZ 10 TARSILA 4PC C/VD BRA/PTO","preco":1657.918802782242,"ipi":0.0325,"st":0.0,"preco_final":1711.8011638726648},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001755","descricao":"COZ 16 5PC TARSILA 2VD 2021 BRA/PTO","preco":1955.431372620726,"ipi":0.0325,"st":0.0,"preco_final":2018.9828922308996},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001663","descricao":"COZ 12 TARSILA 5PC BRA","preco":1959.2447343208742,"ipi":0.0325,"st":0.0,"preco_final":2022.9201881863025},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001273","descricao":"COZ 5 TARSILA 5V 2021 BRA","preco":1087.673478433542,"ipi":0.0325,"st":0.0,"preco_final":1123.022866482632},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001302","descricao":"COZ 6 TARSILA 5V 2021 BRA","preco":986.8726793966041,"ipi":0.0325,"st":0.0,"preco_final":1018.9460414769937},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001274","descricao":"COZ 5 TARSILA 5V 2021 BRA/PTO","preco":1087.673478433542,"ipi":0.0325,"st":0.0,"preco_final":1123.022866482632},{"setor":"AÇO","linha":"TARSILA","codigo":"6000001303","descricao":"COZ 6 TARSILA 5V 2021 BRA/PTO","preco":986.8726793966041,"ipi":0.0325,"st":0.0,"preco_final":1018.9460414769937},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000988","descricao":"IPL-40 TARSILA 2021 BRA","preco":359.215857864864,"ipi":0.0325,"st":0.0,"preco_final":370.89037324547206},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000807","descricao":"IPLDPFNO-70 TARSILA 2021 BRA","preco":628.339286633058,"ipi":0.0325,"st":0.0,"preco_final":648.7603134486324},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001233","descricao":"IPLDV-70 TARSILA 2018 BRA","preco":520.57312212906,"ipi":0.0325,"st":0.0,"preco_final":537.4917485982545},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001234","descricao":"IPLDV-70 TARSILA 2018 BRA/PTO","preco":520.7068008602461,"ipi":0.0325,"st":0.0,"preco_final":537.629771888204},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001253","descricao":"IPLDV-80 TARSILA 2021 BRA","preco":624.4063176471119,"ipi":0.0325,"st":0.0,"preco_final":644.699522970643},{"setor":"AÇO","linha":"TARSILA","codigo":"3500001259","descricao":"IPLDV-80 TARSILA 2021 BRA/PTO","preco":624.4063176471119,"ipi":0.0325,"st":0.0,"preco_final":644.699522970643},{"setor":"AÇO","linha":"TARSILA","codigo":"3500000707","descricao":"IPLD-80 TARSILA 2021 BRA","preco":611.8897669744862,"ipi":0.0325,"st":0.0,"preco_final":631.776184401157},{"setor":"AÇO ","linha":"RENOVA","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS C/ PANELEIRO FORNO 2,10 ALT.","preco":1894.43,"ipi":0.0325,"st":0.0,"preco_final":1955.998975},{"setor":"AÇO ","linha":"RENOVA","codigo":"CONJUNTO","descricao":"COZ. 5 PEÇAS C/ IG2-80 + IP2-80","preco":2320.58,"ipi":0.0325,"st":0.0,"preco_final":2395.99885},{"setor":"AÇO ","linha":"NEW PREMIUM","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS C/ PANELEIRO FORNO 2,10 ALT.","preco":1340.0,"ipi":0.0325,"st":0.0,"preco_final":1383.55},{"setor":"AÇO ","linha":"NEW PREMIUM","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS - PANELEIRO 6 PTS - FECHADA","preco":1306.54,"ipi":0.0325,"st":0.0,"preco_final":1349.00255},{"setor":"AÇO ","linha":"NEW PREMIUM","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS - PANELEIRO 6 PTS C/ VIDRO","preco":1330.75,"ipi":0.0325,"st":0.0,"preco_final":1373.999375},{"setor":"AÇO ","linha":"NEW PREMIUM","codigo":"CONJUNTO","descricao":"COZ. 5 PEÇAS C/ PANELEIRO FORNO 2,10 ALT.","preco":1625.18,"ipi":0.0325,"st":0.0,"preco_final":1677.99835},{"setor":"AÇO ","linha":"FLORENCA","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS C/ PANELEIRO FORNO 2,10 ALT.","preco":1139.95,"ipi":0.0325,"st":0.0,"preco_final":1176.9983750000001},{"setor":"AÇO ","linha":"FLORENCA","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS - PANELEIRO 6 PTS - FECHADA","preco":1112.83,"ipi":0.0325,"st":0.0,"preco_final":1148.996975},{"setor":"AÇO ","linha":"FLORENCA","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS - PANELEIRO 6 PTS C/ VIDRO","preco":1170.94,"ipi":0.0325,"st":0.0,"preco_final":1208.99555},{"setor":"AÇO ","linha":"LUCE","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS - PANELEIRO 6 PTS - FECHADA","preco":1133.17,"ipi":0.0325,"st":0.0,"preco_final":1169.998025},{"setor":"AÇO ","linha":"LUCE","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS - PANELEIRO 6 PTS C/ VIDRO","preco":1182.57,"ipi":0.0325,"st":0.0,"preco_final":1221.0035249999999},{"setor":"AÇO ","linha":"ROSE","codigo":"CONJUNTO","descricao":"COZ. 3 PEÇAS ROSE ","preco":497.82,"ipi":0.0325,"st":0.0,"preco_final":513.99915},{"setor":"AÇO ","linha":"ROSE","codigo":"CONJUNTO","descricao":"BALCAO 105 - IG3G1-105 ROSE","preco":305.08,"ipi":0.0325,"st":0.0,"preco_final":314.9951}],"madeira":[{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002145","descricao":"ARM-70 1PH CANELA CNM/OFW","preco":76.36038260019839,"ipi":0.0325,"st":0.0,"preco_final":86.73012255730534,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002146","descricao":"ARM-70 2PT CANELA CNM/OFW","preco":115.570939815936,"ipi":0.0325,"st":0.0,"preco_final":131.2654734429401,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002147","descricao":"ARM-120 2PT 1NC CANELA CNM/OFW","preco":165.7295774823744,"ipi":0.0325,"st":0.0,"preco_final":188.23565410448083,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002148","descricao":"ARM-120 2PT 1NC/ARM-70 CANELA CNM/OFW","preco":231.6446698724928,"ipi":0.0325,"st":0.0,"preco_final":263.1020160411773,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002149","descricao":"ARM-70 1PH CANELA CNM/GFI","preco":76.36038260019839,"ipi":0.0325,"st":0.0,"preco_final":86.73012255730534,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002150","descricao":"ARM-70 2PT CANELA CNM/GFI","preco":115.570939815936,"ipi":0.0325,"st":0.0,"preco_final":131.2654734429401,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002151","descricao":"ARM-120 2PT 1NC CANELA CNM/GFI","preco":165.7295774823744,"ipi":0.0325,"st":0.0,"preco_final":188.23565410448083,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002152","descricao":"ARM-120 2PT 1NC/ARM-70 CANELA CNM/GFI","preco":231.6446698724928,"ipi":0.0325,"st":0.0,"preco_final":263.1020160411773,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002153","descricao":"BALC-70 2PT CANELA CNM/OFW","preco":157.56454723680002,"ipi":0.0325,"st":0.0,"preco_final":178.96181275155746,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002154","descricao":"BALC-70 2PT CANELA CNM/GFI","preco":157.56454723680002,"ipi":0.0325,"st":0.0,"preco_final":178.96181275155746,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002157","descricao":"BALC-120 2PT1G CANELA CNM/OFW","preco":258.689119575744,"ipi":0.0325,"st":0.0,"preco_final":293.81910201413,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002158","descricao":"BALC-120 2PT1G CANELA CNM/GFI","preco":258.689119575744,"ipi":0.0325,"st":0.0,"preco_final":293.81910201413,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002159","descricao":"PAN-62 2PT FNO CANELA CNM/OFW","preco":264.8925597276288,"ipi":0.0325,"st":0.0,"preco_final":300.8649693386408,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002160","descricao":"PAN-62 2PT FNO CANELA CNM/GFI","preco":264.8925597276288,"ipi":0.0325,"st":0.0,"preco_final":300.8649693386408,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002161","descricao":"PAN-62 2PT 1VD FNO CANELA CNM/OFW","preco":296.8870147575552,"ipi":0.0325,"st":0.0,"preco_final":337.20427136163124,"frete":0.1},{"setor":"MADEIRA","linha":"CANELA","codigo":"3600002162","descricao":"PAN-62 2PT 1VD FNO CANELA CNM/GFI","preco":296.8870147575552,"ipi":0.0325,"st":0.0,"preco_final":337.20427136163124,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"3600002001","descricao":"ARM-120 3PT NC GAR ESSENCE FND/GRS","preco":299.36093655232514,"ipi":0.0325,"st":0.0,"preco_final":340.0141517361309,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"3600002000","descricao":"ARM-120 3PT ESSENCE FND/GRS","preco":242.4413541810586,"ipi":0.0325,"st":0.0,"preco_final":275.3648900788464,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"3600001998","descricao":"ARM-80 1PH ESSENCE FND/GRS","preco":116.02177382264831,"ipi":0.0325,"st":0.0,"preco_final":131.77753070776396,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"3600001999","descricao":"ARM-80 2PT ESSENCE FND/GRS","preco":157.3267561519104,"ipi":0.0325,"st":0.0,"preco_final":178.69172963733982,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001964","descricao":"BALC-120 1PT3G PIA ESSENCE FND","preco":698.7855543087513,"ipi":0.0325,"st":0.0,"preco_final":793.6806325838797,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000002002","descricao":"BALC-120 1PT3G C/T ESSENCE FND","preco":565.5819955636224,"ipi":0.0325,"st":0.0,"preco_final":642.3880305611623,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001985","descricao":"BALC-120 1PT3G P/PIA C/T ESSENCE FND","preco":576.502197059543,"ipi":0.0325,"st":0.0,"preco_final":654.791195420229,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000002015","descricao":"BALC-120 1PT3G S/T ESSENCE FND","preco":489.7989458638848,"ipi":0.0325,"st":0.0,"preco_final":556.3136427122004,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"3600002004","descricao":"BALC-80 1PH1G ESSENCE FND","preco":339.6783777240269,"ipi":0.0325,"st":0.0,"preco_final":385.8067014189498,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001989","descricao":"COZ 4 4PC ESSENCE 2VD FND/GRS","preco":1666.5114838597635,"ipi":0.0325,"st":0.0,"preco_final":1892.8237433679194,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001991","descricao":"COZ 6 5PC ESSENCE 2VD FND/GRS","preco":2041.977494402335,"ipi":0.0325,"st":0.0,"preco_final":2319.278038142172,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001987","descricao":"COZ 2 6PC ESSENCE 4VD FND/GRS","preco":2343.435166890639,"ipi":0.0325,"st":0.0,"preco_final":2661.6736625543876,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001958","descricao":"CRISTALEIRA 70 4PT ESSENCE FND","preco":922.3849094473727,"ipi":0.0325,"st":0.0,"preco_final":1047.644780150326,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001961","descricao":"PAN-40 2PT ESSENCE FND","preco":275.63132438949884,"ipi":0.0325,"st":0.0,"preco_final":313.0620582415928,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001959","descricao":"PAN-70 2PT1PH1G 2VD 1FNO ESSENCE FND","preco":685.5467779211674,"ipi":0.0325,"st":0.0,"preco_final":778.6440303628619,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"6000001960","descricao":"PAN-70 2PT1PH1G 2VD 2FNO ESSENCE FND","preco":652.1850614244557,"ipi":0.0325,"st":0.0,"preco_final":740.7517927658969,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"3600002007","descricao":"IT 1200X530 MAD S/REGUA FND","preco":100.08514949013505,"ipi":0.0325,"st":0.0,"preco_final":113.6767127908954,"frete":0.1},{"setor":"MADEIRA","linha":"EXPOSITOR","codigo":"3600002035","descricao":"EXPOSITOR COOKTOP IND 3UND OFW","preco":489.7378208828161,"ipi":0.0325,"st":0.0,"preco_final":556.2442169587025,"frete":0.1},{"setor":"MADEIRA","linha":"ITAFRIZ","codigo":"3600002137","descricao":"ARM-120 3PT FRS ITAFRIZ CNM","preco":221.80131164062078,"ipi":0.0325,"st":0.0,"preco_final":251.9219297614171,"frete":0.1},{"setor":"MADEIRA","linha":"ITAFRIZ","codigo":"3600002138","descricao":"ARM-70 1PH FRS ITAFRIZ CNM","preco":89.30546090801279,"ipi":0.0325,"st":0.0,"preco_final":101.43314249932092,"frete":0.1},{"setor":"MADEIRA","linha":"ITAFRIZ","codigo":"3600002139","descricao":"ARM-70 2PT FRS ITAFRIZ CNM","preco":144.35745147964798,"ipi":0.0325,"st":0.0,"preco_final":163.96119339058419,"frete":0.1},{"setor":"MADEIRA","linha":"ITAFRIZ","codigo":"3600002140","descricao":"BALC-70 2PT ITAFRIZ CNM/OFW","preco":175.0276561575168,"ipi":0.0325,"st":0.0,"preco_final":198.79641186370756,"frete":0.1},{"setor":"MADEIRA","linha":"ITAFRIZ","codigo":"3600002141","descricao":"BALC-120 3PT2G ITAFRIZ CNM/OFW","preco":348.72398041029123,"ipi":0.0325,"st":0.0,"preco_final":396.0806969500088,"frete":0.1},{"setor":"MADEIRA","linha":"ITAFRIZ","codigo":"6000002216","descricao":"PAN-70 4PT FRS 1FNO ITAFRIZ CNM/OFW","preco":375.924224272608,"ipi":0.0325,"st":0.0,"preco_final":426.9747339288282,"frete":0.1},{"setor":"MADEIRA","linha":"ITAFRIZ","codigo":"6000002217","descricao":"PAN-70 4PT 2VD FRS 1FNO ITAFRIZ CNM/OFW","preco":433.72385728594566,"ipi":0.0325,"st":0.0,"preco_final":492.6235571053771,"frete":0.1},{"setor":"MADEIRA","linha":"KIT DUNAS","codigo":"6000002200","descricao":"KIT-120 5PT 1GV DUNAS CNM/OFW","preco":469.0321570836,"ipi":0.0325,"st":0.0,"preco_final":532.7267240155529,"frete":0.1},{"setor":"MADEIRA","linha":"KIT DUNAS","codigo":"6000002201","descricao":"KIT-120 5PT 1GV DUNAS CNM/GFI","preco":469.0321570836,"ipi":0.0325,"st":0.0,"preco_final":532.7267240155529,"frete":0.1},{"setor":"MADEIRA","linha":"KIT DUNAS","codigo":"6000002204","descricao":"KIT-140 5PT 1GV DUNAS CNM/OFW","preco":532.38791195568,"ipi":0.0325,"st":0.0,"preco_final":604.6861903992614,"frete":0.1},{"setor":"MADEIRA","linha":"KIT DUNAS","codigo":"6000002205","descricao":"KIT-140 5PT 1GV DUNAS CNM/GFI","preco":532.38791195568,"ipi":0.0325,"st":0.0,"preco_final":604.6861903992614,"frete":0.1},{"setor":"MADEIRA","linha":"KIT DUNAS","codigo":"6000002206","descricao":"KIT-180 7PT 1GV DUNAS CNM/OFW","preco":653.65950168288,"ipi":0.0325,"st":0.0,"preco_final":742.4264620114151,"frete":0.1},{"setor":"MADEIRA","linha":"KIT DUNAS","codigo":"6000002207","descricao":"KIT-180 7PT 1GV DUNAS CNM/GFI","preco":653.65950168288,"ipi":0.0325,"st":0.0,"preco_final":742.4264620114151,"frete":0.1},{"setor":"MADEIRA","linha":"KIT ITAFRIZ","codigo":"6000002227","descricao":"KIT-200 10PT 2VD 2GV NC ITAFRIZ CNM/OFW","preco":796.0898898735552,"ipi":0.0325,"st":0.0,"preco_final":904.198896918384,"frete":0.1},{"setor":"MADEIRA","linha":"KIT ITAFRIZ","codigo":"6000002226","descricao":"KIT-150 8PT 1VD 1GV NC ITAFRIZ CNM/OFW","preco":580.8575755886746,"ipi":0.0325,"st":0.0,"preco_final":659.7380343536166,"frete":0.1},{"setor":"MADEIRA","linha":"KIT ITAFRIZ","codigo":"6000002225","descricao":"KIT-110 6PT 1GV NC ITAFRIZ CNM/OFW","preco":432.01056879218294,"ipi":0.0325,"st":0.0,"preco_final":490.6776040341614,"frete":0.1},{"setor":"MADEIRA","linha":"KIT NAPOLES","codigo":"6000001801","descricao":"KIT-120 6PT 1VD 1GV NAPOLES CNM/GFI","preco":454.1187290181696,"ipi":0.0325,"st":0.0,"preco_final":515.788052418837,"frete":0.1},{"setor":"MADEIRA","linha":"KIT NAPOLES","codigo":"6000001800","descricao":"KIT-120 6PT 1VD 1GV NAPOLES CNM/OFW","preco":454.1187290181696,"ipi":0.0325,"st":0.0,"preco_final":515.788052418837,"frete":0.1},{"setor":"MADEIRA","linha":"KIT NAPOLES","codigo":"6000001805","descricao":"KIT-160 6PT 2GV NAPOLES CNM/GFI","preco":593.0446295885761,"ipi":0.0325,"st":0.0,"preco_final":673.5800902867047,"frete":0.1},{"setor":"MADEIRA","linha":"KIT NAPOLES","codigo":"6000001804","descricao":"KIT-160 6PT 2GV NAPOLES CNM/OFW","preco":593.0446295885761,"ipi":0.0325,"st":0.0,"preco_final":673.5800902867047,"frete":0.1},{"setor":"MADEIRA","linha":"KIT NAPOLES","codigo":"6000001803","descricao":"KIT-220 8PT 1VD 3GV NAPOLES CNM/GFI","preco":822.9543190532928,"ipi":0.0325,"st":0.0,"preco_final":934.71151558073,"frete":0.1},{"setor":"MADEIRA","linha":"KIT NAPOLES","codigo":"6000001802","descricao":"KIT-220 8PT 1VD 3GV NAPOLES CNM/OFW","preco":822.9543190532928,"ipi":0.0325,"st":0.0,"preco_final":934.71151558073,"frete":0.1},{"setor":"MADEIRA","linha":"LISBOA","codigo":"6000002208","descricao":"LOFT-120 3PT2GV1PH LISBOA FRJ/OFW","preco":772.6685522688,"ipi":0.0325,"st":0.0,"preco_final":877.596941666903,"frete":0.1},{"setor":"MADEIRA","linha":"LISBOA","codigo":"6000002209","descricao":"LOFT-120 3PT2GV1PHVD LISBOA FRJ/OFW","preco":763.6556670336001,"ipi":0.0325,"st":0.0,"preco_final":867.360106616763,"frete":0.1},{"setor":"MADEIRA","linha":"LISBOA","codigo":"3600001789","descricao":"PIA 1200X530MM MAD","preco":229.12177355020808,"ipi":0.0325,"st":0.0,"preco_final":260.23651039832635,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"3600002036","descricao":"ARM-120 3PTV LUMINA CNM/FND","preco":479.8750815593856,"ipi":0.0325,"st":0.0,"preco_final":545.0421176351501,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"3600002037","descricao":"ARM-120 3PTV LUMINA GRF","preco":479.8750815593856,"ipi":0.0325,"st":0.0,"preco_final":545.0421176351501,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"3600002040","descricao":"ARM-80 1PH LUMINA CNM/FND","preco":109.22527226907647,"ipi":0.0325,"st":0.0,"preco_final":124.05806424321706,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"3600002041","descricao":"ARM-80 1PH LUMINA GRF/FND","preco":109.22527226907647,"ipi":0.0325,"st":0.0,"preco_final":124.05806424321706,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"3600002038","descricao":"ARM-80 2PT LUMINA CNM/FND","preco":161.0911604738304,"ipi":0.0325,"st":0.0,"preco_final":182.96734006617658,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"3600002039","descricao":"ARM-80 2PT LUMINA GRF/FND","preco":161.0911604738304,"ipi":0.0325,"st":0.0,"preco_final":182.96734006617658,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002075","descricao":"BALC-120 1PT4G C/T LUMINA CNM/FND","preco":612.5948584421529,"ipi":0.0325,"st":0.0,"preco_final":695.7852402185973,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002076","descricao":"BALC-120 1PT4G C/T LUMINA GRF/FND","preco":612.5948584421529,"ipi":0.0325,"st":0.0,"preco_final":695.7852402185973,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002077","descricao":"BALC-120 1PT4G S/T LUMINA CNM/FND","preco":524.66388963893,"ipi":0.0325,"st":0.0,"preco_final":595.9132458518966,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002078","descricao":"BALC-120 1PT4G S/T LUMINA GRF/FND","preco":524.66388963893,"ipi":0.0325,"st":0.0,"preco_final":595.9132458518966,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"3600002043","descricao":"BALC-80 1PH1G LUMINA CNM/FND","preco":333.6177613083956,"ipi":0.0325,"st":0.0,"preco_final":378.9230532940757,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"3600002044","descricao":"BALC-80 1PH1G LUMINA GRF/FND","preco":333.6177613083956,"ipi":0.0325,"st":0.0,"preco_final":378.9230532940757,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002083","descricao":"DESP-60 1PT1PH1G LUMINA CNM/FND","preco":535.671902388142,"ipi":0.0325,"st":0.0,"preco_final":608.4161467324517,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002084","descricao":"DESP-60 1PT1PH1G LUMINA GRF/FND","preco":535.671902388142,"ipi":0.0325,"st":0.0,"preco_final":608.4161467324517,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002079","descricao":"PAN-70 2PT1PH1G 1NC 1FNO LUMINA CNM/FND","preco":589.7730267908582,"ipi":0.0325,"st":0.0,"preco_final":669.8642038290568,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002080","descricao":"PAN-70 2PT1PH1G 1NC 1FNO LUMINA GRF/FND","preco":589.7730267908582,"ipi":0.0325,"st":0.0,"preco_final":669.8642038290568,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002081","descricao":"PAN-70 2PH1G 1NC 2FNO LUMINA CNM/FND","preco":553.6098480520396,"ipi":0.0325,"st":0.0,"preco_final":628.7900654175066,"frete":0.1},{"setor":"MADEIRA","linha":"LUMINA","codigo":"6000002082","descricao":"PAN-70 2PH1G 1NC 2FNO LUMINA GRF/FND","preco":553.6098480520396,"ipi":0.0325,"st":0.0,"preco_final":628.7900654175066,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001950","descricao":"ARM-120 1PT1PH NC NAPOLES CNM/GFI","preco":329.5471357398528,"ipi":0.0325,"st":0.0,"preco_final":374.29963677332483,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001962","descricao":"ARM-120 1PT1PH NC NAPOLES CNM/OFW","preco":329.5471357398528,"ipi":0.0325,"st":0.0,"preco_final":374.29963677332483,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001969","descricao":"ARM-120 1PT1PHV NC NAPOLES CNM/GFI","preco":367.31305620789124,"ipi":0.0325,"st":0.0,"preco_final":417.19416924092286,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001970","descricao":"ARM-120 1PT1PHV NC NAPOLES CNM/OFW","preco":367.31305620789124,"ipi":0.0325,"st":0.0,"preco_final":417.19416924092286,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001939","descricao":"ARM-80 1PH NAPOLES CNM/GFI","preco":96.4578291196608,"ipi":0.0325,"st":0.0,"preco_final":109.55680231411074,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001951","descricao":"ARM-80 1PH NAPOLES CNM/OFW","preco":96.4578291196608,"ipi":0.0325,"st":0.0,"preco_final":109.55680231411074,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001952","descricao":"ARM-80 2PT NAPOLES CNM/OFW","preco":142.10551772588158,"ipi":0.0325,"st":0.0,"preco_final":161.4034470330563,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001940","descricao":"ARM-80 2PT NAPOLES CNM/GFI","preco":142.10551772588158,"ipi":0.0325,"st":0.0,"preco_final":161.4034470330563,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001941","descricao":"BALC-120 3PT2G NAPOLES CNM/GFI","preco":410.3547334261056,"ipi":0.0325,"st":0.0,"preco_final":466.08090622537077,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001953","descricao":"BALC-120 3PT2G NAPOLES CNM/OFW","preco":410.3547334261056,"ipi":0.0325,"st":0.0,"preco_final":466.08090622537077,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001943","descricao":"BALC-80 2PT NAPOLES CNM/GFI","preco":225.4978821420864,"ipi":0.0325,"st":0.0,"preco_final":256.12049453698177,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"3600001955","descricao":"BALC-80 2PT NAPOLES CNM/OFW","preco":225.4978821420864,"ipi":0.0325,"st":0.0,"preco_final":256.12049453698177,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001904","descricao":"COZ 1 3PC NAPOLES 1VD GFI","preco":973.1398883925311,"ipi":0.0325,"st":0.0,"preco_final":1105.292285236237,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001925","descricao":"COZ 2 3PC NAPOLES 1VD GFI","preco":886.851168928243,"ipi":0.0325,"st":0.0,"preco_final":1007.2855576686984,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001905","descricao":"COZ 1 3PC NAPOLES 1VD OFW","preco":973.1398883925311,"ipi":0.0325,"st":0.0,"preco_final":1105.292285236237,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001926","descricao":"COZ 2 3PC NAPOLES 1VD OFW","preco":886.851168928243,"ipi":0.0325,"st":0.0,"preco_final":1007.2855576686984,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000002007","descricao":"COZ 8 4PC NAPOLES GFI","preco":1259.4399818863105,"ipi":0.0325,"st":0.0,"preco_final":1430.4719314264714,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001945","descricao":"COZ 8 4PC NAPOLES OFW","preco":1259.4399818863105,"ipi":0.0325,"st":0.0,"preco_final":1430.4719314264714,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001944","descricao":"COZ 7 5PC NAPOLES 1VD GFI","preco":1522.717947601805,"ipi":0.0325,"st":0.0,"preco_final":1729.50304488613,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001941","descricao":"COZ 4 6PC NAPOLES OFW","preco":1627.0504633069631,"ipi":0.0325,"st":0.0,"preco_final":1848.0039162240487,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001880","descricao":"PAN-70 2PT1PH1G 2FNO NAPOLES CNM/GFI","preco":453.7292436205056,"ipi":0.0325,"st":0.0,"preco_final":515.3456749041702,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001882","descricao":"PAN-70 2PT1PH1G 2FNO NAPOLES CNM/OFW","preco":453.7292436205056,"ipi":0.0325,"st":0.0,"preco_final":515.3456749041702,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001897","descricao":"PAN-70 4PT1G 1FNO NAPOLES CNM/GFI","preco":509.3690030649791,"ipi":0.0325,"st":0.0,"preco_final":578.5413136812033,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001898","descricao":"PAN-70 4PT1G 1FNO NAPOLES CNM/OFW","preco":509.3690030649791,"ipi":0.0325,"st":0.0,"preco_final":578.5413136812033,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001881","descricao":"PAN-70 4PT FNO NAPOLES CNM/GFI","preco":423.0873651533761,"ipi":0.0325,"st":0.0,"preco_final":480.5426293412046,"frete":0.1},{"setor":"MADEIRA","linha":"NAPOLES","codigo":"6000001883","descricao":"PAN-70 4PT FNO NAPOLES CNM/OFW","preco":423.0873651533761,"ipi":0.0325,"st":0.0,"preco_final":480.5426293412046,"frete":0.1},{"setor":"MADEIRA","linha":"ESSENCE","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS ESSENCE S/ NICHO ","preco":1609.59,"ipi":0.0325,"st":0.0,"preco_final":1828.172322,"frete":0.1},{"setor":"nan","linha":"ESSENCE","codigo":"CONJUNTO","descricao":"COZ. 5 PEÇAS ESSENCE S/ NICHO ","preco":1990.58,"ipi":0.0325,"st":0.0,"preco_final":2260.900764,"frete":0.1},{"setor":"nan","linha":"NAPOLES","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS NAPOLES  C/ NICHO","preco":1480.87,"ipi":0.0325,"st":0.0,"preco_final":1681.9721459999998,"frete":0.1},{"setor":"nan","linha":"NAPOLES","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS NAPOLES  C/ VIDRO","preco":1521.55,"ipi":0.0325,"st":0.0,"preco_final":1728.1764899999998,"frete":0.1},{"setor":"nan","linha":"NAPOLES","codigo":"CONJUNTO","descricao":"COZ. 5 PEÇAS NAPOLES  C/ NICHO","preco":1779.18,"ipi":0.0325,"st":0.0,"preco_final":2020.792644,"frete":0.1},{"setor":"nan","linha":"NAPOLES","codigo":"CONJUNTO","descricao":"COZ. 5 PEÇAS NAPOLES  C/ VIDRO","preco":1819.85,"ipi":0.0325,"st":0.0,"preco_final":2066.98563,"frete":0.1},{"setor":"nan","linha":"CANELA","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS CANELA FECHADA","preco":1480.87,"ipi":0.0325,"st":0.0,"preco_final":1681.9721459999998,"frete":0.1},{"setor":"nan","linha":"CANELA","codigo":"CONJUNTO","descricao":"COZ. 4 PEÇAS CANELA C/ VIDRO","preco":1521.55,"ipi":0.0325,"st":0.0,"preco_final":1728.1764899999998,"frete":0.1},{"setor":"nan","linha":"CANELA","codigo":"CONJUNTO","descricao":"COZ. 5 PEÇAS CANELA FECHADA","preco":1779.18,"ipi":0.0325,"st":0.0,"preco_final":2020.792644,"frete":0.1},{"setor":"nan","linha":"CANELA","codigo":"CONJUNTO","descricao":"COZ. 5 PEÇAS CANELA C/ VIDRO","preco":1819.85,"ipi":0.0325,"st":0.0,"preco_final":2066.98563,"frete":0.1}],"fogoes":[{"setor":"COOKTOP","linha":"COOKTOP ELECTRA PLUS","codigo":"3700000480","descricao":"COOKTOP ELECTRA PLUS 4Q 127/220V PTO","preco":320.213281862232,"ipi":0.026,"st":0.1744,"preco_final":385.82498331580337},{"setor":"COOKTOP","linha":"COOKTOP ELECTRA PLUS","codigo":"3700000481","descricao":"COOKTOP ELECTRA PLUS 5Q 127/220V PTO","preco":389.5747521613201,"ipi":0.026,"st":0.1744,"preco_final":469.3986188791746},{"setor":"COOKTOP","linha":"COOKTOP ELECTRA PLUS","codigo":"3700000482","descricao":"COOKTOP ELECTRA PLUS 5Q TC 127/220V PTO","preco":446.10241137897594,"ipi":0.026,"st":0.1744,"preco_final":537.5087954705281},{"setor":"COOKTOP","linha":"COOKTOP ESSENCIAL","codigo":"3700000192","descricao":"COOKTOP ITATIAIA ESS 4Q 127/220V PTO","preco":329.650118885736,"ipi":0.026,"st":0.1744,"preco_final":397.1954282454233},{"setor":"COOKTOP","linha":"COOKTOP ESSENCIAL","codigo":"3700000193","descricao":"COOKTOP ITATIAIA ESS 5Q 127/220V PTO","preco":389.172573414504,"ipi":0.026,"st":0.1744,"preco_final":468.91403370713584},{"setor":"COOKTOP","linha":"COOKTOP ESSENCIAL","codigo":"3700000194","descricao":"COOKTOP ITATIAIA ESS 5Q TC 127/220V PTO","preco":428.334728885712,"ipi":0.026,"st":0.1744,"preco_final":516.1005148343944},{"setor":"COOKTOP","linha":"COOKTOP ITAMASTER","codigo":"3700000342","descricao":"COOKTOP ITAMASTER 4Q TC 127/220V BRA","preco":445.74332321217605,"ipi":0.026,"st":0.1744,"preco_final":537.0761301383509},{"setor":"COOKTOP","linha":"COOKTOP ITAMASTER","codigo":"3700000341","descricao":"COOKTOP ITAMASTER 4Q TC 127/220V PTO","preco":445.74332321217605,"ipi":0.026,"st":0.1744,"preco_final":537.0761301383509},{"setor":"COOKTOP","linha":"COOKTOP ITAMASTER","codigo":"3700000344","descricao":"COOKTOP ITAMASTER 5Q TC 127/220V BRA","preco":504.71278196407184,"ipi":0.026,"st":0.1744,"preco_final":608.1284309885102},{"setor":"COOKTOP","linha":"COOKTOP ITAMASTER","codigo":"3700000343","descricao":"COOKTOP ITAMASTER 5Q TC 127/220V PTO","preco":504.71278196407184,"ipi":0.026,"st":0.1744,"preco_final":608.1284309885102},{"setor":"COOKTOP","linha":"COOKTOP ITAPLUS","codigo":"3700000493","descricao":"COOKTOP ITAPLUS 4Q TC 127/220V BRA","preco":434.48156232623995,"ipi":0.026,"st":0.1744,"preco_final":523.5068344468865},{"setor":"COOKTOP","linha":"COOKTOP ITAPLUS","codigo":"3700000492","descricao":"COOKTOP ITAPLUS 4Q TC 127/220V PTO","preco":434.48156232623995,"ipi":0.026,"st":0.1744,"preco_final":523.5068344468865},{"setor":"COOKTOP","linha":"COOKTOP ITAPLUS","codigo":"3700000495","descricao":"COOKTOP ITAPLUS 5Q TC 127/220V BRA","preco":513.99502208208,"ipi":0.026,"st":0.1744,"preco_final":619.3126021066983},{"setor":"COOKTOP","linha":"COOKTOP ITAPLUS","codigo":"3700000494","descricao":"COOKTOP ITAPLUS 5Q TC 127/220V PTO","preco":513.99502208208,"ipi":0.026,"st":0.1744,"preco_final":619.3126021066983},{"setor":"COOKTOP","linha":"COOKTOP LUMI","codigo":"3700000540","descricao":"COOKTOP LUMI 4Q 127/220V PTO  ","preco":266.67777204287995,"ipi":0.026,"st":0.1744,"preco_final":321.3200475344661},{"setor":"COOKTOP","linha":"COOKTOP LUMI","codigo":"3700000541","descricao":"COOKTOP LUMI 5Q 127/220V PTO","preco":316.35289507536004,"ipi":0.026,"st":0.1744,"preco_final":381.1736032763013},{"setor":"FOGÃO","linha":"ELECTRA GLASS PLUS","codigo":"3700000485","descricao":"FOGAO ELECTRA GLASS PLUS 4Q BRA","preco":751.4059745681279,"ipi":0.026,"st":0.1744,"preco_final":905.3690587571373},{"setor":"FOGÃO","linha":"ELECTRA GLASS PLUS","codigo":"3700000484","descricao":"FOGAO ELECTRA GLASS PLUS 4Q PTO","preco":751.4059745681279,"ipi":0.026,"st":0.1744,"preco_final":905.3690587571373},{"setor":"FOGÃO","linha":"ELECTRA GLASS PLUS","codigo":"3700000487","descricao":"FOGAO ELECTRA GLASS PLUS 5Q BRA","preco":1034.9348849075807,"ipi":0.026,"st":0.1744,"preco_final":1246.993042825144},{"setor":"FOGÃO","linha":"ELECTRA GLASS PLUS","codigo":"3700000486","descricao":"FOGAO ELECTRA GLASS PLUS 5Q PTO","preco":1034.9348849075807,"ipi":0.026,"st":0.1744,"preco_final":1246.993042825144},{"setor":"FOGÃO","linha":"ITACHEF","codigo":"3700000498","descricao":"FOGAO ITACHEF 4Q PTO","preco":996.9119082964801,"ipi":0.026,"st":0.1744,"preco_final":1201.179158306429},{"setor":"FOGÃO","linha":"ITACHEF","codigo":"3700000499","descricao":"FOGAO ITACHEF 4Q REFLECTA","preco":1070.8840706572798,"ipi":0.026,"st":0.1744,"preco_final":1290.3082167349564},{"setor":"FOGÃO","linha":"ITACHEF","codigo":"3700000500","descricao":"FOGAO ITACHEF 5Q PTO","preco":1327.04622922608,"ipi":0.026,"st":0.1744,"preco_final":1598.9580015945037},{"setor":"FOGÃO","linha":"ITACHEF","codigo":"3700000501","descricao":"FOGAO ITACHEF 5Q REFLECTA","preco":1438.9229824992,"ipi":0.026,"st":0.1744,"preco_final":1733.7583016132862},{"setor":"FOGÃO","linha":"ITAGLASS PLUS","codigo":"3700000369","descricao":"FOGAO ITAGLASS PLUS 4Q BRA","preco":847.3747440644639,"ipi":0.026,"st":0.1744,"preco_final":1021.0018291232726},{"setor":"FOGÃO","linha":"ITAGLASS PLUS","codigo":"3700000370","descricao":"FOGAO ITAGLASS PLUS 4Q PTO","preco":847.3747440644639,"ipi":0.026,"st":0.1744,"preco_final":1021.0018291232726},{"setor":"FOGÃO","linha":"ITAGLASS PLUS","codigo":"3700000372","descricao":"FOGAO ITAGLASS PLUS 5Q BRA","preco":1161.3819996367774,"ipi":0.026,"st":0.1744,"preco_final":1399.3491713623532},{"setor":"FOGÃO","linha":"ITAGLASS PLUS","codigo":"3700000373","descricao":"FOGAO ITAGLASS PLUS 5Q PTO","preco":1161.3819996367774,"ipi":0.026,"st":0.1744,"preco_final":1399.3491713623532},{"setor":"FOGÃO","linha":"ITAMASTER","codigo":"3700000328","descricao":"FOGAO ITAMASTER 4Q PTO","preco":1092.7932870726431,"ipi":0.026,"st":0.1744,"preco_final":1316.7066315938278},{"setor":"FOGÃO","linha":"ITAMASTER","codigo":"3700000327","descricao":"FOGAO ITAMASTER 4Q REFLECTA","preco":1163.9828563295328,"ipi":0.026,"st":0.1744,"preco_final":1402.482943591454},{"setor":"FOGÃO","linha":"ITAMASTER","codigo":"3700000331","descricao":"FOGAO ITAMASTER 5Q PTO","preco":1440.3274330176862,"ipi":0.026,"st":0.1744,"preco_final":1735.45052404301},{"setor":"FOGÃO","linha":"ITAMASTER","codigo":"3700000330","descricao":"FOGAO ITAMASTER 5Q REFLECTA","preco":1562.6458654012797,"ipi":0.026,"st":0.1744,"preco_final":1882.832003222002},{"setor":"FOGÃO","linha":"ITAMASTER DIGITAL","codigo":"3700000334","descricao":"FOGAO ITAMASTER 4Q DIG PTO","preco":1187.8311488456159,"ipi":0.026,"st":0.1744,"preco_final":1431.2177512440826},{"setor":"FOGÃO","linha":"ITAMASTER DIGITAL","codigo":"3700000333","descricao":"FOGAO ITAMASTER 4Q DIG REFLECTA","preco":1229.864119713504,"ipi":0.026,"st":0.1744,"preco_final":1481.863277842801},{"setor":"FOGÃO","linha":"ITAMASTER DIGITAL","codigo":"3700000337","descricao":"FOGAO ITAMASTER 5Q DIG PTO","preco":1571.2016890572286,"ipi":0.026,"st":0.1744,"preco_final":1893.1409151450548},{"setor":"FOGÃO","linha":"ITAMASTER DIGITAL","codigo":"3700000336","descricao":"FOGAO ITAMASTER 5Q DIG REFLECTA","preco":1620.9732745109377,"ipi":0.026,"st":0.1744,"preco_final":1953.1106984582289},{"setor":"FOGÃO","linha":"LUMI","codigo":"3700000530","descricao":"FOGAO LUMI 4Q BRA","preco":577.4893697232,"ipi":0.026,"st":0.1744,"preco_final":695.8169415794837},{"setor":"FOGÃO","linha":"LUMI","codigo":"3700000531","descricao":"FOGAO LUMI 4Q PTO","preco":577.4893697232,"ipi":0.026,"st":0.1744,"preco_final":695.8169415794837},{"setor":"FOGÃO","linha":"LUMI","codigo":"3700000534","descricao":"FOGAO LUMI 5Q BRA","preco":760.82844806496,"ipi":0.026,"st":0.1744,"preco_final":916.7221970734703},{"setor":"FOGÃO","linha":"LUMI","codigo":"3700000535","descricao":"FOGAO LUMI 5Q PTO","preco":760.82844806496,"ipi":0.026,"st":0.1744,"preco_final":916.7221970734703},{"setor":"FOGÃO","linha":"LUMI","codigo":"3700000532","descricao":"FOGAO LUMI CLEAN 4Q BRA ","preco":535.0564880337599,"ipi":0.026,"st":0.1744,"preco_final":644.6895624318773},{"setor":"FOGÃO","linha":"LUMI","codigo":"3700000533","descricao":"FOGAO LUMI CLEAN 4Q PTO ","preco":535.0564880337599,"ipi":0.026,"st":0.1744,"preco_final":644.6895624318773},{"setor":"FOGÃO","linha":"LUMI GLASS","codigo":"3700000536","descricao":"FOGAO LUMI GLASS 4Q BRA","preco":667.8208329883199,"ipi":0.026,"st":0.1744,"preco_final":804.6573216676267},{"setor":"FOGÃO","linha":"LUMI GLASS","codigo":"3700000537","descricao":"FOGAO LUMI GLASS 4Q PTO","preco":667.8208329883199,"ipi":0.026,"st":0.1744,"preco_final":804.6573216676267},{"setor":"FOGÃO","linha":"LUMI GLASS","codigo":"3700000538","descricao":"FOGAO LUMI GLASS 5Q BRA","preco":879.05539207728,"ipi":0.026,"st":0.1744,"preco_final":1059.1738419139147},{"setor":"FOGÃO","linha":"LUMI GLASS","codigo":"3700000539","descricao":"FOGAO LUMI GLASS 5Q PTO","preco":879.05539207728,"ipi":0.026,"st":0.1744,"preco_final":1059.1738419139147},{"setor":"FOGÃO","linha":"NEW DREAM","codigo":"3700000320","descricao":"FOGAO NEW DREAM 4Q BRA","preco":929.4486914433601,"ipi":0.026,"st":0.1744,"preco_final":1119.8927283201047},{"setor":"FOGÃO","linha":"NEW DREAM","codigo":"3700000322","descricao":"FOGAO NEW DREAM 4Q PTO","preco":929.4486914433601,"ipi":0.026,"st":0.1744,"preco_final":1119.8927283201047},{"setor":"FOGÃO","linha":"NEW DREAM","codigo":"3700000321","descricao":"FOGAO NEW DREAM 4Q REFLECTA","preco":1012.0238503056,"ipi":0.026,"st":0.1744,"preco_final":1219.3875372332175},{"setor":"FOGÃO","linha":"NEW DREAM","codigo":"3700000323","descricao":"FOGAO NEW DREAM 5Q BRA","preco":1229.19281383536,"ipi":0.026,"st":0.1744,"preco_final":1481.0544213902253},{"setor":"FOGÃO","linha":"NEW DREAM","codigo":"3700000325","descricao":"FOGAO NEW DREAM 5Q PTO","preco":1229.19281383536,"ipi":0.026,"st":0.1744,"preco_final":1481.0544213902253},{"setor":"FOGÃO","linha":"NEW DREAM","codigo":"3700000324","descricao":"FOGAO NEW DREAM 5Q REFLECTA","preco":1339.64833394304,"ipi":0.026,"st":0.1744,"preco_final":1614.142277567969},{"setor":"FOGÃO","linha":"STAR NEW","codigo":"3700000354","descricao":"FOGAO STAR CLEAN NEW 4Q BRA","preco":578.790402849648,"ipi":0.026,"st":0.1744,"preco_final":697.3845563935408},{"setor":"FOGÃO","linha":"STAR NEW","codigo":"3700000355","descricao":"FOGAO STAR CLEAN NEW 4Q PTO","preco":578.790402849648,"ipi":0.026,"st":0.1744,"preco_final":697.3845563935408},{"setor":"FOGÃO","linha":"STAR NEW","codigo":"3700000357","descricao":"FOGAO STAR NEW 4Q BRA","preco":614.8392261159456,"ipi":0.026,"st":0.1744,"preco_final":740.8197835471028},{"setor":"FOGÃO","linha":"STAR NEW","codigo":"3700000358","descricao":"FOGAO STAR NEW 4Q PTO","preco":614.8392261159456,"ipi":0.026,"st":0.1744,"preco_final":740.8197835471028},{"setor":"FOGÃO","linha":"STAR NEW","codigo":"3700000360","descricao":"FOGAO STAR NEW 5Q BRA","preco":849.9558698074223,"ipi":0.026,"st":0.1744,"preco_final":1024.1118275309632},{"setor":"FOGÃO","linha":"STAR NEW","codigo":"3700000361","descricao":"FOGAO STAR NEW 5Q PTO","preco":849.9558698074223,"ipi":0.026,"st":0.1744,"preco_final":1024.1118275309632},{"setor":"FOGÃO","linha":"STAR NEW","codigo":"3700000473","descricao":"FOGAO STAR NEW 6Q BRA","preco":849.9558698074223,"ipi":0.026,"st":0.1744,"preco_final":1024.1118275309632},{"setor":"FOGÃO","linha":"STAR NEW","codigo":"3700000474","descricao":"FOGAO STAR NEW 6Q PTO","preco":849.9558698074223,"ipi":0.026,"st":0.1744,"preco_final":1024.1118275309632},{"setor":"FOGÃO","linha":"WAVES NEW","codigo":"3700000375","descricao":"FOGAO WAVES NEW 4Q BRA","preco":689.2027567798032,"ipi":0.026,"st":0.1744,"preco_final":830.4204016439849},{"setor":"FOGÃO","linha":"WAVES NEW","codigo":"3700000376","descricao":"FOGAO WAVES NEW 4Q PTO","preco":689.2027567798032,"ipi":0.026,"st":0.1744,"preco_final":830.4204016439849},{"setor":"FOGÃO","linha":"WAVES NEW","codigo":"3700000378","descricao":"FOGAO WAVES NEW 5Q BRA","preco":938.4133464268994,"ipi":0.026,"st":0.1744,"preco_final":1130.6942411097712},{"setor":"FOGÃO","linha":"WAVES NEW","codigo":"3700000379","descricao":"FOGAO WAVES NEW 5Q PTO","preco":938.4133464268994,"ipi":0.026,"st":0.1744,"preco_final":1130.6942411097712}],"lavadoras":[{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA1100B","descricao":"LAVADORA SEMIAUTO LSITA 10.0 BRA 127V","preco":362.32990145352005,"ipi":0.026,"st":0.1744,"preco_final":436.5712982613463},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA1150B","descricao":"LAVADORA SEMIAUTO LSITA 15.0 BRA 127V","preco":380.45225053836003,"ipi":0.065,"st":0.1744,"preco_final":458.40691667367},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA1205B","descricao":"LAVADORA SEMIAUTO LSITA 20.5 BRA 127V","preco":412.61586594228,"ipi":0.0,"st":0.1744,"preco_final":497.16085687385316},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA2100B","descricao":"LAVADORA SEMIAUTO LSITA 10.0 BRA 220V","preco":362.32990145352005,"ipi":0.0325,"st":0.1744,"preco_final":436.5712982613463},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA2150B","descricao":"LAVADORA SEMIAUTO LSITA 15.0 BRA 220V","preco":380.45225053836003,"ipi":0.065,"st":0.1744,"preco_final":458.40691667367},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA2205B","descricao":"LAVADORA SEMIAUTO LSITA 20.5 BRA 220V","preco":412.61586594228,"ipi":0.0,"st":0.1744,"preco_final":497.16085687385316},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA1100C","descricao":"LAVADORA SEMIAUTO LSITA 10.0 CNZ 127V","preco":362.32990145352005,"ipi":0.0325,"st":0.1744,"preco_final":436.5712982613463},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA1150C","descricao":"LAVADORA SEMIAUTO LSITA 15.0 CNZ 127V","preco":380.45225053836003,"ipi":0.065,"st":0.1744,"preco_final":458.40691667367},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA1205C","descricao":"LAVADORA SEMIAUTO LSITA 20.5 CNZ 127V","preco":412.61586594228,"ipi":0.0,"st":0.1744,"preco_final":497.16085687385316},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA2100C","descricao":"LAVADORA SEMIAUTO LSITA 10.0 CNZ 220V","preco":362.32990145352005,"ipi":0.0325,"st":0.1744,"preco_final":436.5712982613463},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA2150C","descricao":"LAVADORA SEMIAUTO LSITA 15.0 CNZ 220V","preco":380.45225053836003,"ipi":0.065,"st":0.1744,"preco_final":458.40691667367},{"setor":"LAVADORA","linha":"SEMIAUTOMATICA","codigo":"LSITA2205C","descricao":"LAVADORA SEMIAUTO LSITA 20.5 CNZ 220V","preco":412.61586594228,"ipi":0.0,"st":0.1744,"preco_final":497.16085687385316}],"portateis":[{"setor":"AIR FRYER","linha":"AIR FRYER","codigo":"AFITA1003","descricao":"AIR FRYER ITATIAIA 8L 127V","preco":379.710147513312,"ipi":0.078,"st":0.085,"preco_final":444.12037983599515},{"setor":"AIR FRYER","linha":"AIR FRYER","codigo":"AFITA2003","descricao":"AIR FRYER ITATIAIA 8L 220V","preco":379.710147513312,"ipi":0.078,"st":0.085,"preco_final":444.12037983599515},{"setor":"AIR FRYER","linha":"AIR FRYER","codigo":"AFITA1004","descricao":"AIR FRYER FORNO ITATIAIA 12L 127V","preco":401.0159432069683,"ipi":0.078,"st":0.085,"preco_final":469.04027765316636},{"setor":"AIR FRYER","linha":"AIR FRYER","codigo":"AFITA2004","descricao":"AIR FRYER FORNO ITATIAIA 12L 220V","preco":401.0159432069683,"ipi":0.078,"st":0.085,"preco_final":469.04027765316636},{"setor":"AIR FRYER","linha":"AIR FRYER","codigo":"AFITA1007","descricao":"AIR FRYER ITATIAIA NG 5L 127V","preco":224.31285778809595,"ipi":0.078,"st":0.085,"preco_final":262.3630478546907},{"setor":"AIR FRYER","linha":"AIR FRYER","codigo":"AFITA2007","descricao":"AIR FRYER ITATIAIA NG 5L 220V","preco":224.31285778809595,"ipi":0.078,"st":0.085,"preco_final":262.3630478546907},{"setor":"AIR FRYER","linha":"AIR FRYER","codigo":"AFITA1035A","descricao":"AIR FRYER 3,5 LITROS 127V","preco":157.01043507811198,"ipi":0.078,"st":0.085,"preco_final":183.64411518041211},{"setor":"AIR FRYER","linha":"AIR FRYER","codigo":"AFITA2035A","descricao":"AIR FRYER 3,5 LITROS 220V","preco":157.01043507811198,"ipi":0.078,"st":0.085,"preco_final":183.64411518041211},{"setor":"ELETROPORTÁTEIS","linha":"ASPIRADOR DE PO","codigo":"APITA1ESSA","descricao":"ASPIRADOR DE PO VERTICAL 127V","preco":101.69239753411199,"ipi":0.065,"st":0.074,"preco_final":116.31678122349263},{"setor":"ELETROPORTÁTEIS","linha":"ASPIRADOR DE PO","codigo":"APITA2ESSA","descricao":"ASPIRADOR DE PO VERTICAL 220V","preco":101.69239753411199,"ipi":0.065,"st":0.074,"preco_final":116.31678122349263},{"setor":"ELETROPORTÁTEIS","linha":"BATEDEIRA","codigo":"BPMID1003","descricao":"BATEDEIRA MIDI 4,5L 127V INOX/PRETO","preco":325.59126226703995,"ipi":0.065,"st":0.083,"preco_final":375.53533394249257},{"setor":"ELETROPORTÁTEIS","linha":"BATEDEIRA","codigo":"BPMID2003","descricao":"BATEDEIRA MIDI 4,5L 220V INOX/PRETO","preco":325.59126226703995,"ipi":0.065,"st":0.083,"preco_final":375.53533394249257},{"setor":"ELETROPORTÁTEIS","linha":"CAFETEIRA","codigo":"CFITA1001","descricao":"CAFETEIRA ITATIAIA 15 XICARAS 127V","preco":60.692809449887996,"ipi":0.078,"st":0.094,"preco_final":71.57697235415532},{"setor":"ELETROPORTÁTEIS","linha":"CAFETEIRA","codigo":"CFITA2001","descricao":"CAFETEIRA ITATIAIA 15 XICARAS 220V","preco":60.692809449887996,"ipi":0.078,"st":0.094,"preco_final":71.57697235415532},{"setor":"ELETROPORTÁTEIS","linha":"CAFETEIRA","codigo":"CFITA1002","descricao":"CAFETEIRA ITATIAIA 30 XICARAS 127V","preco":84.825749441664,"ipi":0.078,"st":0.094,"preco_final":100.03772074053649},{"setor":"ELETROPORTÁTEIS","linha":"CAFETEIRA","codigo":"CFITA2002","descricao":"CAFETEIRA ITATIAIA 30 XICARAS 220V","preco":84.825749441664,"ipi":0.078,"st":0.094,"preco_final":100.03772074053649},{"setor":"ELETROPORTÁTEIS","linha":"CHALEIRA","codigo":"CHITA1ESSA","descricao":"CHALEIRA 1,8L INOX 127V","preco":45.553511691071996,"ipi":0.13,"st":0.1017,"preco_final":56.71052332796104},{"setor":"ELETROPORTÁTEIS","linha":"CHALEIRA","codigo":"CHITA2ESSA","descricao":"CHALEIRA 1,8L INOX 220V","preco":45.553511691071996,"ipi":0.13,"st":0.1017,"preco_final":56.71052332796104},{"setor":"ELETROPORTÁTEIS","linha":"CLIMATIZADOR DE AR","codigo":"CAITA1040A","descricao":"CLIMATIZADOR DE AR 4 LITROS 127V","preco":272.757183054048,"ipi":0.0,"st":0.081,"preco_final":294.8505148814259},{"setor":"ELETROPORTÁTEIS","linha":"CLIMATIZADOR DE AR","codigo":"CAITA2040A","descricao":"CLIMATIZADOR DE AR 4 LITROS 220V","preco":272.757183054048,"ipi":0.0,"st":0.081,"preco_final":294.8505148814259},{"setor":"ELETROPORTÁTEIS","linha":"CLIMATIZADOR DE AR","codigo":"CAITA1140A","descricao":"CLIMATIZADOR DE AR 14 LITROS 127V","preco":323.906738801184,"ipi":0.0,"st":0.081,"preco_final":350.14318464407995},{"setor":"ELETROPORTÁTEIS","linha":"CLIMATIZADOR DE AR","codigo":"CAITA2140A","descricao":"CLIMATIZADOR DE AR 14 LITROS 220V","preco":323.906738801184,"ipi":0.0,"st":0.081,"preco_final":350.14318464407995},{"setor":"ELETROPORTÁTEIS","linha":"CLIMATIZADOR DE AR","codigo":"CAITA1200A","descricao":"CLIMATIZADOR DE AR 20 LITROS 127V","preco":399.39623106767993,"ipi":0.0,"st":0.081,"preco_final":431.747325784162},{"setor":"ELETROPORTÁTEIS","linha":"CLIMATIZADOR DE AR","codigo":"CAITA2200A","descricao":"CLIMATIZADOR DE AR 20 LITROS 220V","preco":399.39623106767993,"ipi":0.0,"st":0.081,"preco_final":431.747325784162},{"setor":"ELETROPORTÁTEIS","linha":"CLIMATIZADOR DE AR","codigo":"CAITA1400A","descricao":"CLIMATIZADOR DE AR 40 LITROS 127V","preco":757.807149673728,"ipi":0.0,"st":0.081,"preco_final":819.1895287972999},{"setor":"ELETROPORTÁTEIS","linha":"CLIMATIZADOR DE AR","codigo":"CAITA2400A","descricao":"CLIMATIZADOR DE AR 40 LITROS 220V","preco":757.807149673728,"ipi":0.0,"st":0.081,"preco_final":819.1895287972999},{"setor":"COOKTOP MESA INOX","linha":"COOKTOP A GAS","codigo":"CGITA3005A","descricao":"COOKTOP A GAS 5B TPC 127/220V","preco":722.5035350037119,"ipi":0.026,"st":0.1744,"preco_final":870.5693634475766},{"setor":"COOKTOP MESA INOX","linha":"COOKTOP A GAS","codigo":"CGITA3005B","descricao":"COOKTOP A GAS 5B TPE 127/220V","preco":722.5035350037119,"ipi":0.026,"st":0.1744,"preco_final":870.5693634475766},{"setor":"COOKTOP INDUÇÃO","linha":"COOKTOP INDUÇÃO","codigo":"CIESS1001","descricao":"COOKTOP INDUCAO ESSENCIAL 1Q 127V","preco":218.4893316860285,"ipi":0.026,"st":0.1744,"preco_final":263.2653117815057},{"setor":"COOKTOP INDUÇÃO","linha":"COOKTOP INDUÇÃO","codigo":"CIESS2001","descricao":"COOKTOP INDUCAO ESSENCIAL 1Q 220V","preco":218.4893316860285,"ipi":0.026,"st":0.1744,"preco_final":263.2653117815057},{"setor":"COOKTOP INDUÇÃO","linha":"COOKTOP INDUÇÃO","codigo":"CIMAS2003","descricao":"COOKTOP INDUCAO MASTER 4Q 220V","preco":1113.448597496928,"ipi":0.026,"st":0.1744,"preco_final":1341.6325177558024},{"setor":"COOKTOP INDUÇÃO","linha":"COOKTOP INDUÇÃO","codigo":"CIMID1002","descricao":"COOKTOP INDUCAO MIDI 2Q 127V","preco":603.39487790736,"ipi":0.026,"st":0.1744,"preco_final":727.051245174378},{"setor":"COOKTOP INDUÇÃO","linha":"COOKTOP INDUÇÃO","codigo":"CIMID2002","descricao":"COOKTOP INDUCAO MIDI 2Q 220V","preco":603.39487790736,"ipi":0.026,"st":0.1744,"preco_final":727.051245174378},{"setor":"ELETROPORTÁTEIS","linha":"FERRO DE PASSAR","codigo":"FSITA1ESSA","descricao":"FERRO A SECO 127V","preco":44.0959706244288,"ipi":0.065,"st":0.083,"preco_final":50.86007203836306},{"setor":"ELETROPORTÁTEIS","linha":"FERRO DE PASSAR","codigo":"FSITA2ESSA","descricao":"FERRO A SECO 220V","preco":47.93040285264,"ipi":0.065,"st":0.083,"preco_final":55.28268699822071},{"setor":"ELETROPORTÁTEIS","linha":"FERRO DE PASSAR","codigo":"FVITA1ESSA","descricao":"FERRO A VAPOR 127V","preco":62.99118468719999,"ipi":0.065,"st":0.083,"preco_final":72.65371746229305},{"setor":"ELETROPORTÁTEIS","linha":"FERRO DE PASSAR","codigo":"FVITA2ESSA","descricao":"FERRO A VAPOR 220V","preco":56.692066218479994,"ipi":0.065,"st":0.083,"preco_final":65.38834571606374},{"setor":"ELETROPORTÁTEIS","linha":"GRILL","codigo":"GRESS1005","descricao":"GRILL ESSENCIAL 1000W INOX 127V","preco":84.1633605533952,"ipi":0.078,"st":0.094,"preco_final":99.25654432815665},{"setor":"ELETROPORTÁTEIS","linha":"GRILL","codigo":"GRESS2005","descricao":"GRILL ESSENCIAL 1000W INOX 220V","preco":84.1633605533952,"ipi":0.078,"st":0.094,"preco_final":99.25654432815665},{"setor":"ELETROPORTÁTEIS","linha":"GRILL","codigo":"GRMAS1007","descricao":"GRILL MASTER 1400W INOX 127V","preco":218.41702565760002,"ipi":0.078,"st":0.094,"preco_final":257.58618770282874},{"setor":"ELETROPORTÁTEIS","linha":"GRILL","codigo":"GRMAS2007","descricao":"GRILL MASTER 2000W INOX 220V","preco":218.41702565760002,"ipi":0.078,"st":0.094,"preco_final":257.58618770282874},{"setor":"ELETROPORTÁTEIS","linha":"GRILL","codigo":"GRMID1006","descricao":"GRILL MIDI 1200W INOX 127V","preco":151.84979751110401,"ipi":0.078,"st":0.094,"preco_final":179.08132539836532},{"setor":"ELETROPORTÁTEIS","linha":"GRILL","codigo":"GRMID2006","descricao":"GRILL MIDI 1600W INOX 220V","preco":151.84979751110401,"ipi":0.078,"st":0.094,"preco_final":179.08132539836532},{"setor":"ELETROPORTÁTEIS","linha":"MINI PROCESSADOR","codigo":"MPITA1ESSA","descricao":"MINI PROCESSADOR 127V","preco":62.234576689823996,"ipi":0.065,"st":0.083,"preco_final":71.78104958115955},{"setor":"ELETROPORTÁTEIS","linha":"MINI PROCESSADOR","codigo":"MPITA2ESSA","descricao":"MINI PROCESSADOR 220V","preco":62.234576689823996,"ipi":0.065,"st":0.083,"preco_final":71.78104958115955},{"setor":"ELETROPORTÁTEIS","linha":"MIXER","codigo":"MXITA1ESSA","descricao":"MIXER 127V","preco":62.24171450112,"ipi":0.065,"st":0.083,"preco_final":71.7892822970193},{"setor":"ELETROPORTÁTEIS","linha":"MIXER","codigo":"MXITA2ESSA","descricao":"MIXER 220V","preco":62.24171450112,"ipi":0.065,"st":0.083,"preco_final":71.7892822970193},{"setor":"ELETROPORTÁTEIS","linha":"MIXER","codigo":"MXITA1MIDA","descricao":"MIXER 3 EM 1 127V","preco":113.2620758637984,"ipi":0.065,"st":0.083,"preco_final":130.63591199092576},{"setor":"ELETROPORTÁTEIS","linha":"MIXER","codigo":"MXITA2MIDA","descricao":"MIXER 3 EM 1 220V","preco":113.2620758637984,"ipi":0.065,"st":0.083,"preco_final":130.63591199092576},{"setor":"ELETROPORTÁTEIS","linha":"PANELA ARROZ","codigo":"PAESS1003","descricao":"PAN ARROZ ELETRICA 5X 1,0L 127V PRETA","preco":113.96943296323198,"ipi":0.078,"st":0.085,"preco_final":133.30206787678503},{"setor":"ELETROPORTÁTEIS","linha":"PANELA ARROZ","codigo":"PAESS2003","descricao":"PAN ARROZ ELETRICA 5X 1,0L 220V PRETA","preco":113.96943296323198,"ipi":0.078,"st":0.085,"preco_final":133.30206787678503},{"setor":"ELETROPORTÁTEIS","linha":"PANELA ARROZ","codigo":"PAMID1001","descricao":"PAN ARZ EL MID VIS 1,5L 127V 500W INOX","preco":147.74555601590401,"ipi":0.078,"st":0.085,"preco_final":172.8076346828818},{"setor":"ELETROPORTÁTEIS","linha":"PANELA ARROZ","codigo":"PAMID2001","descricao":"PAN ARZ EL MID VIS 1,5L 220V 500W INOX","preco":147.74555601590401,"ipi":0.078,"st":0.085,"preco_final":172.8076346828818},{"setor":"ELETROPORTÁTEIS","linha":"PANELA ARROZ","codigo":"PAMID1002","descricao":"PAN ARZ EL MIDI VIS 1,8L 127V 700W INX","preco":154.4311155881894,"ipi":0.078,"st":0.085,"preco_final":180.627265725414},{"setor":"ELETROPORTÁTEIS","linha":"PANELA ARROZ","codigo":"PAMID2002","descricao":"PAN ARZ EL MIDI VIS 1,8L 220V 700W INX","preco":167.85990824803196,"ipi":0.078,"st":0.085,"preco_final":196.33398448414562},{"setor":"ELETROPORTÁTEIS","linha":"PANELA DE PRESSÃO","codigo":"PPESS1001","descricao":"PAN PRES EL ESS 3L 127V 700W INOX","preco":239.74680439721092,"ipi":0.078,"st":0.085,"preco_final":280.41505482710977},{"setor":"ELETROPORTÁTEIS","linha":"PANELA DE PRESSÃO","codigo":"PPESS2001","descricao":"PAN PRES EL ESS 3L 220V 700W INOX","preco":239.74680439721092,"ipi":0.078,"st":0.085,"preco_final":280.41505482710977},{"setor":"ELETROPORTÁTEIS","linha":"PANELA DE PRESSÃO","codigo":"PPESS1003","descricao":"PAN PRESS ESSENCIAL 5L 127V 900W INX","preco":306.56899516319993,"ipi":0.078,"st":0.085,"preco_final":358.5722938127335},{"setor":"ELETROPORTÁTEIS","linha":"PANELA DE PRESSÃO","codigo":"PPESS2003","descricao":"PAN PRESS ESSENCIAL 5L 220V 900W INX","preco":306.56899516319993,"ipi":0.078,"st":0.085,"preco_final":358.5722938127335},{"setor":"ELETROPORTÁTEIS","linha":"PANELA DE PRESSÃO","codigo":"PPMID1002","descricao":"PAN PRES EL MID 5L 127V 900W INOX","preco":294.4482778014624,"ipi":0.078,"st":0.085,"preco_final":344.39553916492446},{"setor":"ELETROPORTÁTEIS","linha":"PANELA DE PRESSÃO","codigo":"PPMID2002","descricao":"PAN PRES EL MID 5L 220V 900W INOX","preco":294.4482778014624,"ipi":0.078,"st":0.085,"preco_final":344.39553916492446},{"setor":"ELETROPORTÁTEIS","linha":"SANDUICHEIRA","codigo":"SDESS1003","descricao":"GRILL E SAND ESSENCIAL 750W PRETA 127V","preco":56.510052030432,"ipi":0.078,"st":0.094,"preco_final":66.64411268115343},{"setor":"ELETROPORTÁTEIS","linha":"SANDUICHEIRA","codigo":"SDESS2003","descricao":"GRILL E SAND ESSENCIAL 750W  PRETA 220V","preco":56.510052030432,"ipi":0.078,"st":0.094,"preco_final":66.64411268115343},{"setor":"ELETROPORTÁTEIS","linha":"SANDUICHEIRA","codigo":"SDESS1004","descricao":"GRILL E SAND ESSENCIAL 750W INOX 127V","preco":60.250265149536,"ipi":0.078,"st":0.094,"preco_final":71.05506569933259},{"setor":"ELETROPORTÁTEIS","linha":"SANDUICHEIRA","codigo":"SDESS2004","descricao":"GRILL E SAND ESSENCIAL 750W INOX 220V","preco":55.430243937573124,"ipi":0.078,"st":0.094,"preco_final":65.37066044338599}]};
+
+const TAB_CONFIG = {
+  aco:      {label:"Aço",      info:"Frete: CIF — Mínimo: R$ 3.000 — IPI 3,25%",                  min:3000},
+  madeira:  {label:"Madeira",  info:"Frete: FOB Dirigido (FOB + 10%) — Mínimo: R$ 3.000",          min:3000},
+  fogoes:   {label:"Fogões/Cooktop", info:"Frete: CIF — Mínimo: R$ 3.000",                         min:3000},
+  lavadoras:{label:"Lavadoras",info:"Frete: CIF — Sem mínimo definido",                             min:0},
+  portateis:{label:"Portáteis",info:"Frete: CIF — Mínimo: R$ 1.500",                               min:1500},
+};
+
+let currentUser = null;
+let currentTab = 'aco';
+let cart = {};
+
+// ===== LOGIN =====
+function doLogin(){
+  const raw = document.getElementById('inp-cnpj').value.replace(/\D/g,'');
+  const senha = document.getElementById('inp-senha').value.replace(/\D/g,'');
+  const lerr = document.getElementById('lerr');
+  lerr.style.display='none';
+  if(raw.length < 8){ lerr.textContent='Digite o CNPJ completo.'; lerr.style.display='block'; return; }
+  if(senha.length < 8){ lerr.textContent='A senha deve ter 8 dígitos.'; lerr.style.display='block'; return; }
+  const expectedSenha = raw.substring(0,8);
+  if(senha !== expectedSenha){ lerr.textContent='Senha incorreta. Use os 8 primeiros dígitos do seu CNPJ.'; lerr.style.display='block'; return; }
+  const client = CLIENTS_DB.find(c=>c.cnpj && c.cnpj.replace(/\D/g,'')===raw);
+  if(!client){ lerr.textContent='CNPJ não encontrado. Entre em contato com a Ideale.'; lerr.style.display='block'; return; }
+  currentUser = client;
+  applyUser();
+}
+
+document.getElementById('inp-cnpj').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inp-senha').focus()});
+document.getElementById('inp-senha').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+function applyUser(){
+  const nome = currentUser.nome_fantasia || currentUser.razao_social || '—';
+  const cidade = currentUser.cidade || '';
+  const estado = currentUser.estado || '';
+  document.getElementById('tb-nome').textContent = nome;
+  document.getElementById('tb-cidade').textContent = cidade + (estado?' - '+estado:'');
+  document.getElementById('hm-nome').textContent = nome;
+  document.getElementById('hm-info').textContent = cidade + (estado?' - '+estado:'') + (currentUser.cod_itatiaia?' | Cód. '+currentUser.cod_itatiaia:'');
+  document.getElementById('pg-login').style.display='none';
+  document.getElementById('pg-portal').style.display='block';
+  showPage('home');
+}
+
+function doLogout(){
+  currentUser=null; cart={};
+  document.getElementById('pg-login').style.display='flex';
+  document.getElementById('pg-portal').style.display='none';
+  document.getElementById('inp-cnpj').value='';
+  document.getElementById('inp-senha').value='';
+}
+
+// ===== NAVIGATION =====
+function showPage(p){
+  ['home','itatiaia','colli','nautika'].forEach(id=>{
+    document.getElementById('pg-'+id).style.display='none';
+  });
+  document.getElementById('pg-'+p).style.display='block';
+  if(p==='itatiaia'){ setTab('aco',document.querySelector('.tab-btn')); }
+}
+
+// ===== ITATIAIA =====
+function setTab(tab,btn){
+  currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const cfg=TAB_CONFIG[tab];
+  document.getElementById('tab-info-txt').textContent=cfg.info;
+  // Populate filter selects
+  const data=ITATIAIA[tab]||[];
+  const linhas=[...new Set(data.map(r=>r.linha).filter(Boolean))].sort();
+  const setores=[...new Set(data.map(r=>r.setor).filter(Boolean))].sort();
+  const selL=document.getElementById('sel-linha');
+  const selS=document.getElementById('sel-setor');
+  selL.innerHTML='<option value="">Todas as linhas</option>'+linhas.map(l=>`<option>${l}</option>`).join('');
+  selS.innerHTML='<option value="">Todos os setores</option>'+setores.map(s=>`<option>${s}</option>`).join('');
+  document.getElementById('search-prod').value='';
+  renderTable();
+}
+
+function clearFilters(){
+  document.getElementById('search-prod').value='';
+  document.getElementById('sel-linha').value='';
+  document.getElementById('sel-setor').value='';
+  renderTable();
+}
+
+function renderTable(){
+  const data=ITATIAIA[currentTab]||[];
+  const q=(document.getElementById('search-prod').value||'').toLowerCase();
+  const fl=(document.getElementById('sel-linha').value||'');
+  const fs=(document.getElementById('sel-setor').value||'');
+  const filtered=data.filter(r=>{
+    const matchQ=!q||(r.codigo.toLowerCase().includes(q)||r.descricao.toLowerCase().includes(q)||r.linha.toLowerCase().includes(q));
+    const matchL=!fl||r.linha===fl;
+    const matchS=!fs||r.setor===fs;
+    return matchQ&&matchL&&matchS;
+  });
+  const tbody=document.getElementById('prod-tbody');
+  tbody.innerHTML='';
+  filtered.forEach(r=>{
+    const key=r.codigo;
+    const qty=cart[key]?.qty||0;
+    const stFrete=(r.frete!=null&&r.frete>0)?r.frete:(r.st||0);
+    const stLabel=currentTab==='madeira'?'Frete':'ST';
+    const row=document.createElement('tr');
+    row.innerHTML=`
+      <td><span class="tag-setor">${r.setor}</span></td>
+      <td><span class="tag-linha">${r.linha}</span></td>
+      <td style="font-weight:600;font-size:.82rem">${r.codigo}</td>
+      <td style="text-align:center">
+        <a href="https://itatiaia.sharepoint.com/:f:/s/ITA_MARKETING/IgCu8f-a4OvkQLPSKDK9IOY1AZAO8FnFLdoq5pCIJMeWF5E?e=HYveop" 
+           target="_blank" 
+           title="Ver fotos no catálogo Itatiaia"
+           style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,#1a4fa0,#1566cc);border-radius:8px;text-decoration:none;font-size:1rem;transition:transform .15s;"
+           onmouseover="this.style.transform='scale(1.18)'" 
+           onmouseout="this.style.transform='scale(1)'">📷</a>
+      </td>
+      <td>${r.descricao}</td>
+      <td>R$ ${fmt(r.preco)}</td>
+      <td>${pct(r.ipi)}</td>
+      <td>${pct(stFrete)}</td>
+      <td style="font-weight:700;color:var(--blue)">R$ ${fmt(r.preco_final)}</td>
+      <td><input class="qty-input" type="number" min="0" value="${qty||''}" placeholder="0"
+        oninput="updateCart('${key}',this.value,${JSON.stringify(r).replace(/"/g,'&quot;')})" 
+        data-code="${key}"></td>
+    `;
+    tbody.appendChild(row);
+  });
+  updateTotal();
+}
+
+function updateCart(code,val,rStr){
+  const qty=parseInt(val)||0;
+  if(qty>0){
+    const r=typeof rStr==='string'?JSON.parse(rStr.replace(/&quot;/g,'"')):rStr;
+    cart[code]={qty,item:r};
+  }else{
+    delete cart[code];
+  }
+  updateTotal();
+}
+
+function fmt(n){
+  return Number(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function pct(n){
+  return (Number(n)*100).toFixed(2).replace('.',',')+'%';
+}
+
+function updateTotal(){
+  let total=0,count=0;
+  Object.values(cart).forEach(c=>{total+=c.item.preco_final*c.qty;count+=c.qty;});
+  document.getElementById('sp-total').textContent='R$ '+fmt(total);
+  document.getElementById('sp-count').textContent=count+' item(s)';
+  const min=TAB_CONFIG[currentTab].min;
+  const warn=document.getElementById('min-warn');
+  const warnTxt=document.getElementById('min-warn-txt');
+  if(count>0&&total<min&&min>0){
+    warnTxt.textContent=`Pedido mínimo para ${TAB_CONFIG[currentTab].label}: R$ ${fmt(min)}. Total atual: R$ ${fmt(total)}.`;
+    warn.style.display='block';
+  }else{
+    warn.style.display='none';
+  }
+}
+
+function clearCart(){
+  cart={};
+  document.querySelectorAll('.qty-input').forEach(i=>i.value='');
+  updateTotal();
+}
+
+function gerarPedido(){
+  const pgto=document.getElementById('pgto-sel').value;
+  if(!pgto){alert('Selecione a forma de pagamento!');return;}
+
+  // Somente itens com quantidade > 0
+  const items=Object.values(cart).filter(c=>c.qty>0);
+  if(items.length===0){alert('Adicione itens ao pedido!');return;}
+
+  const cfg=TAB_CONFIG[currentTab];
+  let totalGeral=0;
+  items.forEach(c=>totalGeral+=c.item.preco_final*c.qty);
+  const min=cfg.min;
+  if(min>0&&totalGeral<min){
+    if(!confirm(`Atenção: Pedido mínimo para ${cfg.label} é R$ ${fmt(min)}. Total atual: R$ ${fmt(totalGeral)}. Deseja continuar mesmo assim?`))return;
+  }
+
+  const cliente=currentUser;
+  const dataNow=new Date();
+  const dataStr=dataNow.toLocaleDateString('pt-BR');
+  const horaStr=dataNow.toLocaleTimeString('pt-BR');
+  const cnpjF=cliente.cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,'$1.$2.$3/$4-$5');
+  const obsMap={
+    aco:'Frete: CIF incluso',
+    madeira:'Frete: FOB Dirigido (FOB + 10%)',
+    fogoes:'Frete: CIF incluso',
+    lavadoras:'Frete: CIF incluso',
+    portateis:'Frete: CIF incluso',
+  };
+
+  // Agrupar por SETOR (apenas itens com qty > 0)
+  const porSetor={};
+  items.forEach(c=>{
+    const s=c.item.setor||'GERAL';
+    if(!porSetor[s]) porSetor[s]=[];
+    porSetor[s].push(c);
+  });
+  const setores=Object.keys(porSetor).sort();
+  const numPedidos=setores.length;
+
+  // ── Montar preview HTML no modal ──
+  let htmlFull=`<p style="font-size:.85rem;color:#555;margin-bottom:16px;">
+    Serão gerados <strong>${numPedidos} PDF(s)</strong> — um para cada setor com itens. 
+    Clique nos botões abaixo para baixar cada pedido.
+  </p>`;
+
+  let msgWpp=`*PEDIDO - IDEALE REP COM LTDA*\n`;
+  msgWpp+=`Data: ${dataStr} ${horaStr}\n`;
+  msgWpp+=`CNPJ: ${cnpjF}\n`;
+  msgWpp+=`Cliente: ${cliente.razao_social}\n`;
+  msgWpp+=`Cidade: ${cliente.cidade||''} / ${cliente.estado||''}\n`;
+  msgWpp+=`Linha: ${cfg.label}\n`;
+  msgWpp+=`Pagamento: ${pgto}\n`;
+  msgWpp+=`━━━━━━━━━━━━━━━━━━━━━\n`;
+
+  setores.forEach((setor,idx)=>{
+    const itensSetor=porSetor[setor];
+    let totalSetor=0;
+    itensSetor.forEach(c=>totalSetor+=c.item.preco_final*c.qty);
+
+    let rows='';
+    itensSetor.forEach(c=>{
+      rows+=`<tr>
+        <td style="font-size:.78rem">${c.item.codigo}</td>
+        <td style="font-size:.78rem">${c.item.descricao}</td>
+        <td style="text-align:center">${c.qty}</td>
+        <td style="text-align:right">R$ ${fmt(c.item.preco_final)}</td>
+        <td style="text-align:right;font-weight:700;color:#1a4fa0">R$ ${fmt(c.item.preco_final*c.qty)}</td>
+      </tr>`;
+    });
+
+    htmlFull+=`
+      <div class="order-section" style="margin-bottom:20px;">
+        <h4 style="background:#1a4fa0;color:#fff;padding:8px 14px;border-radius:8px;margin-bottom:10px;font-size:.9rem;">
+          📦 PEDIDO ${idx+1}/${numPedidos} — ${setor}
+        </h4>
+        <table class="order-items-table">
+          <thead><tr><th>Código</th><th>Descrição</th><th>Qtd</th><th>Unit.</th><th>Total</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div class="order-total" style="margin-top:8px;">Subtotal ${setor}: <span>R$ ${fmt(totalSetor)}</span></div>
+      </div>`;
+
+    msgWpp+=`\n📦 *${setor}*\n`;
+    itensSetor.forEach(c=>{
+      msgWpp+=`• ${c.item.codigo} | ${c.item.descricao} | Qtd: ${c.qty} | R$${fmt(c.item.preco_final*c.qty)}\n`;
+    });
+    msgWpp+=`*Subtotal: R$${fmt(totalSetor)}*\n`;
+  });
+
+  htmlFull+=`<div style="border-top:3px solid #1a4fa0;margin-top:12px;padding-top:12px;">
+    <div class="order-total" style="font-size:1.1rem;">TOTAL GERAL: <span>R$ ${fmt(totalGeral)}</span></div>
+  </div>`;
+
+  msgWpp+=`\n━━━━━━━━━━━━━━━━━━━━━\n*TOTAL GERAL: R$${fmt(totalGeral)}*\n${obsMap[currentTab]}`;
+
+  document.getElementById('modal-content').innerHTML=htmlFull;
+
+  // ── Botões de download PDF por setor + WhatsApp ──
+  const actionsDiv=document.getElementById('modal-actions-area');
+  actionsDiv.innerHTML='';
+
+  // Botão WhatsApp
+  const btnWpp=document.createElement('button');
+  btnWpp.className='btn-enviar';
+  btnWpp.textContent='📱 Enviar WhatsApp';
+  btnWpp.onclick=()=>window.open('https://wa.me/5535999598717?text='+encodeURIComponent(msgWpp),'_blank');
+  actionsDiv.appendChild(btnWpp);
+
+  // Botão PDF por setor
+  setores.forEach((setor,idx)=>{
+    const btn=document.createElement('button');
+    btn.className='btn-print';
+    btn.style.cssText='background:linear-gradient(135deg,#c8001e,#e02040);color:#fff;border:none;padding:10px 18px;border-radius:9px;cursor:pointer;font-size:.85rem;font-weight:700;font-family:Barlow Condensed,sans-serif;letter-spacing:.5px;margin:4px;';
+    btn.textContent=`📄 PDF — ${setor}`;
+    btn.onclick=()=>gerarPDFSetor(setor, porSetor[setor], idx+1, numPedidos, cliente, cnpjF, dataStr, horaStr, pgto, cfg, obsMap);
+    actionsDiv.appendChild(btn);
+  });
+
+  // Botão "Todos os PDFs"
+  if(numPedidos>1){
+    const btnAll=document.createElement('button');
+    btnAll.className='btn-print';
+    btnAll.style.cssText='background:linear-gradient(135deg,#1a4fa0,#1566cc);color:#fff;border:none;padding:10px 18px;border-radius:9px;cursor:pointer;font-size:.85rem;font-weight:700;font-family:Barlow Condensed,sans-serif;letter-spacing:.5px;margin:4px;';
+    btnAll.textContent=`⬇ Baixar Todos (${numPedidos} PDFs)`;
+    btnAll.onclick=()=>{
+      setores.forEach((s,i)=>{
+        setTimeout(()=>gerarPDFSetor(s,porSetor[s],i+1,numPedidos,cliente,cnpjF,dataStr,horaStr,pgto,cfg,obsMap),i*600);
+      });
+    };
+    actionsDiv.insertBefore(btnAll, actionsDiv.firstChild);
+  }
+
+  document.getElementById('modal-pedido').classList.add('open');
+}
+
+function gerarPDFSetor(setor, itens, numPedido, totalPedidos, cliente, cnpjF, dataStr, horaStr, pgto, cfg, obsMap){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=210, mg=14;
+
+  // ── Cabeçalho ──
+  doc.setFillColor(26,79,160);
+  doc.rect(0,0,W,28,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(18);
+  doc.text('IDEALE REP COM LTDA',mg,11);
+  doc.setFontSize(9);
+  doc.setFont('helvetica','normal');
+  doc.text('Representações Comerciais  |  (35) 99959-8717  |  ideale.vendas@terra.com.br',mg,18);
+  doc.text(`Pedido ${numPedido} de ${totalPedidos}  —  Setor: ${setor}`,mg,24);
+
+  // ── Título do setor ──
+  doc.setFillColor(200,0,30);
+  doc.rect(0,30,W,10,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(11);
+  doc.text(`ITATIAIA MÓVEIS — ${cfg.label} — SETOR: ${setor}`,mg,37);
+
+  // ── Dados do cliente ──
+  let y=48;
+  doc.setTextColor(13,27,46);
+  doc.setFillColor(240,244,251);
+  doc.rect(mg,y-5,W-mg*2,30,'F');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(9);
+  doc.text('DADOS DO CLIENTE',mg+2,y);
+  y+=5;
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8.5);
+  const col1=mg+2, col2=W/2;
+  doc.text(`CNPJ: ${cnpjF}`,col1,y);
+  doc.text(`Data: ${dataStr}  Hora: ${horaStr}`,col2,y);
+  y+=5;
+  doc.text(`Razão Social: ${cliente.razao_social||'—'}`,col1,y);
+  doc.text(`Pagamento: ${pgto}`,col2,y);
+  y+=5;
+  doc.text(`Nome Fantasia: ${cliente.nome_fantasia||'—'}`,col1,y);
+  doc.text(`Cód. Itatiaia: ${cliente.cod_itatiaia||'—'}`,col2,y);
+  y+=5;
+  doc.text(`Cidade: ${cliente.cidade||'—'} / ${cliente.estado||'—'}`,col1,y);
+  y+=8;
+
+  // ── Tabela de itens ──
+  let totalSetor=0;
+  const tableRows=itens.map(c=>{
+    const tot=c.item.preco_final*c.qty;
+    totalSetor+=tot;
+    return[
+      c.item.codigo,
+      c.item.descricao,
+      String(c.qty),
+      'R$ '+fmt(c.item.preco_final),
+      'R$ '+fmt(tot)
+    ];
+  });
+
+  doc.autoTable({
+    startY:y,
+    head:[['Código','Descrição','Qtd','Preço Unit.','Total']],
+    body:tableRows,
+    theme:'grid',
+    margin:{left:mg,right:mg},
+    headStyles:{
+      fillColor:[26,79,160],
+      textColor:255,
+      fontStyle:'bold',
+      fontSize:8.5,
+    },
+    bodyStyles:{fontSize:8,textColor:[13,27,46]},
+    alternateRowStyles:{fillColor:[240,244,251]},
+    columnStyles:{
+      0:{cellWidth:28},
+      1:{cellWidth:80},
+      2:{cellWidth:14,halign:'center'},
+      3:{cellWidth:30,halign:'right'},
+      4:{cellWidth:30,halign:'right',fontStyle:'bold'},
+    },
+  });
+
+  let finalY=doc.lastAutoTable.finalY+6;
+
+  // ── Total do setor ──
+  doc.setFillColor(26,79,160);
+  doc.rect(W-mg-60,finalY-4,60,10,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
+  doc.text(`TOTAL: R$ ${fmt(totalSetor)}`,W-mg-58,finalY+3);
+
+  // ── Observação frete por setor ──
+  const obsSetorMap={
+    'ACO':'Frete: CIF — entregue sem custo adicional de frete.',
+    'AÇO':'Frete: CIF — entregue sem custo adicional de frete.',
+    'MADEIRA':'Frete: FOB Dirigido — acrescentar 10% sobre o valor do pedido.',
+    'FOGOES':'Frete: CIF — entregue sem custo adicional de frete.',
+    'FOGÕES':'Frete: CIF — entregue sem custo adicional de frete.',
+    'COOKTOP':'Frete: CIF — entregue sem custo adicional de frete.',
+    'LAVADORAS':'Frete: CIF — entregue sem custo adicional de frete.',
+    'PORTATEIS':'Frete: CIF — entregue sem custo adicional de frete.',
+    'PORTÁTEIS':'Frete: CIF — entregue sem custo adicional de frete.',
+  };
+  const setorUpper=(setor||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const freteMsg=obsSetorMap[setor.toUpperCase()]||obsSetorMap[setorUpper]||obsMap[currentTab]||'';
+  finalY+=14;
+  doc.setFillColor(255,243,205);
+  doc.rect(mg,finalY-4,W-mg*2,9,'F');
+  doc.setDrawColor(200,150,0);
+  doc.rect(mg,finalY-4,W-mg*2,9,'S');
+  doc.setTextColor(120,80,0);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(8.5);
+  doc.text(`⚠  ${freteMsg}`,mg+2,finalY+2);
+
+  // ── Rodapé ──
+  const pageH=297;
+  doc.setDrawColor(26,79,160);
+  doc.setLineWidth(0.5);
+  doc.line(mg,pageH-16,W-mg,pageH-16);
+  doc.setTextColor(100,100,100);
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(7.5);
+  doc.text('IDEALE REP COM LTDA  |  (35) 99959-8717  |  ideale.vendas@terra.com.br  |  ideale.vendas3@terra.com.br',mg,pageH-10);
+  doc.text(`Gerado em: ${dataStr} ${horaStr}`,W-mg,pageH-10,{align:'right'});
+
+  // ── Salvar ──
+  const nomeArq=`Pedido_${setor.replace(/[^a-zA-Z0-9]/g,'_')}_${cliente.cnpj.replace(/\D/g,'')}_${dataStr.replace(/\//g,'-')}.pdf`;
+  doc.save(nomeArq);
+}
+
+function closeModal(){
+  document.getElementById('modal-pedido').classList.remove('open');
+}
+
+// Init
+setTab('aco',null);
+</script>
+
+<style>
+@media print{
+  #pg-login,#pg-home,#pg-itatiaia .tab-bar,
+  #pg-itatiaia .filter-bar,.sticky-pedido,.btn-back,
+  .topbar,.modal-actions,.catalogo-bar{display:none!important}
+  .modal-bg{position:static;background:white;display:block!important}
+  .modal{box-shadow:none;border:1px solid #ddd}
+}
+</style>
+</body>
+</html>
